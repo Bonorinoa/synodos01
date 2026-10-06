@@ -1,0 +1,2535 @@
+{
+  "nodes": [
+    {
+      "id": "augusto",
+      "label": "Augusto Gonzalez-Bonorino",
+      "kind": "person",
+      "blurb": "Behavioral/computational economist; co-founder EconLLM Lab; Marist BA Econ + BS Data Science; CGU MA; ASU Econ PhD mastering out Dec 2026. Targets: DeepMind collaboration paths and SFI complexity community.",
+      "tags": [
+        "user",
+        "econllm",
+        "complexity",
+        "llm-agents"
+      ],
+      "target": false,
+      "profiles": {
+        "scholar": "https://scholar.google.com/citations?user=xdO0FqwAAAAJ",
+        "website": "https://augusto-gonzalezbonorino.com/",
+        "linkedin": "https://www.linkedin.com/in/augustogbono"
+      },
+      "evidence_packet": {
+        "urls": [
+          "https://scholar.google.com/citations?user=xdO0FqwAAAAJ",
+          "https://talkingtomachines.org/partners/",
+          "https://econllm-lab.com/team"
+        ],
+        "notes": "Central ego node; EconLLM co-founder targeting DeepMind paths and SFI complexity community."
+      }
+    },
+    {
+      "id": "monica-capra",
+      "label": "Monica Capra",
+      "kind": "person",
+      "blurb": "Professor of Economic Sciences, CGU. Director & co-founder of EconLLM Lab with Augusto. Experimental, behavioral, and neuroeconomics; AI/LLM methods. Coauthor of Synthetic Cultural Agents (SSRN) with Augusto and Emilio Pantoja. UVA PhD (RePEc: Anderson chair; Holt/Goeree committee per Academia).",
+      "tags": [
+        "cgu",
+        "experimental-econ",
+        "econllm",
+        "lineage"
+      ],
+      "target": false,
+      "profiles": {
+        "cgu": "https://www.cgu.edu/people/c-monica-capra/",
+        "scholar": "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+        "academia": "https://claremont.academia.edu/monicacapra"
+      },
+      "evidence_packet": {
+        "urls": [
+          "https://www.cgu.edu/people/c-monica-capra/",
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "https://genealogy.repec.org/pages/pca93.html",
+          "https://claremont.academia.edu/monicacapra",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf",
+          "https://talkingtomachines.org/partners/",
+          "https://www.sfipress.org/chapter-6-communication-coordination-in-experiments"
+        ],
+        "notes": "Closest collaborator; primary SFI Press / symposium bridge. Lineage: UVA PhD via RePEc (Anderson) + Academia committee self-report (Holt, Goeree)."
+      }
+    },
+    {
+      "id": "econllm-lab",
+      "label": "EconLLM Lab",
+      "kind": "lab",
+      "blurb": "CGU research lab at the intersection of behavioral/experimental economics, AI, and computational methods. Co-founded by Capra (Director) and Augusto (Lead Graduate Researcher). Partner of Talking to Machines. econllm-lab.com",
+      "tags": [
+        "cgu",
+        "llm",
+        "experiments"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://econllm-lab.com/",
+          "https://talkingtomachines.org/partners/"
+        ],
+        "notes": "Joint lab hub linking Augusto, Capra, T2M, and field bridges like Concordia."
+      }
+    },
+    {
+      "id": "talking-to-machines",
+      "label": "Talking to Machines",
+      "kind": "lab",
+      "blurb": "SNSF-funded international project using AI for experimental social science (digital twins, synthetic subjects, AI polling). Led by Sonja Vogt (HEC Lausanne) and Ray Duch (Nuffield Oxford). talkingtomachines.org",
+      "tags": [
+        "t2m",
+        "digital-twins",
+        "experiments"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://talkingtomachines.org/",
+          "https://talkingtomachines.org/partners/",
+          "https://talkingtomachines.org/publications/"
+        ],
+        "notes": "SNSF project hub toward Duch/Yang/Ansell DeepMind-adjacent paths."
+      }
+    },
+    {
+      "id": "raymond-duch",
+      "label": "Raymond Duch",
+      "kind": "person",
+      "blurb": "Senior Research Fellow, Nuffield College, Oxford. Co-director of Talking to Machines. LLM digital twins, AI opinion polling (incl. 2024 synthetic election poll), AI for development evaluation.",
+      "tags": [
+        "oxford",
+        "t2m",
+        "polling"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/",
+          "https://talkingtomachines.org/",
+          "https://arxiv.org/abs/2502.04262"
+        ],
+        "notes": "T2M co-director; NeurIPS/Yang and Nuffield/Ansell bridges."
+      }
+    },
+    {
+      "id": "sonja-vogt",
+      "label": "Sonja Vogt",
+      "kind": "person",
+      "blurb": "HEC University of Lausanne. Co-lead of Talking to Machines with Ray Duch. Experimental social science and AI-enhanced research design.",
+      "tags": [
+        "hec-lausanne",
+        "t2m",
+        "experiments"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://talkingtomachines.org/",
+          "https://iris.unil.ch/entities/person/sonjavogt"
+        ],
+        "notes": "T2M co-lead at HEC Lausanne."
+      }
+    },
+    {
+      "id": "google-deepmind",
+      "label": "Google DeepMind",
+      "kind": "institution",
+      "blurb": "TARGET. Google’s flagship AI research organization (DeepMind + Google Brain merger), led by Demis Hassabis. Gemini, science AI, safety. deepmind.google",
+      "tags": [
+        "target",
+        "ai-research"
+      ],
+      "target": true,
+      "evidence_packet": {
+        "urls": [
+          "https://deepmind.google/",
+          "https://deepmind.google/about/"
+        ],
+        "notes": "TARGET institution."
+      }
+    },
+    {
+      "id": "santa-fe-institute",
+      "label": "Santa Fe Institute",
+      "kind": "institution",
+      "blurb": "TARGET. Independent complexity-science institute; birthplace of complexity economics (1987 Arrow–Anderson workshop). Agent-based modeling, networks, emergent political economies. santafe.edu",
+      "tags": [
+        "target",
+        "complexity",
+        "abm"
+      ],
+      "target": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/",
+          "https://www.sfipress.org/books/complexity-economics"
+        ],
+        "notes": "TARGET institution; complexity economics / external faculty hub."
+      }
+    },
+    {
+      "id": "eitel-lauria",
+      "label": "Eitel J.M. Lauría",
+      "kind": "person",
+      "blurb": "Professor of Data Science & Information Systems; Director of Graduate Programs, Marist School of Computer Science & Mathematics. Learning analytics, ML/NLP/LLMs. Industry background (IBM, Microsoft, etc.). Born Buenos Aires.",
+      "tags": [
+        "marist",
+        "data-science",
+        "argentina"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://www.marist.edu/computer-science-math/faculty/eitel-lauria"
+        ],
+        "notes": "Marist DS mentor node; no verified SFI/DeepMind bridge."
+      }
+    },
+    {
+      "id": "erik-johnston",
+      "label": "Erik Johnston",
+      "kind": "person",
+      "blurb": "Professor, ASU School of Complex Adaptive Systems and School for the Future of Innovation in Society. Policy informatics, ABM, Decision Theater; co-director Center for Smart Cities and Regions. PhD Information + Complex Systems certificate, Michigan.",
+      "tags": [
+        "asu",
+        "complex-systems",
+        "policy-informatics"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://dt.asu.edu/our-team"
+        ],
+        "notes": "ASU complexity / Decision Theater hop toward Laubichler and Shutters."
+      }
+    },
+    {
+      "id": "cgu",
+      "label": "Claremont Graduate University",
+      "kind": "university",
+      "blurb": "Home of EconLLM Lab and Monica Capra. Augusto’s MA institution.",
+      "tags": [
+        "university"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://www.cgu.edu/",
+          "https://www.cgu.edu/people/c-monica-capra/"
+        ],
+        "notes": "Home of EconLLM Lab and Capra."
+      }
+    },
+    {
+      "id": "marist",
+      "label": "Marist University",
+      "kind": "university",
+      "blurb": "Augusto’s BA Economics / BS Data Science alma mater. Lauría leads graduate CS/IS programs and shaped DS/AI curriculum.",
+      "tags": [
+        "university"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://www.marist.edu/",
+          "https://www.marist.edu/computer-science-math/faculty/eitel-lauria"
+        ],
+        "notes": "Augusto alma mater; Lauría affiliation."
+      }
+    },
+    {
+      "id": "asu",
+      "label": "Arizona State University",
+      "kind": "university",
+      "blurb": "Augusto’s current Econ PhD (mastering out). Home of School of Complex Adaptive Systems, CSDC, Decision Theater — local complexity hub.",
+      "tags": [
+        "university",
+        "complex-systems"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://www.asu.edu/",
+          "https://scas.asu.edu/asu-sfi/"
+        ],
+        "notes": "Local complexity hub (SCAS, CSDC, Decision Theater, ASU-SFI)."
+      }
+    },
+    {
+      "id": "nuffield-oxford",
+      "label": "Nuffield College, Oxford",
+      "kind": "university",
+      "blurb": "Raymond Duch’s home college; T2M institutional base in the UK.",
+      "tags": [
+        "university",
+        "oxford"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://www.nuffield.ox.ac.uk/",
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/"
+        ],
+        "notes": "Duch / Ansell college base for T2M and SFI×DeepMind event hop."
+      }
+    },
+    {
+      "id": "hec-lausanne",
+      "label": "HEC Lausanne",
+      "kind": "university",
+      "blurb": "Sonja Vogt’s institution; co-lead base for Talking to Machines (SNSF).",
+      "tags": [
+        "university"
+      ],
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://www.unil.ch/hec/",
+          "https://talkingtomachines.org/"
+        ],
+        "notes": "Vogt / T2M institutional base."
+      }
+    },
+    {
+      "id": "emilio-pantoja",
+      "label": "Emilio Pantoja",
+      "kind": "person",
+      "blurb": "CANDIDATE. Coauthor with Capra and Augusto on LLMs Model Non-WEIRD Populations (Synthetic Cultural Agents). Evidence: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714",
+      "tags": [
+        "candidate",
+        "econllm",
+        "coauthor"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714"
+        ],
+        "notes": "SCA coauthor densifying EconLLM cluster."
+      }
+    },
+    {
+      "id": "manfred-laubichler",
+      "label": "Manfred Laubichler",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). President's Professor; Director, ASU School of Complex Adaptive Systems; SFI External Professor; co-leads ASU-SFI Center for Biosocial Complex Systems. Evidence: https://www.santafe.edu/people/profile/manfred-laubichler and https://search.asu.edu/profile/384867",
+      "tags": [
+        "candidate",
+        "asu",
+        "sfi",
+        "scas"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/manfred-laubichler",
+          "https://search.asu.edu/profile/384867"
+        ],
+        "notes": "Strongest ASU→SFI personal bridge (External Professor + ASU-SFI co-director)."
+      }
+    },
+    {
+      "id": "sara-walker",
+      "label": "Sara Imari Walker",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). ASU SCAS / SESE professor; SFI External Faculty; Associate Director, ASU-SFI Center. Origins-of-life / complex systems. Evidence: https://search.asu.edu/profile/1731899",
+      "tags": [
+        "candidate",
+        "asu",
+        "sfi"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://search.asu.edu/profile/1731899",
+          "https://scas.asu.edu/asu-sfi/"
+        ],
+        "notes": "ASU-SFI Associate Director; SFI External Faculty."
+      }
+    },
+    {
+      "id": "stephanie-forrest",
+      "label": "Stephanie Forrest",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). ASU CS professor; Biodesign Center for Biocomputation; SFI External Faculty (past Science Board). Evidence: https://www.santafe.edu/people/profile/stephanie-forrest",
+      "tags": [
+        "candidate",
+        "asu",
+        "sfi",
+        "cs"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/stephanie-forrest"
+        ],
+        "notes": "ASU CS + SFI External Faculty bridge."
+      }
+    },
+    {
+      "id": "asu-sfi-center",
+      "label": "ASU-SFI Center for Biosocial Complex Systems",
+      "kind": "lab",
+      "blurb": "CANDIDATE (institutional bridge). Joint ASU–Santa Fe Institute center. Shared institution path from Augusto/Johnston into SFI. Evidence: ASU profiles listing ASU-SFI Center; Laubichler/Walker affiliations.",
+      "tags": [
+        "candidate",
+        "asu",
+        "sfi"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://scas.asu.edu/asu-sfi/",
+          "https://www.santafe.edu/research/initiatives/asu-sfi-center-biosocial-complex-systems"
+        ],
+        "notes": "Institutional ASU↔SFI joint center."
+      }
+    },
+    {
+      "id": "csdc-asu",
+      "label": "Center for Social Dynamics and Complexity",
+      "kind": "lab",
+      "blurb": "CANDIDATE. ASU complexity center; Johnston and Laubichler affiliations. Evidence: https://search.asu.edu/profile/561604",
+      "tags": [
+        "candidate",
+        "asu",
+        "complexity"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://search.asu.edu/profile/561604"
+        ],
+        "notes": "ASU complexity center linking Johnston / Laubichler / Boyd."
+      }
+    },
+    {
+      "id": "decision-theater",
+      "label": "ASU Decision Theater",
+      "kind": "lab",
+      "blurb": "CANDIDATE. Johnston is Director of Policy Informatics; Laubichler also listed with Decision Theater. Evidence: ASU Johnston profile.",
+      "tags": [
+        "candidate",
+        "asu",
+        "policy-informatics"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://dt.asu.edu/our-team"
+        ],
+        "notes": "Policy informatics facility; Johnston / Shutters / Laubichler."
+      }
+    },
+    {
+      "id": "sfi-complexity-econ-2019",
+      "label": "SFI Complexity Economics Symposium 2019",
+      "kind": "institution",
+      "blurb": "CANDIDATE (SFI path). Capra presented Ch. 6 Communication & Coordination in Experiments in SFI Press Complexity Economics volume (Arthur/Beinhocker/Stanger). Evidence: https://www.sfipress.org/books/complexity-economics and https://www.sfipress.org/chapter-6-communication-coordination-in-experiments",
+      "tags": [
+        "candidate",
+        "sfi",
+        "venue"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.sfipress.org/books/complexity-economics",
+          "https://www.sfipress.org/chapter-6-communication-coordination-in-experiments"
+        ],
+        "notes": "Venue node for Capra→SFI Press path."
+      }
+    },
+    {
+      "id": "brian-arthur",
+      "label": "W. Brian Arthur",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI hub). Foundational complexity economist; edited SFI Complexity Economics volume where Capra appears. Evidence: https://www.sfipress.org/books/complexity-economics",
+      "tags": [
+        "candidate",
+        "sfi",
+        "complexity-economics"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/w-brian-arthur",
+          "https://www.sfipress.org/books/complexity-economics"
+        ],
+        "notes": "SFI complexity economics hub; volume co-editor."
+      }
+    },
+    {
+      "id": "concordia-deepmind",
+      "label": "Concordia (DeepMind GABM)",
+      "kind": "lab",
+      "blurb": "CANDIDATE (DeepMind field bridge). DeepMind library for generative agent-based models with LLMs. Field overlap with EconLLM synthetic cultural agents — not a personal tie. Evidence: https://deepmind.google/research/publications/64717/",
+      "tags": [
+        "candidate",
+        "deepmind",
+        "gabm",
+        "field-bridge"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://deepmind.google/research/publications/64717/"
+        ],
+        "notes": "DeepMind GABM field bridge (not a personal tie to Augusto)."
+      }
+    },
+    {
+      "id": "blaise-aguera",
+      "label": "Blaise Aguera y Arcas",
+      "kind": "person",
+      "blurb": "CANDIDATE (Google↔SFI hub). Google VP/Fellow; SFI External Professor (2025 class). Bridge node between Google AI and SFI — not yet tied to Augusto's one-hop except via targets. Evidence: https://www.santafe.edu/news-center/news/sfi-welcomes-new-2025-external-professors",
+      "tags": [
+        "candidate",
+        "google",
+        "sfi",
+        "hub"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/news-center/news/sfi-welcomes-new-2025-external-professors"
+        ],
+        "notes": "Google↔SFI hub via 2025 External Professor appointment."
+      }
+    },
+    {
+      "id": "demis-hassabis",
+      "label": "Demis Hassabis",
+      "kind": "person",
+      "blurb": "CANDIDATE (DeepMind hub). CEO of Google DeepMind. Institutional anchor only. Evidence: https://deepmind.google/about/",
+      "tags": [
+        "candidate",
+        "deepmind",
+        "hub"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://deepmind.google/about/"
+        ],
+        "notes": "DeepMind institutional CEO hub."
+      }
+    },
+    {
+      "id": "doyne-farmer",
+      "label": "J. Doyne Farmer",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI + Oxford INET hub). Director of Complexity Economics at INET Oxford; Baillie Gifford Professor, Oxford Smith School; SFI External Professor. Institutional hop from Nuffield/Oxford.",
+      "tags": [
+        "candidate",
+        "sfi",
+        "abm",
+        "oxford",
+        "inet",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/j-doyne-farmer",
+          "https://www.inet.ox.ac.uk/people/j-doyne-farmer"
+        ],
+        "notes": "SFI External Professor; INET Oxford complexity economics director; institutional hop via nuffield-oxford."
+      }
+    },
+    {
+      "id": "shade-shutters",
+      "label": "Shade T. Shutters",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). ASU SCAS research scientist; Director of Economic Transformations at Decision Theater; founding co-director, ASU Complexity Economics Lab. SFI Visiting Scholar 2014; joint projects with Johnston. Evidence: https://search.asu.edu/profile/340746",
+      "tags": [
+        "candidate",
+        "asu",
+        "sfi-visitor",
+        "complexity-economics"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://search.asu.edu/profile/340746",
+          "https://dt.asu.edu/our-team"
+        ],
+        "notes": "Decision Theater / SCAS; SFI Visiting Scholar 2014."
+      }
+    },
+    {
+      "id": "sander-van-der-leeuw",
+      "label": "Sander van der Leeuw",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). ASU Foundation Professor; co-director ASU-SFI Center; SFI External Professor since 2001. Evidence: https://www.santafe.edu/people/profile/sander-van-der-leeuw",
+      "tags": [
+        "candidate",
+        "asu",
+        "sfi"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/sander-van-der-leeuw",
+          "https://scas.asu.edu/asu-sfi/"
+        ],
+        "notes": "ASU-SFI co-director; long-time SFI External Professor."
+      }
+    },
+    {
+      "id": "scott-page",
+      "label": "Scott E. Page",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI + DeepMind-event adjacent). Michigan complexity/political economy; SFI External Professor. Co-panelist with Capra on SFI 2019 Economic Organism. Evidence: https://www.santafe.edu/people/profile/scott-page",
+      "tags": [
+        "candidate",
+        "sfi",
+        "complexity-economics"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/scott-page"
+        ],
+        "notes": "SFI External Professor; Capra 2019 panel colleague."
+      }
+    },
+    {
+      "id": "geoffrey-west",
+      "label": "Geoffrey West",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI hub). SFI Shannan Distinguished Professor; former SFI President. Same Capra panel in SFI Press Complexity Economics. Evidence: https://www.santafe.edu/people/profile/geoffrey-west",
+      "tags": [
+        "candidate",
+        "sfi",
+        "scaling"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/geoffrey-west"
+        ],
+        "notes": "SFI Distinguished Professor; Capra panel colleague."
+      }
+    },
+    {
+      "id": "ben-ansell",
+      "label": "Ben Ansell",
+      "kind": "person",
+      "blurb": "CANDIDATE (DeepMind x SFI). Nuffield College Professorial Fellow (same college as Duch). Provocateur at SFI June 2025 London roundtable with Google DeepMind. Evidence: https://www.nuffield.ox.ac.uk/people/profiles/ben-ansell/",
+      "tags": [
+        "candidate",
+        "nuffield",
+        "deepmind-sfi-event"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.nuffield.ox.ac.uk/people/profiles/ben-ansell/",
+          "https://www.santafe.edu/events/ais-impact-on-social-and-economic-distributions"
+        ],
+        "notes": "Nuffield colleague of Duch; SFI×DeepMind London roundtable provocateur."
+      }
+    },
+    {
+      "id": "fanny-yang",
+      "label": "Fanny Yang",
+      "kind": "person",
+      "blurb": "CANDIDATE (DeepMind-adjacent). ETH Zurich ML faculty; coauthor with Raymond Duch on NeurIPS 2025 Efficient Randomized Experiments Using Foundation Models. Evidence: https://arxiv.org/abs/2502.04262",
+      "tags": [
+        "candidate",
+        "foundation-models",
+        "neurips",
+        "deepmind-adjacent"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://arxiv.org/abs/2502.04262",
+          "https://talkingtomachines.org/publications/"
+        ],
+        "notes": "NeurIPS foundation-model RCT coauthor with Duch; DeepMind-adjacent ML."
+      }
+    },
+    {
+      "id": "robert-boyd",
+      "label": "Robert Boyd",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). ASU Regents Professor; SFI External Faculty / former Cowan Professor; ASU-SFI Fellow. Evidence: https://search.asu.edu/profile/1952328",
+      "tags": [
+        "candidate",
+        "asu",
+        "sfi",
+        "cultural-evolution"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://search.asu.edu/profile/1952328"
+        ],
+        "notes": "ASU Regents Professor + SFI External Faculty / ASU-SFI Fellow."
+      }
+    },
+    {
+      "id": "herbert-dawid",
+      "label": "Herbert Dawid",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI venue). Bielefeld ETACE / agent-based macro. Chapter in SFI Press EECS IV. Evidence: https://www.sfipress.org/books/eecs-iv",
+      "tags": [
+        "candidate",
+        "sfi-press",
+        "abm",
+        "bielefeld"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.sfipress.org/books/eecs-iv"
+        ],
+        "notes": "SFI Press EECS IV chapter; ABM / complexity venue link."
+      }
+    },
+    {
+      "id": "inet-oxford",
+      "label": "INET Oxford",
+      "kind": "institution",
+      "blurb": "Institute for New Economic Thinking at the Oxford Martin School. Complexity economics hub (Farmer, Beinhocker, Mealy) with deep SFI partnership. Institutional hop from Nuffield/Oxford via Duch.",
+      "tags": [
+        "candidate",
+        "oxford",
+        "complexity-economics",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.inet.ox.ac.uk/",
+          "https://www.santafe.edu/people/profile/eric-beinhocker",
+          "https://www.inet.ox.ac.uk/people/j-doyne-farmer"
+        ],
+        "notes": "institutional hop via nuffield-oxford; Oxford complexity economics bridge to SFI"
+      }
+    },
+    {
+      "id": "yee-whye-teh",
+      "label": "Yee Whye Teh",
+      "kind": "person",
+      "blurb": "CANDIDATE (DeepMind bridge). Professor of Statistical Machine Learning, Oxford Statistics; Principal Research Scientist at DeepMind. Institutional hop from Nuffield/Oxford via Duch.",
+      "tags": [
+        "candidate",
+        "oxford",
+        "deepmind",
+        "ml",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.stats.ox.ac.uk/~teh/aboutme.html",
+          "https://www.stats.ox.ac.uk/people/yee-whye-teh"
+        ],
+        "notes": "institutional hop via nuffield-oxford; dual Oxford + DeepMind appointment"
+      }
+    },
+    {
+      "id": "allan-dafoe",
+      "label": "Allan Dafoe",
+      "kind": "person",
+      "blurb": "CANDIDATE (DeepMind bridge). Senior Director, Frontier Strategy and Governance / Distinguished Research Scientist at Google DeepMind; Visiting Fellow, Oxford Martin AI Governance Initiative. Institutional hop from Oxford via Duch.",
+      "tags": [
+        "candidate",
+        "oxford",
+        "deepmind",
+        "ai-governance",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.allandafoe.com/",
+          "https://aigi.ox.ac.uk/people/allan-dafoe/",
+          "https://www.oxfordmartin.ox.ac.uk/people/allan-dafoe"
+        ],
+        "notes": "institutional hop via nuffield-oxford; Oxford Martin AIGI + DeepMind leadership"
+      }
+    },
+    {
+      "id": "eric-beinhocker",
+      "label": "Eric Beinhocker",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). Executive Director, INET Oxford; Professor, Blavatnik School of Government; SFI External Professor and Chair of the Science Board. Institutional hop from Nuffield/Oxford.",
+      "tags": [
+        "candidate",
+        "oxford",
+        "inet",
+        "sfi",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/eric-beinhocker",
+          "https://www.inet.ox.ac.uk/people/eric-beinhocker",
+          "https://www.inet.ox.ac.uk/news/eric-beinhocker-to-chair-santa-fe-institute-science-board"
+        ],
+        "notes": "institutional hop via nuffield-oxford / inet-oxford; bridge to santa-fe-institute"
+      }
+    },
+    {
+      "id": "penny-mealy",
+      "label": "Penny Mealy",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). Research Associate, INET Oxford / Oxford Smith School; External Applied Complexity Fellow at SFI; World Bank Senior Economist. Complexity economics / green transition.",
+      "tags": [
+        "candidate",
+        "oxford",
+        "inet",
+        "sfi",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/penny-mealy",
+          "https://www.inet.ox.ac.uk/people/penny-mealy"
+        ],
+        "notes": "institutional hop via nuffield-oxford / inet-oxford; bridge to santa-fe-institute"
+      }
+    },
+    {
+      "id": "jane-gingrich",
+      "label": "Jane Gingrich",
+      "kind": "person",
+      "blurb": "CANDIDATE (DeepMind×SFI event). Professor of Social Policy, Oxford DSPI; Senior Research Fellow, Green Templeton. Provocateur at SFI×DeepMind London roundtable (Jun 2025) with Nuffield’s Ben Ansell.",
+      "tags": [
+        "candidate",
+        "oxford",
+        "deepmind-sfi-event",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.spi.ox.ac.uk/people/jane-gingrich",
+          "https://www.santafe.edu/events/ais-impact-on-social-and-economic-distributions"
+        ],
+        "notes": "institutional hop via nuffield-oxford; bridge to SFI and DeepMind via shared venue"
+      }
+    },
+    {
+      "id": "eric-bonabeau",
+      "label": "Eric Bonabeau",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). Swarm-intelligence / complex systems scientist; joined ASU–SFI Center for Biosocial Complex Systems; SFI profile / former Interval Research Fellow at SFI. ASU visiting scholar.",
+      "tags": [
+        "candidate",
+        "asu",
+        "sfi",
+        "swarm-intelligence",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/people/profile/eric-bonabeau",
+          "https://search.asu.edu/profile/2757219",
+          "https://news.asu.edu/content/swarm-intelligence-scientist-joins-asu"
+        ],
+        "notes": "institutional hop via asu / asu-sfi-center; bridge to santa-fe-institute"
+      }
+    },
+    {
+      "id": "robert-page",
+      "label": "Robert E. Page Jr.",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). ASU Provost Emeritus / Regents Professor Emeritus; named SFI External Professor alongside Laubichler and van der Leeuw at the 2015 ASU–SFI Center launch.",
+      "tags": [
+        "candidate",
+        "asu",
+        "sfi",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.santafe.edu/news-center/news/asu-sfi-biosocial-complexity",
+          "https://search.asu.edu/profile/739801",
+          "https://news.asu.edu/content/swarm-intelligence-scientist-joins-asu"
+        ],
+        "notes": "institutional hop via asu / asu-sfi-center; bridge to santa-fe-institute"
+      }
+    },
+    {
+      "id": "charles-efferson",
+      "label": "Charles Efferson",
+      "kind": "person",
+      "blurb": "CANDIDATE (SFI bridge). Full Professor, HEC Lausanne Organizational Behavior (same department as Vogt; frequent coauthor). Former Santa Fe Institute postdoc. Cultural evolution / social norms experiments.",
+      "tags": [
+        "candidate",
+        "hec-lausanne",
+        "sfi",
+        "cultural-evolution",
+        "institutional-hop"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.unil.ch/hec/en/home/menuinst/faculte/departements/ob/membres.html",
+          "https://www.myscience.ch/de/news/wire/new_appointment_at_hec_lausanne_professor_charles_efferson-2018-unil",
+          "https://www.santafe.edu/news-center/news/running-herd-conformists-fare-well"
+        ],
+        "notes": "institutional hop via hec-lausanne; bridge to santa-fe-institute (former SFI postdoc); Vogt coauthor"
+      }
+    },
+    {
+      "id": "simon-anderson",
+      "label": "Simon P. Anderson",
+      "kind": "person",
+      "blurb": "LINEAGE. University of Virginia economics; Capra PhD advisor per RePEc Genealogy (pca93 → pan42). Chair vs full committee: RePEc lists Anderson; Academia/CV also name Holt & Goeree on committee — treat Anderson as chair-strength advisor edge.",
+      "tags": [
+        "lineage",
+        "uva",
+        "phd-advisor",
+        "candidate"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://genealogy.repec.org/pages/pca93.html",
+          "https://genealogy.repec.org/pages/pan42.html",
+          "https://claremont.academia.edu/monicacapra",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ],
+        "notes": "Capra PhD advisor (RePEc). Committee ambiguity noted: Academia self-report lists Holt & Goeree alongside."
+      }
+    },
+    {
+      "id": "charles-holt",
+      "label": "Charles A. Holt",
+      "kind": "person",
+      "blurb": "LINEAGE + coauthor. UVA; Capra dissertation committee (Academia self-report) and frequent experimental-econ coauthor (~6 papers). Dual edges: phd_advisor (committee, not chair) + coauthorship.",
+      "tags": [
+        "lineage",
+        "uva",
+        "committee",
+        "coauthor",
+        "candidate"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://claremont.academia.edu/monicacapra",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf",
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ"
+        ],
+        "notes": "Committee (not RePEc chair) + ~6 coauthorships with Capra."
+      }
+    },
+    {
+      "id": "jacob-goeree",
+      "label": "Jacob K. Goeree",
+      "kind": "person",
+      "blurb": "LINEAGE. Capra dissertation committee per Academia self-report (not RePEc chair). Experimental / game theory.",
+      "tags": [
+        "lineage",
+        "committee",
+        "candidate"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://claremont.academia.edu/monicacapra",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ],
+        "notes": "Dissertation committee (Academia self-report); distinguish from Anderson chair on RePEc."
+      }
+    },
+    {
+      "id": "gregory-berns",
+      "label": "Gregory S. Berns",
+      "kind": "person",
+      "blurb": "CANDIDATE / LINEAGE coauthor. Frequent Capra coauthor (~14–16 papers); neuroeconomics / decision neuroscience.",
+      "tags": [
+        "lineage",
+        "coauthor",
+        "neuroeconomics",
+        "candidate"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf",
+          "https://www.cgu.edu/people/c-monica-capra/"
+        ],
+        "notes": "Highest Capra coauthorship count in this pass (~14–16)."
+      }
+    },
+    {
+      "id": "charles-noussair",
+      "label": "Charles N. Noussair",
+      "kind": "person",
+      "blurb": "CANDIDATE / LINEAGE coauthor. Frequent Capra coauthor (~10–11); experimental economics.",
+      "tags": [
+        "lineage",
+        "coauthor",
+        "experimental-econ",
+        "candidate"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ],
+        "notes": "~10–11 Capra coauthorships."
+      }
+    },
+    {
+      "id": "sara-moore",
+      "label": "Sara Moore",
+      "kind": "person",
+      "blurb": "CANDIDATE / LINEAGE coauthor. Capra collaborator (~7–10 coauthorships); experimental / behavioral.",
+      "tags": [
+        "lineage",
+        "coauthor",
+        "candidate"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ],
+        "notes": "~7–10 Capra coauthorships."
+      }
+    },
+    {
+      "id": "rosario-gomez",
+      "label": "Rosario Gomez",
+      "kind": "person",
+      "blurb": "CANDIDATE / LINEAGE coauthor. Capra collaborator (~6 coauthorships).",
+      "tags": [
+        "lineage",
+        "coauthor",
+        "candidate"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ],
+        "notes": "~6 Capra coauthorships."
+      }
+    },
+    {
+      "id": "bing-jiang",
+      "label": "Bing Jiang",
+      "kind": "person",
+      "blurb": "CANDIDATE / LINEAGE coauthor. Capra collaborator (~6 coauthorships).",
+      "tags": [
+        "lineage",
+        "coauthor",
+        "candidate"
+      ],
+      "target": false,
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ],
+        "notes": "~6 Capra coauthorships."
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "augusto",
+      "target": "monica-capra",
+      "strength": 10,
+      "evidence": {
+        "claim": "Co-founded EconLLM Lab; coauthored Synthetic Cultural Agents (SSRN).",
+        "basis": "coauthorship",
+        "urls": [
+          "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714",
+          "https://talkingtomachines.org/partners/",
+          "https://econllm-lab.com/team"
+        ]
+      }
+    },
+    {
+      "source": "augusto",
+      "target": "econllm-lab",
+      "strength": 10,
+      "evidence": {
+        "claim": "Lead Graduate Researcher and co-founder of EconLLM Lab.",
+        "basis": "joint_project",
+        "urls": [
+          "https://talkingtomachines.org/partners/",
+          "https://econllm-lab.com/team",
+          "https://econllm-lab.com/"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "econllm-lab",
+      "strength": 10,
+      "evidence": {
+        "claim": "Director and co-founder of EconLLM Lab.",
+        "basis": "joint_project",
+        "urls": [
+          "https://talkingtomachines.org/partners/",
+          "https://econllm-lab.com/team",
+          "https://www.cgu.edu/people/c-monica-capra/"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "cgu",
+      "strength": 9,
+      "evidence": {
+        "claim": "Professor of Economic Sciences at Claremont Graduate University.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.cgu.edu/people/c-monica-capra/"
+        ]
+      }
+    },
+    {
+      "source": "econllm-lab",
+      "target": "cgu",
+      "strength": 8,
+      "evidence": {
+        "claim": "EconLLM Lab is hosted at Claremont Graduate University.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://econllm-lab.com/",
+          "https://www.cgu.edu/people/c-monica-capra/"
+        ]
+      }
+    },
+    {
+      "source": "augusto",
+      "target": "cgu",
+      "strength": 7,
+      "evidence": {
+        "claim": "MA Economics at CGU; co-founded EconLLM Lab there.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://talkingtomachines.org/partners/",
+          "https://scholar.google.com/citations?user=xdO0FqwAAAAJ",
+          "https://econllm-lab.com/"
+        ]
+      }
+    },
+    {
+      "source": "econllm-lab",
+      "target": "talking-to-machines",
+      "strength": 7,
+      "evidence": {
+        "claim": "EconLLM Lab is an official Talking to Machines partner.",
+        "basis": "joint_project",
+        "urls": [
+          "https://talkingtomachines.org/partners/",
+          "https://econllm-lab.com/team"
+        ]
+      }
+    },
+    {
+      "source": "augusto",
+      "target": "talking-to-machines",
+      "strength": 5,
+      "evidence": {
+        "claim": "Listed on T2M partners page via EconLLM Lab (Lead Graduate Researcher & co-founder).",
+        "basis": "joint_project",
+        "urls": [
+          "https://talkingtomachines.org/partners/"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "talking-to-machines",
+      "strength": 5,
+      "evidence": {
+        "claim": "Listed on T2M partners page via EconLLM Lab (Director & co-founder).",
+        "basis": "joint_project",
+        "urls": [
+          "https://talkingtomachines.org/partners/"
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "talking-to-machines",
+      "strength": 9,
+      "evidence": {
+        "claim": "Co-director of Talking to Machines (SNSF-funded project).",
+        "basis": "joint_project",
+        "urls": [
+          "https://talkingtomachines.org/",
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/"
+        ]
+      }
+    },
+    {
+      "source": "sonja-vogt",
+      "target": "talking-to-machines",
+      "strength": 9,
+      "evidence": {
+        "claim": "Co-lead / co-director of Talking to Machines at HEC Lausanne.",
+        "basis": "joint_project",
+        "urls": [
+          "https://talkingtomachines.org/",
+          "https://iris.unil.ch/entities/person/sonjavogt"
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "sonja-vogt",
+      "strength": 8,
+      "evidence": {
+        "claim": "Joint leadership of Talking to Machines (SNSF project).",
+        "basis": "joint_project",
+        "urls": [
+          "https://talkingtomachines.org/"
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "nuffield-oxford",
+      "strength": 9,
+      "evidence": {
+        "claim": "Senior Research Fellow at Nuffield College, Oxford.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/"
+        ]
+      }
+    },
+    {
+      "source": "sonja-vogt",
+      "target": "hec-lausanne",
+      "strength": 9,
+      "evidence": {
+        "claim": "Faculty at HEC University of Lausanne.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://iris.unil.ch/entities/person/sonjavogt",
+          "https://talkingtomachines.org/"
+        ]
+      }
+    },
+    {
+      "source": "talking-to-machines",
+      "target": "nuffield-oxford",
+      "strength": 6,
+      "evidence": {
+        "claim": "T2M institutional base in the UK via Raymond Duch at Nuffield.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://talkingtomachines.org/",
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/"
+        ]
+      }
+    },
+    {
+      "source": "talking-to-machines",
+      "target": "hec-lausanne",
+      "strength": 6,
+      "evidence": {
+        "claim": "T2M institutional base via Sonja Vogt at HEC Lausanne; SNSF-funded.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://talkingtomachines.org/",
+          "https://iris.unil.ch/entities/person/sonjavogt"
+        ]
+      }
+    },
+    {
+      "source": "augusto",
+      "target": "marist",
+      "strength": 7,
+      "evidence": {
+        "claim": "BA Economics / BS Data Science alumnus of Marist University.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://scholar.google.com/citations?user=xdO0FqwAAAAJ"
+        ]
+      }
+    },
+    {
+      "source": "eitel-lauria",
+      "target": "marist",
+      "strength": 9,
+      "evidence": {
+        "claim": "Professor of Data Science & Information Systems; Director of Graduate Programs at Marist.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.marist.edu/computer-science-math/faculty/eitel-lauria"
+        ]
+      }
+    },
+    {
+      "source": "augusto",
+      "target": "eitel-lauria",
+      "strength": 6,
+      "evidence": {
+        "claim": "Shared Marist Data Science institution and DS/AI field (Argentine background noted on Lauría profile).",
+        "basis": "shared_institution",
+        "urls": [
+          "https://www.marist.edu/computer-science-math/faculty/eitel-lauria",
+          "https://scholar.google.com/citations?user=xdO0FqwAAAAJ"
+        ]
+      }
+    },
+    {
+      "source": "augusto",
+      "target": "asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "Economics PhD student at Arizona State University (mastering out).",
+        "basis": "shared_institution",
+        "urls": [
+          "https://talkingtomachines.org/partners/",
+          "https://scholar.google.com/citations?user=xdO0FqwAAAAJ"
+        ]
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "asu",
+      "strength": 9,
+      "evidence": {
+        "claim": "Professor at ASU School of Complex Adaptive Systems and SFIS.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/561604"
+        ]
+      }
+    },
+    {
+      "source": "augusto",
+      "target": "erik-johnston",
+      "strength": 5,
+      "evidence": {
+        "claim": "Shared ASU affiliation; shared complexity / computational social science field.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://talkingtomachines.org/partners/"
+        ]
+      }
+    },
+    {
+      "source": "augusto",
+      "target": "emilio-pantoja",
+      "strength": 8,
+      "evidence": {
+        "claim": "Coauthor on Synthetic Cultural Agents / LLMs Model Non-WEIRD Populations (SSRN 5082714).",
+        "basis": "coauthorship",
+        "urls": [
+          "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "emilio-pantoja",
+      "strength": 8,
+      "evidence": {
+        "claim": "Coauthor on Synthetic Cultural Agents paper (SSRN 5082714).",
+        "basis": "coauthorship",
+        "urls": [
+          "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714"
+        ]
+      }
+    },
+    {
+      "source": "econllm-lab",
+      "target": "emilio-pantoja",
+      "strength": 6,
+      "evidence": {
+        "claim": "Lab collaborator / coauthor on EconLLM Synthetic Cultural Agents work.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714",
+          "https://econllm-lab.com/"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "sfi-complexity-econ-2019",
+      "strength": 8,
+      "evidence": {
+        "claim": "Presented Ch.6 Communication & Coordination in Experiments at SFI 2019 Complexity Economics symposium.",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.sfipress.org/chapter-6-communication-coordination-in-experiments",
+          "https://www.sfipress.org/books/complexity-economics"
+        ]
+      }
+    },
+    {
+      "source": "sfi-complexity-econ-2019",
+      "target": "santa-fe-institute",
+      "strength": 9,
+      "evidence": {
+        "claim": "SFI Press / SFI Applied Complexity Network Symposium volume.",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.sfipress.org/books/complexity-economics",
+          "https://www.santafe.edu/"
+        ]
+      }
+    },
+    {
+      "source": "sfi-complexity-econ-2019",
+      "target": "brian-arthur",
+      "strength": 7,
+      "evidence": {
+        "claim": "Arthur co-edited the SFI Press Complexity Economics volume from the 2019 symposium.",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.sfipress.org/books/complexity-economics",
+          "https://www.sfipress.org/w-brian-arthur"
+        ]
+      }
+    },
+    {
+      "source": "brian-arthur",
+      "target": "santa-fe-institute",
+      "strength": 9,
+      "evidence": {
+        "claim": "SFI External Professor; foundational complexity economist at SFI.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/w-brian-arthur"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "santa-fe-institute",
+      "strength": 6,
+      "evidence": {
+        "claim": "SFI symposium speaker with chapter in SFI Press Complexity Economics.",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.sfipress.org/chapter-6-communication-coordination-in-experiments",
+          "https://www.sfipress.org/books/complexity-economics"
+        ]
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "csdc-asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "CSDC affiliation listed on ASU Johnston profile.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/561604"
+        ]
+      }
+    },
+    {
+      "source": "csdc-asu",
+      "target": "asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "Center for Social Dynamics and Complexity is an ASU center.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://www.asu.edu/"
+        ]
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "decision-theater",
+      "strength": 9,
+      "evidence": {
+        "claim": "Director of Policy Informatics at ASU Decision Theater.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://dt.asu.edu/our-team"
+        ]
+      }
+    },
+    {
+      "source": "decision-theater",
+      "target": "asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "Decision Theater is an ASU facility.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://dt.asu.edu/our-team",
+          "https://www.asu.edu/"
+        ]
+      }
+    },
+    {
+      "source": "manfred-laubichler",
+      "target": "asu",
+      "strength": 9,
+      "evidence": {
+        "claim": "Director, ASU School of Complex Adaptive Systems.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/384867"
+        ]
+      }
+    },
+    {
+      "source": "manfred-laubichler",
+      "target": "santa-fe-institute",
+      "strength": 9,
+      "evidence": {
+        "claim": "SFI External Professor.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/manfred-laubichler"
+        ]
+      }
+    },
+    {
+      "source": "manfred-laubichler",
+      "target": "asu-sfi-center",
+      "strength": 9,
+      "evidence": {
+        "claim": "Co-Director / ASU-SFI Fellow of the ASU-SFI Center for Biosocial Complex Systems.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/manfred-laubichler",
+          "https://scas.asu.edu/asu-sfi/",
+          "https://www.santafe.edu/research/initiatives/asu-sfi-center-biosocial-complex-systems"
+        ]
+      }
+    },
+    {
+      "source": "asu-sfi-center",
+      "target": "asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "Joint ASU–SFI center hosted at ASU.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://scas.asu.edu/asu-sfi/",
+          "https://www.santafe.edu/research/initiatives/asu-sfi-center-biosocial-complex-systems"
+        ]
+      }
+    },
+    {
+      "source": "asu-sfi-center",
+      "target": "santa-fe-institute",
+      "strength": 9,
+      "evidence": {
+        "claim": "Joint ASU–Santa Fe Institute center for biosocial complex systems.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://www.santafe.edu/research/initiatives/asu-sfi-center-biosocial-complex-systems",
+          "https://scas.asu.edu/asu-sfi/"
+        ]
+      }
+    },
+    {
+      "source": "manfred-laubichler",
+      "target": "csdc-asu",
+      "strength": 7,
+      "evidence": {
+        "claim": "CSDC affiliation listed on ASU Laubichler profile.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/384867"
+        ]
+      }
+    },
+    {
+      "source": "manfred-laubichler",
+      "target": "decision-theater",
+      "strength": 6,
+      "evidence": {
+        "claim": "Decision Theater affiliation listed on ASU Laubichler profile / DT team.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/384867",
+          "https://dt.asu.edu/our-team"
+        ]
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "manfred-laubichler",
+      "strength": 6,
+      "evidence": {
+        "claim": "Shared ASU SCAS faculty; shared CSDC / Decision Theater affiliations.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://search.asu.edu/profile/384867",
+          "https://dt.asu.edu/our-team"
+        ]
+      }
+    },
+    {
+      "source": "sara-walker",
+      "target": "asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "ASU SCAS / SESE joint appointment.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/1731899"
+        ]
+      }
+    },
+    {
+      "source": "sara-walker",
+      "target": "santa-fe-institute",
+      "strength": 8,
+      "evidence": {
+        "claim": "SFI External Faculty.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/1731899",
+          "https://www.santafe.edu/research/initiatives/asu-sfi-center-biosocial-complex-systems"
+        ]
+      }
+    },
+    {
+      "source": "sara-walker",
+      "target": "asu-sfi-center",
+      "strength": 8,
+      "evidence": {
+        "claim": "Associate Director, ASU-SFI Center for Biosocial Complex Systems.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/1731899",
+          "https://scas.asu.edu/asu-sfi/"
+        ]
+      }
+    },
+    {
+      "source": "stephanie-forrest",
+      "target": "asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "ASU CS / Biodesign professor.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/stephanie-forrest"
+        ]
+      }
+    },
+    {
+      "source": "stephanie-forrest",
+      "target": "santa-fe-institute",
+      "strength": 8,
+      "evidence": {
+        "claim": "SFI External Faculty (past Science Board).",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/stephanie-forrest"
+        ]
+      }
+    },
+    {
+      "source": "concordia-deepmind",
+      "target": "google-deepmind",
+      "strength": 9,
+      "evidence": {
+        "claim": "Concordia is a DeepMind research publication / GABM library.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://deepmind.google/research/publications/64717/"
+        ]
+      }
+    },
+    {
+      "source": "econllm-lab",
+      "target": "concordia-deepmind",
+      "strength": 3,
+      "evidence": {
+        "claim": "Shared field only: LLM generative agents / GABM (no joint project verified).",
+        "basis": "shared_field",
+        "urls": [
+          "https://deepmind.google/research/publications/64717/",
+          "https://econllm-lab.com/",
+          "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714"
+        ]
+      }
+    },
+    {
+      "source": "demis-hassabis",
+      "target": "google-deepmind",
+      "strength": 10,
+      "evidence": {
+        "claim": "CEO of Google DeepMind.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://deepmind.google/about/",
+          "https://deepmind.google/"
+        ]
+      }
+    },
+    {
+      "source": "blaise-aguera",
+      "target": "santa-fe-institute",
+      "strength": 8,
+      "evidence": {
+        "claim": "Named SFI External Professor in the 2025 class.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/news-center/news/sfi-welcomes-new-2025-external-professors"
+        ]
+      }
+    },
+    {
+      "source": "blaise-aguera",
+      "target": "google-deepmind",
+      "strength": 4,
+      "evidence": {
+        "claim": "[UNVERIFIED URL] Google VP/Fellow; Google AI leadership adjacent to DeepMind org (team overlap not confirmed on DeepMind staff pages).",
+        "basis": "shared_field",
+        "urls": []
+      }
+    },
+    {
+      "source": "doyne-farmer",
+      "target": "santa-fe-institute",
+      "strength": 8,
+      "evidence": {
+        "claim": "SFI-linked complexity economics / ABM researcher.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/j-doyne-farmer"
+        ]
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "shade-shutters",
+      "strength": 8,
+      "evidence": {
+        "claim": "Shared SCAS/Decision Theater; Shutters listed with Decision Theater and SCAS alongside Johnston network.",
+        "basis": "joint_project",
+        "urls": [
+          "https://search.asu.edu/profile/340746",
+          "https://search.asu.edu/profile/561604",
+          "https://dt.asu.edu/our-team"
+        ]
+      }
+    },
+    {
+      "source": "shade-shutters",
+      "target": "asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "ASU SCAS research scientist / Decision Theater.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/340746"
+        ]
+      }
+    },
+    {
+      "source": "shade-shutters",
+      "target": "decision-theater",
+      "strength": 8,
+      "evidence": {
+        "claim": "Director of Economic Transformations at ASU Decision Theater.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/340746",
+          "https://dt.asu.edu/our-team"
+        ]
+      }
+    },
+    {
+      "source": "shade-shutters",
+      "target": "santa-fe-institute",
+      "strength": 5,
+      "evidence": {
+        "claim": "SFI Visiting Scholar 2014 (noted on ASU profile / prior research notes).",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/340746"
+        ]
+      }
+    },
+    {
+      "source": "shade-shutters",
+      "target": "manfred-laubichler",
+      "strength": 7,
+      "evidence": {
+        "claim": "Shared Decision Theater / SCAS affiliations at ASU.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://search.asu.edu/profile/340746",
+          "https://search.asu.edu/profile/384867",
+          "https://dt.asu.edu/our-team"
+        ]
+      }
+    },
+    {
+      "source": "sander-van-der-leeuw",
+      "target": "asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "ASU Foundation Professor.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/sander-van-der-leeuw"
+        ]
+      }
+    },
+    {
+      "source": "sander-van-der-leeuw",
+      "target": "asu-sfi-center",
+      "strength": 9,
+      "evidence": {
+        "claim": "Co-director of the ASU-SFI Center for Biosocial Complex Systems.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/sander-van-der-leeuw",
+          "https://scas.asu.edu/asu-sfi/",
+          "https://www.santafe.edu/research/initiatives/asu-sfi-center-biosocial-complex-systems"
+        ]
+      }
+    },
+    {
+      "source": "sander-van-der-leeuw",
+      "target": "santa-fe-institute",
+      "strength": 9,
+      "evidence": {
+        "claim": "SFI External Professor since 2001.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/sander-van-der-leeuw"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "scott-page",
+      "strength": 7,
+      "evidence": {
+        "claim": "Co-panelists on SFI 2019 Economic Organism; shared SFI Press Complexity Economics volume.",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.sfipress.org/books/complexity-economics",
+          "https://www.santafe.edu/people/profile/scott-page"
+        ]
+      }
+    },
+    {
+      "source": "scott-page",
+      "target": "santa-fe-institute",
+      "strength": 9,
+      "evidence": {
+        "claim": "SFI External Professor / Science Board.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/scott-page"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "geoffrey-west",
+      "strength": 7,
+      "evidence": {
+        "claim": "Same SFI 2019 Economic Organism panel / SFI Press chapter set.",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.sfipress.org/books/complexity-economics",
+          "https://www.santafe.edu/people/profile/geoffrey-west"
+        ]
+      }
+    },
+    {
+      "source": "geoffrey-west",
+      "target": "santa-fe-institute",
+      "strength": 10,
+      "evidence": {
+        "claim": "SFI Distinguished Professor; former SFI President.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/geoffrey-west"
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "ben-ansell",
+      "strength": 6,
+      "evidence": {
+        "claim": "Shared Nuffield College affiliation.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/",
+          "https://www.nuffield.ox.ac.uk/people/profiles/ben-ansell/"
+        ]
+      }
+    },
+    {
+      "source": "ben-ansell",
+      "target": "nuffield-oxford",
+      "strength": 9,
+      "evidence": {
+        "claim": "Nuffield Professorial Fellow.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.nuffield.ox.ac.uk/people/profiles/ben-ansell/"
+        ]
+      }
+    },
+    {
+      "source": "ben-ansell",
+      "target": "santa-fe-institute",
+      "strength": 5,
+      "evidence": {
+        "claim": "Provocateur at SFI × DeepMind London roundtable (Jun 2025).",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.santafe.edu/events/ais-impact-on-social-and-economic-distributions",
+          "https://www.nuffield.ox.ac.uk/people/profiles/ben-ansell/"
+        ]
+      }
+    },
+    {
+      "source": "ben-ansell",
+      "target": "google-deepmind",
+      "strength": 5,
+      "evidence": {
+        "claim": "Participant at SFI × DeepMind London roundtable (event co-org, not DeepMind staff).",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.santafe.edu/events/ais-impact-on-social-and-economic-distributions"
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "fanny-yang",
+      "strength": 8,
+      "evidence": {
+        "claim": "Coauthors NeurIPS 2025 foundation-model RCT paper; listed on T2M publications.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://arxiv.org/abs/2502.04262",
+          "https://proceedings.neurips.cc/paper_files/paper/2025/hash/e9e1a0abc1a5b19a4aeb80dab19c82ae-Abstract-Conference.html",
+          "https://talkingtomachines.org/publications/"
+        ]
+      }
+    },
+    {
+      "source": "fanny-yang",
+      "target": "talking-to-machines",
+      "strength": 6,
+      "evidence": {
+        "claim": "Coauthor on T2M-listed foundation-model experiments paper.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://talkingtomachines.org/publications/",
+          "https://arxiv.org/abs/2502.04262"
+        ]
+      }
+    },
+    {
+      "source": "robert-boyd",
+      "target": "asu",
+      "strength": 8,
+      "evidence": {
+        "claim": "ASU Regents Professor.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/1952328"
+        ]
+      }
+    },
+    {
+      "source": "robert-boyd",
+      "target": "santa-fe-institute",
+      "strength": 8,
+      "evidence": {
+        "claim": "SFI External Faculty / former Cowan Professor.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/1952328",
+          "https://www.santafe.edu/"
+        ]
+      }
+    },
+    {
+      "source": "robert-boyd",
+      "target": "csdc-asu",
+      "strength": 6,
+      "evidence": {
+        "claim": "CSDC / Biosocial Complexity / ASU-SFI affiliations on ASU profile.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/1952328"
+        ]
+      }
+    },
+    {
+      "source": "robert-boyd",
+      "target": "asu-sfi-center",
+      "strength": 6,
+      "evidence": {
+        "claim": "ASU-SFI Fellow.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/1952328",
+          "https://scas.asu.edu/asu-sfi/"
+        ]
+      }
+    },
+    {
+      "source": "herbert-dawid",
+      "target": "santa-fe-institute",
+      "strength": 5,
+      "evidence": {
+        "claim": "Chapter author in SFI Press EECS IV.",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.sfipress.org/books/eecs-iv"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "doyne-farmer",
+      "strength": 6,
+      "evidence": {
+        "claim": "Same SFI Press Complexity Economics volume (Capra chapter; Farmer afterword).",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.sfipress.org/books/complexity-economics",
+          "https://www.santafe.edu/people/profile/j-doyne-farmer"
+        ]
+      }
+    },
+    {
+      "source": "nuffield-oxford",
+      "target": "inet-oxford",
+      "strength": 7,
+      "evidence": {
+        "claim": "Both are University of Oxford units (Nuffield College and INET at Oxford Martin School); shared Oxford complexity / social-science ecosystem via Duch hub.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/",
+          "https://www.inet.ox.ac.uk/"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "doyne-farmer",
+      "target": "inet-oxford",
+      "strength": 9,
+      "evidence": {
+        "claim": "Director of Complexity Economics at INET Oxford; Baillie Gifford Professor at Oxford Smith School.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.inet.ox.ac.uk/people/j-doyne-farmer",
+          "https://www.santafe.edu/people/profile/j-doyne-farmer"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "doyne-farmer",
+      "target": "nuffield-oxford",
+      "strength": 6,
+      "evidence": {
+        "claim": "University of Oxford faculty (INET / Smith School) in the same Oxford ecosystem as Nuffield College (Duch hub).",
+        "basis": "shared_institution",
+        "urls": [
+          "https://www.inet.ox.ac.uk/people/j-doyne-farmer",
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "nuffield-oxford",
+      "target": "yee-whye-teh",
+      "strength": 7,
+      "evidence": {
+        "claim": "University of Oxford shared institution: Teh is Professor of Statistical Machine Learning at Oxford Statistics; Nuffield is Duch’s Oxford college hub.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://www.stats.ox.ac.uk/~teh/aboutme.html",
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "yee-whye-teh",
+      "target": "google-deepmind",
+      "strength": 9,
+      "evidence": {
+        "claim": "Principal Research Scientist at DeepMind (dual appointment with Oxford Statistics professorship).",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.stats.ox.ac.uk/~teh/aboutme.html"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "nuffield-oxford",
+      "target": "allan-dafoe",
+      "strength": 7,
+      "evidence": {
+        "claim": "University of Oxford shared institution: Dafoe is Visiting Fellow at Oxford Martin AI Governance Initiative; Nuffield is Duch’s Oxford hub.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://aigi.ox.ac.uk/people/allan-dafoe/",
+          "https://www.oxfordmartin.ox.ac.uk/people/allan-dafoe",
+          "https://www.nuffield.ox.ac.uk/people/profiles/ray-duch/"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "allan-dafoe",
+      "target": "google-deepmind",
+      "strength": 10,
+      "evidence": {
+        "claim": "Senior Director, Frontier Strategy and Governance / Distinguished Research Scientist at Google DeepMind.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.allandafoe.com/",
+          "https://aigi.ox.ac.uk/people/allan-dafoe/"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "nuffield-oxford",
+      "target": "eric-beinhocker",
+      "strength": 7,
+      "evidence": {
+        "claim": "University of Oxford shared institution: Beinhocker is Executive Director of INET Oxford and Blavatnik Professor; Nuffield is Duch’s Oxford hub.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://www.inet.ox.ac.uk/people/eric-beinhocker",
+          "https://www.santafe.edu/people/profile/eric-beinhocker"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "inet-oxford",
+      "target": "eric-beinhocker",
+      "strength": 10,
+      "evidence": {
+        "claim": "Founder and Executive Director of INET Oxford.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.inet.ox.ac.uk/people/eric-beinhocker",
+          "https://www.bsg.ox.ac.uk/people/eric-beinhocker"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "eric-beinhocker",
+      "target": "santa-fe-institute",
+      "strength": 9,
+      "evidence": {
+        "claim": "SFI External Professor and Chair of the Science Board.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/eric-beinhocker",
+          "https://www.inet.ox.ac.uk/news/eric-beinhocker-to-chair-santa-fe-institute-science-board"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "nuffield-oxford",
+      "target": "penny-mealy",
+      "strength": 6,
+      "evidence": {
+        "claim": "University of Oxford shared institution: Mealy is Research Associate at INET Oxford / Smith School; Nuffield is Duch’s Oxford hub.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://www.inet.ox.ac.uk/people/penny-mealy",
+          "https://www.santafe.edu/people/profile/penny-mealy"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "inet-oxford",
+      "target": "penny-mealy",
+      "strength": 8,
+      "evidence": {
+        "claim": "Research Associate / Associate Fellow at INET Oxford; Oxford PhD via INET.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.inet.ox.ac.uk/people/penny-mealy",
+          "https://www.santafe.edu/people/profile/penny-mealy"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "penny-mealy",
+      "target": "santa-fe-institute",
+      "strength": 8,
+      "evidence": {
+        "claim": "SFI External Applied Complexity Fellow.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/penny-mealy"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "nuffield-oxford",
+      "target": "jane-gingrich",
+      "strength": 7,
+      "evidence": {
+        "claim": "University of Oxford shared institution: Gingrich is Professor of Social Policy at Oxford DSPI; Nuffield colleague Ansell shared the same SFI×DeepMind London roundtable.",
+        "basis": "shared_institution",
+        "urls": [
+          "https://www.spi.ox.ac.uk/people/jane-gingrich",
+          "https://www.santafe.edu/events/ais-impact-on-social-and-economic-distributions"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "jane-gingrich",
+      "target": "santa-fe-institute",
+      "strength": 5,
+      "evidence": {
+        "claim": "Provocateur at SFI × DeepMind London roundtable (Jun 2025).",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.santafe.edu/events/ais-impact-on-social-and-economic-distributions"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "jane-gingrich",
+      "target": "google-deepmind",
+      "strength": 5,
+      "evidence": {
+        "claim": "Participant at SFI × DeepMind London roundtable (event co-org, not DeepMind staff).",
+        "basis": "shared_venue",
+        "urls": [
+          "https://www.santafe.edu/events/ais-impact-on-social-and-economic-distributions"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "asu",
+      "target": "eric-bonabeau",
+      "strength": 8,
+      "evidence": {
+        "claim": "Joined ASU and the ASU–SFI Center for Biosocial Complex Systems; ASU visiting scholar / Social Insect Research Group.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://news.asu.edu/content/swarm-intelligence-scientist-joins-asu",
+          "https://search.asu.edu/profile/2757219"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "asu-sfi-center",
+      "target": "eric-bonabeau",
+      "strength": 8,
+      "evidence": {
+        "claim": "Appointed to work primarily within the ASU–SFI Center for Biosocial Complex Systems (2015).",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://news.asu.edu/content/swarm-intelligence-scientist-joins-asu",
+          "https://scas.asu.edu/asu-sfi/"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "eric-bonabeau",
+      "target": "santa-fe-institute",
+      "strength": 7,
+      "evidence": {
+        "claim": "SFI people profile; former Interval Research Fellow at SFI; ASU–SFI Center appointment.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/people/profile/eric-bonabeau",
+          "https://news.asu.edu/content/swarm-intelligence-scientist-joins-asu"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "asu",
+      "target": "robert-page",
+      "strength": 8,
+      "evidence": {
+        "claim": "ASU Provost Emeritus / Regents Professor Emeritus; oversaw ASU–SFI Center directors at launch.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://search.asu.edu/profile/739801",
+          "https://www.santafe.edu/news-center/news/asu-sfi-biosocial-complexity"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "asu-sfi-center",
+      "target": "robert-page",
+      "strength": 7,
+      "evidence": {
+        "claim": "ASU–SFI Center directors reported to Provost Page at the 2015 launch; joint SFI external professor appointment noted.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/news-center/news/asu-sfi-biosocial-complexity"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "robert-page",
+      "target": "santa-fe-institute",
+      "strength": 8,
+      "evidence": {
+        "claim": "Named SFI External Professor (with Laubichler and van der Leeuw) in the ASU–SFI Center launch announcement.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.santafe.edu/news-center/news/asu-sfi-biosocial-complexity",
+          "https://news.asu.edu/content/swarm-intelligence-scientist-joins-asu"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "hec-lausanne",
+      "target": "charles-efferson",
+      "strength": 9,
+      "evidence": {
+        "claim": "Full Professor, Department of Organizational Behavior, HEC Lausanne / University of Lausanne.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.unil.ch/hec/en/home/menuinst/faculte/departements/ob/membres.html",
+          "https://www.myscience.ch/de/news/wire/new_appointment_at_hec_lausanne_professor_charles_efferson-2018-unil"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "sonja-vogt",
+      "target": "charles-efferson",
+      "strength": 9,
+      "evidence": {
+        "claim": "Same HEC Lausanne Organizational Behavior department; frequent coauthors (e.g. Nature 2016 FGC attitudes; Science 2015; Nature Human Behaviour 2020).",
+        "basis": "coauthorship",
+        "urls": [
+          "https://www.unil.ch/hec/en/home/menuinst/faculte/departements/ob/membres.html",
+          "https://pubmed.ncbi.nlm.nih.gov/27732586/"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "charles-efferson",
+      "target": "santa-fe-institute",
+      "strength": 6,
+      "evidence": {
+        "claim": "Former Santa Fe Institute postdoctoral fellow (prior to HEC Lausanne appointment); SFI news coverage of his conformity research.",
+        "basis": "shared_appointment",
+        "urls": [
+          "https://www.myscience.ch/de/news/wire/new_appointment_at_hec_lausanne_professor_charles_efferson-2018-unil",
+          "https://www.santafe.edu/news-center/news/running-herd-conformists-fare-well"
+        ],
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "simon-anderson",
+      "strength": 9,
+      "evidence": {
+        "claim": "PhD advisor (chair) per RePEc Genealogy: Capra (pca93) ← Anderson (pan42) at UVA. Note: Academia/CV also list Holt & Goeree on the dissertation committee — RePEc encodes Anderson as the advisor edge; committee members are separate phd_advisor edges with lower strength.",
+        "basis": "phd_advisor",
+        "urls": [
+          "https://genealogy.repec.org/pages/pca93.html",
+          "https://genealogy.repec.org/pages/pan42.html",
+          "https://claremont.academia.edu/monicacapra",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "charles-holt",
+      "strength": 8,
+      "evidence": {
+        "claim": "Dissertation committee (Academia self-report) — not RePEc chair; Anderson is the genealogy advisor. Strength 8 = committee-level phd_advisor, distinct from Anderson chair (9).",
+        "basis": "phd_advisor",
+        "urls": [
+          "https://claremont.academia.edu/monicacapra",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "jacob-goeree",
+      "strength": 7,
+      "evidence": {
+        "claim": "Dissertation committee (Academia self-report) — not RePEc chair; Anderson is the genealogy advisor. Strength 7 = committee-level phd_advisor.",
+        "basis": "phd_advisor",
+        "urls": [
+          "https://claremont.academia.edu/monicacapra",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "gregory-berns",
+      "strength": 9,
+      "evidence": {
+        "claim": "Frequent coauthors (~14–16 joint papers; Capra Scholar / CV).",
+        "basis": "coauthorship",
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf",
+          "https://www.cgu.edu/people/c-monica-capra/"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "charles-noussair",
+      "strength": 8,
+      "evidence": {
+        "claim": "Frequent coauthors (~10–11 joint papers; Capra Scholar / CV).",
+        "basis": "coauthorship",
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "sara-moore",
+      "strength": 7,
+      "evidence": {
+        "claim": "Coauthors (~7–10 joint papers; Capra Scholar / CV).",
+        "basis": "coauthorship",
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "rosario-gomez",
+      "strength": 6,
+      "evidence": {
+        "claim": "Coauthors (~6 joint papers; Capra Scholar / CV).",
+        "basis": "coauthorship",
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "bing-jiang",
+      "strength": 6,
+      "evidence": {
+        "claim": "Coauthors (~6 joint papers; Capra Scholar / CV).",
+        "basis": "coauthorship",
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf"
+        ]
+      }
+    },
+    {
+      "source": "monica-capra",
+      "target": "charles-holt",
+      "strength": 6,
+      "evidence": {
+        "claim": "Coauthors (~6 joint papers; Capra Scholar / CV). Separate from dissertation-committee phd_advisor edge.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://scholar.google.com/citations?user=rn3OphoAAAAJ",
+          "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf",
+          "https://claremont.academia.edu/monicacapra"
+        ]
+      }
+    }
+  ]
+}
