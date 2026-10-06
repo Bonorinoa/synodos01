@@ -57,6 +57,39 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
   for (const [level, ids] of levels) ids.forEach((id,index) => positions.set(id, { x: (index-(ids.length-1)/2)*135, y:level*190 }));
   return { positions, depth, parent, hidden, edges: legal.filter(e => positions.has(e.source) && positions.has(e.target)) };
 }
+// Horizontal progress is a viewing convention, not a direction or introduction claim.
+export function trajectoryLayout(paths: RankedPath[], targets: string[], coreOnly = false, selected: string | null = null) {
+  const positions = new Map<string, { x:number; y:number }>([['augusto', {x:0,y:0}]]);
+  const samples = new Map<string, {x:number;y:number}[]>();
+  const edgeIds = new Set(paths.flatMap(path=>path.edges));
+  targets.forEach((id,index)=>positions.set(id,{x:1000,y:(index-(targets.length-1)/2)*260}));
+  paths.forEach((path,index)=>path.nodes.slice(1,-1).forEach((id,hop)=>{
+    const point={x:(hop+1)/path.edges.length*1000,y:(index-(paths.length-1)/2)*150};
+    samples.set(id,[...(samples.get(id)??[]),point]);
+  }));
+  for(const [id,points] of samples)positions.set(id,{x:points.reduce((sum,p)=>sum+p.x,0)/points.length,y:points.reduce((sum,p)=>sum+p.y,0)/points.length});
+  const placed:{x:number;y:number}[]=[];
+  for(const [id,point] of positions){
+    if(id==='augusto'||targets.includes(id))continue;
+    while(placed.some(p=>Math.abs(p.x-point.x)<145&&Math.abs(p.y-point.y)<115))point.y+=125;
+    placed.push(point);
+  }
+  const legal=legalEdges('path',coreOnly);
+  const selectedEdge=legal.find(edge=>edge.id===selected);
+  const anchors=selectedEdge?[selectedEdge.source,selectedEdge.target]:selected&&nodeById.has(selected)?[selected]:[];
+  for(const id of anchors)if(!positions.has(id))positions.set(id,{x:500,y:400});
+  for(const id of anchors){
+    const anchor=positions.get(id);
+    if(!anchor)continue;
+    const related=legal.filter(edge=>edge.source===id||edge.target===id);
+    related.forEach((edge,index)=>{
+      edgeIds.add(edge.id);
+      const next=edge.source===id?edge.target:edge.source;
+      if(!positions.has(next))positions.set(next,{x:anchor.x+(index%2===0?160:-160),y:anchor.y+180+Math.floor(index/2)*120});
+    });
+  }
+  return {positions,edges:legal.filter(edge=>edgeIds.has(edge.id)&&positions.has(edge.source)&&positions.has(edge.target))};
+}
 type ForceNode = SimulationNodeDatum & { id: string };
 export function organicPositions() {
   const nodes: ForceNode[] = graph.nodes.map((n,i) => ({ id:n.id, x:Math.cos(i*2.399)*Math.sqrt(i)*90, y:Math.sin(i*2.399)*Math.sqrt(i)*90, ...(n.id === 'augusto' ? { fx:0,fy:0 } : {}) }));
