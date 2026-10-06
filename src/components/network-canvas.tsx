@@ -50,7 +50,10 @@ export function NetworkCanvas(props:Props) {
   const fitView = () => {
     const cy=cyRef.current;if(!cy)return;
     if(current.current.mode==='lineage'){cy.fit(cy.elements(),80);return;}
-    const box=cy.elements().boundingBox();
+    const points=[...current.current.trajectory.positions.values()];
+    const x1=Math.min(...points.map(p=>p.x))-80,x2=Math.max(...points.map(p=>p.x))+80;
+    const y1=Math.min(...points.map(p=>p.y))-65,y2=Math.max(...points.map(p=>p.y))+85;
+    const box={x1,y1,w:x2-x1,h:y2-y1};
     const width=cy.width(),height=cy.height();
     const right=current.current.selected&&width>640?390:65;
     const top=width<640?270:260;

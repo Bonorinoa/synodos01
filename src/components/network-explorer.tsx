@@ -24,7 +24,7 @@ export function NetworkExplorer() {
   const appRef=useRef<HTMLDivElement>(null);
   const paths=useMemo(()=>target&&mode==='path'?rankedPaths(target,coreOnly):[],[target,mode,coreOnly]);
   const overviewPaths=useMemo(()=>['santa-fe-institute','google-deepmind'].flatMap(id=>rankedPaths(id,coreOnly).slice(0,1)),[coreOnly]);
-  const visiblePaths=target?(activePath===null?paths:paths.slice(activePath,activePath+1)):overviewPaths;
+  const visiblePaths=useMemo(()=>target?(activePath===null?paths:paths.slice(activePath,activePath+1)):overviewPaths,[target,activePath,paths,overviewPaths]);
   const trajectory=useMemo(()=>trajectoryLayout(visiblePaths,target?[target]:['santa-fe-institute','google-deepmind'],coreOnly,selected),[visiblePaths,target,coreOnly,selected]);
   const highlighted=useMemo(()=>activePath===null?paths.flatMap(p=>p.edges):(paths[activePath]?.edges??[]),[paths,activePath]);
   const lineage=useMemo(()=>lineageLayout(root,coreOnly,collapsed),[root,coreOnly,collapsed]);
