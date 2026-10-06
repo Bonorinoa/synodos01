@@ -265,6 +265,7 @@
 .path-item[data-active=true] { border-color:var(--primary); }
 .path-item[data-active=true]>button { color:var(--primary); }
 .network-app[data-mode=path] .inspector { top:270px; max-height:calc(100dvh - 370px); }
+@media(min-width:641px) { .network-app[data-mode=path]:has(.inspector) .path-list { right:390px; grid-template-columns:1fr; max-height:165px; } }
 @media(max-width:640px) {
  .network-app[data-mode=path] .canvas-heading { top:136px; left:20px; right:20px; }
  .network-app[data-mode=path] .canvas-heading h2 { font-size:20px; }
