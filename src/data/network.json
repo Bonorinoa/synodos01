@@ -186,7 +186,7 @@
         "urls": [
           "https://www.marist.edu/computer-science-math/faculty/eitel-lauria"
         ],
-        "notes": "Marist DS mentor node; no verified SFI/DeepMind bridge."
+        "notes": "Marist DS mentor node; no verified SFI/DeepMind bridge. PhD Information Science, SUNY Albany 2003; advisor Carlos C. Rodriguez. GAP: full committee beyond Rodriguez is unresolved. Coauthorship with Augusto documented in CSEDU 2022 and Springer CCIS."
       }
     },
     {
@@ -205,7 +205,7 @@
           "https://search.asu.edu/profile/561604",
           "https://dt.asu.edu/our-team"
         ],
-        "notes": "ASU complexity / Decision Theater hop toward Laubichler and Shutters."
+        "notes": "ASU complexity / Decision Theater hop toward Laubichler and Shutters. Michigan 2007: chair Judith S. Olson; committee Furnas, Scott E. Page, Scott A. Moore, Darrin Hicks. Committee source is an Exa mirror of dissertation front matter; canonical Deep Blue handle remains a gap."
       }
     },
     {
@@ -1084,6 +1084,414 @@
         ],
         "notes": "~6 Capra coauthorships."
       }
+    },
+    {
+      "id": "university-at-albany",
+      "label": "University at Albany, SUNY",
+      "kind": "university",
+      "blurb": "PhD institution (Lauría 2003)",
+      "tags": [
+        "lineage",
+        "eitel-lauria"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.marist.edu/computer-science-math/faculty/eitel-lauria",
+          "https://www.genealogy.math.ndsu.nodak.edu/id.php?id=91269"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Lauría earned a PhD in Information Science from University at Albany, SUNY (2003)."
+      },
+      "profiles": {
+        "source1": "https://www.albany.edu/"
+      }
+    },
+    {
+      "id": "carlos-c-rodriguez",
+      "label": "Carlos C. Rodriguez",
+      "kind": "person",
+      "blurb": "University at Albany Mathematics & Statistics. PhD advisor (Lauría)",
+      "tags": [
+        "lineage",
+        "eitel-lauria"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.genealogy.math.ndsu.nodak.edu/id.php?id=91269",
+          "https://www.mathgenealogy.org/id.php?id=91269",
+          "https://eitellauria.github.io/publications/",
+          "https://www.albany.edu/math/faculty/carlos-rodriguez"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Carlos C. Rodriguez advised Eitel José Maria Lauria’s 2003 SUNY Albany Ph.D. dissertation on learning Bayesian belief network structure/parameters."
+      },
+      "profiles": {
+        "source1": "https://www.albany.edu/math/faculty/carlos-rodriguez",
+        "source2": "https://www.genealogy.math.ndsu.nodak.edu/id.php?id=91269"
+      }
+    },
+    {
+      "id": "oaai",
+      "label": "Open Academic Analytics Initiative (OAAI)",
+      "kind": "lab",
+      "blurb": "Gates/NGLC learning-analytics project at Marist",
+      "tags": [
+        "lineage",
+        "eitel-lauria"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://www.ceeman.org/docs/default-source/24-cac-cvs/lauria_24cac.pdf?sfvrsn=0",
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.18608/jla.2014.11.3"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Lauría was data-science lead / senior researcher on the Open Academic Analytics Initiative (Gates/NGLC-funded early-alert project at Marist)."
+      },
+      "profiles": {
+        "source1": "https://eitellauria.github.io/publications/"
+      }
+    },
+    {
+      "id": "sandeep-jayaprakash",
+      "label": "Sandeep M. Jayaprakash",
+      "kind": "person",
+      "blurb": "coauthor (Lauría / OAAI)",
+      "tags": [
+        "lineage",
+        "eitel-lauria"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.18608/jla.2014.11.3",
+          "https://doi.org/10.1145/2460296.2460325",
+          "https://www.csauthors.net/eitel-j-m-lauria/"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Highest-frequency coauthor on OAAI / early-alert learning analytics (LAK, JLA, JPAE)."
+      }
+    },
+    {
+      "id": "joshua-baron",
+      "label": "Joshua D. Baron",
+      "kind": "person",
+      "blurb": "coauthor (Lauría / OAAI)",
+      "tags": [
+        "lineage",
+        "eitel-lauria"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.1080/15236803.2015.12001831",
+          "https://dl.acm.org/doi/10.1145/2330601.2330637"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Repeated OAAI / learning-analytics coauthor (LAK 2012–2013, JLA 2014, JPAE 2015)."
+      }
+    },
+    {
+      "id": "peter-duchessi",
+      "label": "Peter Duchessi",
+      "kind": "person",
+      "blurb": "coauthor (Lauría)",
+      "tags": [
+        "lineage",
+        "eitel-lauria"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.1016/j.dss.2006.01.003",
+          "https://doi.org/10.1016/j.ejor.2006.01.016"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Repeated Bayesian decision-support coauthor (DSS 2006, EJOR 2007, ESWA 2013)."
+      }
+    },
+    {
+      "id": "edward-presutti",
+      "label": "Edward Presutti",
+      "kind": "person",
+      "blurb": "Marist collaborator. coauthor (Lauría)",
+      "tags": [
+        "lineage",
+        "eitel-lauria"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.5220/0011059000003182",
+          "https://www.csauthors.net/eitel-j-m-lauria/"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Repeated Marist learning-analytics / QA coauthor (CSEDU 2018, 2020, 2022)."
+      }
+    },
+    {
+      "id": "erik-moody",
+      "label": "Erik W. Moody",
+      "kind": "person",
+      "blurb": "coauthor (Lauría / OAAI)",
+      "tags": [
+        "lineage",
+        "eitel-lauria"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://doi.org/10.18608/jla.2014.11.3",
+          "https://eitellauria.github.io/publications/"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. OAAI coauthor on JLA 2014 early-alert paper and LAK 2013 initial findings."
+      }
+    },
+    {
+      "id": "craig-fisher",
+      "label": "Craig W. Fisher",
+      "kind": "person",
+      "blurb": "coauthor (Lauría / IQ)",
+      "tags": [
+        "lineage",
+        "eitel-lauria"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.1145/1659225.1659229"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Coauthor on ACM JDIQ accuracy metric and MIT-IQ textbook Introduction to Information Quality."
+      }
+    },
+    {
+      "id": "university-of-michigan",
+      "label": "University of Michigan",
+      "kind": "university",
+      "blurb": "PhD institution (Johnston 2007)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://resilience.asu.edu/johnston"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Johnston earned a Ph.D. in Information with a Complex Systems certificate from the University of Michigan in 2007."
+      },
+      "profiles": {
+        "source1": "https://search.asu.edu/profile/561604"
+      }
+    },
+    {
+      "id": "judith-s-olson",
+      "label": "Judith S. Olson",
+      "kind": "person",
+      "blurb": "University of Michigan (Information / HCI). PhD chair (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://exa.ai/library/publication/60h0dlkhd3g",
+          "https://search.asu.edu/profile/561604",
+          "https://en.wikipedia.org/wiki/Judith_S._Olson",
+          "https://doi.org/10.1007/S10588-008-9024-4"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Judith S. Olson chaired Erik W. Johnston’s 2007 University of Michigan Information Ph.D. committee; acknowledgements name her as advisor. Also coauthored agent-based modeling paper on unintended consequences of collocation (Computational & Mathematical Organization Theory, 2008)."
+      },
+      "profiles": {
+        "source1": "https://en.wikipedia.org/wiki/Judith_S._Olson"
+      }
+    },
+    {
+      "id": "george-w-furnas",
+      "label": "George W. Furnas",
+      "kind": "person",
+      "blurb": "University of Michigan. committee (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://exa.ai/library/publication/60h0dlkhd3g"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. George W. Furnas served on Johnston’s 2007 Michigan doctoral committee."
+      }
+    },
+    {
+      "id": "scott-a-moore",
+      "label": "Scott A. Moore",
+      "kind": "person",
+      "blurb": "University of Michigan. committee (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://exa.ai/library/publication/60h0dlkhd3g"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Scott A. Moore served on Johnston’s 2007 Michigan doctoral committee."
+      }
+    },
+    {
+      "id": "darrin-hicks",
+      "label": "Darrin Hicks",
+      "kind": "person",
+      "blurb": "University of Denver. committee + coauthor (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://exa.ai/library/publication/60h0dlkhd3g",
+          "https://doi.org/10.1093/jopart/muq045"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Darrin Hicks (University of Denver) served on Johnston’s 2007 Michigan doctoral committee. Repeated coauthor on collaborative governance / civic collaboration (JPART 2011 and earlier NFP-related work cited in dissertation)."
+      }
+    },
+    {
+      "id": "center-for-policy-informatics",
+      "label": "Center for Policy Informatics",
+      "kind": "lab",
+      "blurb": "ASU School of Public Affairs / Decision Theater orbit",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://innovation.cc/wp-content/uploads/2011_16_1_1_johnston-kim_intro-policy-infomatics.pdf",
+          "https://search.asu.edu/profile/561604",
+          "https://sustainability-innovation.asu.edu/person/erik-johnston/"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Johnston directed / co-directed ASU’s Center for Policy Informatics and co-edited its 2011 special issue introduction with Yushim Kim."
+      },
+      "profiles": {
+        "source1": "https://innovation.cc/wp-content/uploads/2011_16_1_1_johnston-kim_intro-policy-infomatics.pdf"
+      }
+    },
+    {
+      "id": "ning-nan",
+      "label": "Ning Nan",
+      "kind": "person",
+      "blurb": "coauthor (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://doi.org/10.1093/jopart/muq045",
+          "https://search.asu.edu/profile/561604",
+          "https://asu.elsevierpure.com/en/publications/managing-the-inclusion-process-in-collaborative-governance/"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Frequent coauthor including JPART 2011 Managing the Inclusion Process in Collaborative Governance (with Hicks & Auer)."
+      }
+    },
+    {
+      "id": "yushim-kim",
+      "label": "Yushim Kim",
+      "kind": "person",
+      "blurb": "ASU School of Public Affairs. coauthor (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://innovation.cc/wp-content/uploads/2011_16_1_1_johnston-kim_intro-policy-infomatics.pdf",
+          "https://search.asu.edu/profile/561604",
+          "https://doi.org/10.2753/PMR1530-9576340407"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Co-edited Introduction to the Special Issue on Policy Informatics; coauthored PPMR networked governance paper."
+      }
+    },
+    {
+      "id": "qian-hu",
+      "label": "Qian Hu",
+      "kind": "person",
+      "blurb": "coauthor (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://doi.org/10.15353/joci.v9i1.3183"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Repeated coauthor on wiki-based courses, simulation-based scenario learning, and IT tools for cooperative community behavior."
+      }
+    },
+    {
+      "id": "chul-hyun-park",
+      "label": "Chul Hyun Park",
+      "kind": "person",
+      "blurb": "coauthor / former CPI advisee (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "http://opening-governance.org/members-corner/2016/7/28/phds-awarded-to-arizona-state-university-center-for-policy-informatics-students-under-erik-johnstons-guidance",
+          "https://doi.org/10.1080/15309576.2019.1677253"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Highest-frequency recent coauthor on open/collaborative governance; Park completed CPI dissertation under Johnston’s guidance."
+      }
+    },
+    {
+      "id": "kevin-desouza",
+      "label": "Kevin C. Desouza",
+      "kind": "person",
+      "blurb": "coauthor (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://doi.org/10.17705/1CAIS.03321"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Coauthored CAIS policy-informatics / participatory platforms paper; NSF VOSS collaborator on hybrid participatory governance."
+      }
+    },
+    {
+      "id": "tanya-kelley",
+      "label": "Tanya M. Kelley",
+      "kind": "person",
+      "blurb": "coauthor / former CPI advisee (Johnston)",
+      "tags": [
+        "lineage",
+        "erik-johnston"
+      ],
+      "candidate": true,
+      "evidence_packet": {
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "http://opening-governance.org/members-corner/2016/7/28/phds-awarded-to-arizona-state-university-center-for-policy-informatics-students-under-erik-johnstons-guidance"
+        ],
+        "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Coauthored participatory platforms / serious games work; Kelley was a CPI PhD student under Johnston."
+      }
     }
   ],
   "edges": [
@@ -1321,14 +1729,45 @@
     {
       "source": "augusto",
       "target": "eitel-lauria",
-      "strength": 6,
+      "strength": 8,
       "evidence": {
-        "claim": "Shared Marist Data Science institution and DS/AI field (Argentine background noted on Lauría profile).",
-        "basis": "shared_institution",
+        "claim": "Coauthored CSEDU 2022 open-domain QA methodology and Springer CCIS Adaptive Kevin chapter with Augusto Gonzalez-Bonorino.",
+        "basis": "coauthorship",
+        "basis_detail": "Lauría publications site; Springer DOI; SciTePress DOI",
         "urls": [
-          "https://www.marist.edu/computer-science-math/faculty/eitel-lauria",
-          "https://scholar.google.com/citations?user=xdO0FqwAAAAJ"
-        ]
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.1007/978-3-031-40501-3_7",
+          "https://doi.org/10.5220/0011059000003182"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://eitellauria.github.io/publications/",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1007/978-3-031-40501-3_7",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.5220/0011059000003182",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited.",
+        "previous_evidence": {
+          "claim": "Shared Marist Data Science institution and DS/AI field (Argentine background noted on Lauría profile).",
+          "basis": "shared_institution",
+          "urls": [
+            "https://www.marist.edu/computer-science-math/faculty/eitel-lauria",
+            "https://scholar.google.com/citations?user=xdO0FqwAAAAJ"
+          ]
+        }
       }
     },
     {
@@ -2529,6 +2968,776 @@
           "http://scholar.cgu.edu/monica-capra/wp-content/uploads/sites/77/2021/05/CVCapra_CGU_2021-05.pdf",
           "https://claremont.academia.edu/monicacapra"
         ]
+      }
+    },
+    {
+      "source": "carlos-c-rodriguez",
+      "target": "eitel-lauria",
+      "strength": 9,
+      "evidence": {
+        "claim": "Carlos C. Rodriguez advised Eitel José Maria Lauria’s 2003 SUNY Albany Ph.D. dissertation on learning Bayesian belief network structure/parameters.",
+        "basis": "phd_advisor",
+        "basis_detail": "Mathematics Genealogy Project primary record; dissertation title matches Lauría publications site",
+        "urls": [
+          "https://www.genealogy.math.ndsu.nodak.edu/id.php?id=91269",
+          "https://www.mathgenealogy.org/id.php?id=91269",
+          "https://eitellauria.github.io/publications/",
+          "https://www.albany.edu/math/faculty/carlos-rodriguez"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://www.genealogy.math.ndsu.nodak.edu/id.php?id=91269",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://www.mathgenealogy.org/id.php?id=91269",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://eitellauria.github.io/publications/",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://www.albany.edu/math/faculty/carlos-rodriguez",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "university-at-albany",
+      "target": "eitel-lauria",
+      "strength": 9,
+      "evidence": {
+        "claim": "Lauría earned a PhD in Information Science from University at Albany, SUNY (2003).",
+        "basis": "phd_institution",
+        "basis_detail": "Marist faculty education block + Math Genealogy",
+        "urls": [
+          "https://www.marist.edu/computer-science-math/faculty/eitel-lauria",
+          "https://www.genealogy.math.ndsu.nodak.edu/id.php?id=91269"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://www.marist.edu/computer-science-math/faculty/eitel-lauria",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://www.genealogy.math.ndsu.nodak.edu/id.php?id=91269",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited.",
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "eitel-lauria",
+      "target": "oaai",
+      "strength": 9,
+      "evidence": {
+        "claim": "Lauría was data-science lead / senior researcher on the Open Academic Analytics Initiative (Gates/NGLC-funded early-alert project at Marist).",
+        "basis": "joint_project",
+        "basis_detail": "CEEMAN CV PDF; personal publications grants; JLA 2014 OAAI paper",
+        "urls": [
+          "https://www.ceeman.org/docs/default-source/24-cac-cvs/lauria_24cac.pdf?sfvrsn=0",
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.18608/jla.2014.11.3"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://www.ceeman.org/docs/default-source/24-cac-cvs/lauria_24cac.pdf?sfvrsn=0",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://eitellauria.github.io/publications/",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.18608/jla.2014.11.3",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "eitel-lauria",
+      "target": "sandeep-jayaprakash",
+      "strength": 9,
+      "evidence": {
+        "claim": "Highest-frequency coauthor on OAAI / early-alert learning analytics (LAK, JLA, JPAE).",
+        "basis": "coauthorship",
+        "basis_detail": "Personal publications list; DOI JLA 2014 and LAK proceedings",
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.18608/jla.2014.11.3",
+          "https://doi.org/10.1145/2460296.2460325",
+          "https://www.csauthors.net/eitel-j-m-lauria/"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://eitellauria.github.io/publications/",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.18608/jla.2014.11.3",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1145/2460296.2460325",
+            "status": 403,
+            "accessible": false
+          },
+          {
+            "url": "https://www.csauthors.net/eitel-j-m-lauria/",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Confidence lowered because some supplied sources were blocked or unreachable during the accessibility check; this is not proof the claim is false. HTTP success does not independently verify the claim."
+      }
+    },
+    {
+      "source": "eitel-lauria",
+      "target": "joshua-baron",
+      "strength": 8,
+      "evidence": {
+        "claim": "Repeated OAAI / learning-analytics coauthor (LAK 2012–2013, JLA 2014, JPAE 2015).",
+        "basis": "coauthorship",
+        "basis_detail": "Personal publications; csauthors.net",
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.1080/15236803.2015.12001831",
+          "https://dl.acm.org/doi/10.1145/2330601.2330637"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://eitellauria.github.io/publications/",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1080/15236803.2015.12001831",
+            "status": 403,
+            "accessible": false
+          },
+          {
+            "url": "https://dl.acm.org/doi/10.1145/2330601.2330637",
+            "status": 403,
+            "accessible": false
+          }
+        ],
+        "verification_notes": "Confidence lowered because some supplied sources were blocked or unreachable during the accessibility check; this is not proof the claim is false. HTTP success does not independently verify the claim."
+      }
+    },
+    {
+      "source": "eitel-lauria",
+      "target": "peter-duchessi",
+      "strength": 8,
+      "evidence": {
+        "claim": "Repeated Bayesian decision-support coauthor (DSS 2006, EJOR 2007, ESWA 2013).",
+        "basis": "coauthorship",
+        "basis_detail": "Personal publications; DOI DSS 2006",
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.1016/j.dss.2006.01.003",
+          "https://doi.org/10.1016/j.ejor.2006.01.016"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://eitellauria.github.io/publications/",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1016/j.dss.2006.01.003",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1016/j.ejor.2006.01.016",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "eitel-lauria",
+      "target": "edward-presutti",
+      "strength": 7,
+      "evidence": {
+        "claim": "Repeated Marist learning-analytics / QA coauthor (CSEDU 2018, 2020, 2022).",
+        "basis": "coauthorship",
+        "basis_detail": "Personal publications; SciTePress DOIs",
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.5220/0011059000003182",
+          "https://www.csauthors.net/eitel-j-m-lauria/"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://eitellauria.github.io/publications/",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.5220/0011059000003182",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://www.csauthors.net/eitel-j-m-lauria/",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "eitel-lauria",
+      "target": "erik-moody",
+      "strength": 7,
+      "evidence": {
+        "claim": "OAAI coauthor on JLA 2014 early-alert paper and LAK 2013 initial findings.",
+        "basis": "coauthorship",
+        "basis_detail": "JLA DOI; personal publications",
+        "urls": [
+          "https://doi.org/10.18608/jla.2014.11.3",
+          "https://eitellauria.github.io/publications/"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://doi.org/10.18608/jla.2014.11.3",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://eitellauria.github.io/publications/",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "eitel-lauria",
+      "target": "craig-fisher",
+      "strength": 7,
+      "evidence": {
+        "claim": "Coauthor on ACM JDIQ accuracy metric and MIT-IQ textbook Introduction to Information Quality.",
+        "basis": "coauthorship",
+        "basis_detail": "Personal publications books/articles",
+        "urls": [
+          "https://eitellauria.github.io/publications/",
+          "https://doi.org/10.1145/1659225.1659229"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "expansion_root": "eitel-lauria",
+        "source_checks": [
+          {
+            "url": "https://eitellauria.github.io/publications/",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1145/1659225.1659229",
+            "status": 403,
+            "accessible": false
+          }
+        ],
+        "verification_notes": "Confidence lowered because some supplied sources were blocked or unreachable during the accessibility check; this is not proof the claim is false. HTTP success does not independently verify the claim."
+      }
+    },
+    {
+      "source": "judith-s-olson",
+      "target": "erik-johnston",
+      "strength": 9,
+      "evidence": {
+        "claim": "Judith S. Olson chaired Erik W. Johnston’s 2007 University of Michigan Information Ph.D. committee; acknowledgements name her as advisor.",
+        "basis": "phd_advisor",
+        "basis_detail": "Dissertation front matter (Deep Blue text): Doctoral Committee lists Olson as Chair; acknowledgements thank ‘advisor, Dr. Judith Olson’",
+        "urls": [
+          "https://exa.ai/library/publication/60h0dlkhd3g",
+          "https://search.asu.edu/profile/561604",
+          "https://en.wikipedia.org/wiki/Judith_S._Olson"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://exa.ai/library/publication/60h0dlkhd3g",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://search.asu.edu/profile/561604",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Judith_S._Olson",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "george-w-furnas",
+      "target": "erik-johnston",
+      "strength": 7,
+      "evidence": {
+        "claim": "George W. Furnas served on Johnston’s 2007 Michigan doctoral committee.",
+        "basis": "committee",
+        "basis_detail": "Dissertation Doctoral Committee listing",
+        "urls": [
+          "https://exa.ai/library/publication/60h0dlkhd3g"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://exa.ai/library/publication/60h0dlkhd3g",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "scott-page",
+      "target": "erik-johnston",
+      "strength": 7,
+      "evidence": {
+        "claim": "Scott E. Page served on Johnston’s 2007 Michigan doctoral committee.",
+        "basis": "committee",
+        "basis_detail": "Dissertation Doctoral Committee listing (reuse existing scott-page node)",
+        "urls": [
+          "https://exa.ai/library/publication/60h0dlkhd3g",
+          "https://www.santafe.edu/people/profile/scott-page"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://exa.ai/library/publication/60h0dlkhd3g",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://www.santafe.edu/people/profile/scott-page",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "scott-a-moore",
+      "target": "erik-johnston",
+      "strength": 7,
+      "evidence": {
+        "claim": "Scott A. Moore served on Johnston’s 2007 Michigan doctoral committee.",
+        "basis": "committee",
+        "basis_detail": "Dissertation Doctoral Committee listing",
+        "urls": [
+          "https://exa.ai/library/publication/60h0dlkhd3g"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://exa.ai/library/publication/60h0dlkhd3g",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "darrin-hicks",
+      "target": "erik-johnston",
+      "strength": 7,
+      "evidence": {
+        "claim": "Darrin Hicks (University of Denver) served on Johnston’s 2007 Michigan doctoral committee.",
+        "basis": "committee",
+        "basis_detail": "Dissertation Doctoral Committee listing",
+        "urls": [
+          "https://exa.ai/library/publication/60h0dlkhd3g"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://exa.ai/library/publication/60h0dlkhd3g",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "university-of-michigan",
+      "target": "erik-johnston",
+      "strength": 9,
+      "evidence": {
+        "claim": "Johnston earned a Ph.D. in Information with a Complex Systems certificate from the University of Michigan in 2007.",
+        "basis": "phd_institution",
+        "basis_detail": "ASU faculty profile education block",
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://resilience.asu.edu/johnston"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://search.asu.edu/profile/561604",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://resilience.asu.edu/johnston",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited.",
+        "institutional_hop": true
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "center-for-policy-informatics",
+      "strength": 9,
+      "evidence": {
+        "claim": "Johnston directed / co-directed ASU’s Center for Policy Informatics and co-edited its 2011 special issue introduction with Yushim Kim.",
+        "basis": "research_group",
+        "basis_detail": "Innovation Journal 2011 intro PDF; ASU profile service; GIOS bio",
+        "urls": [
+          "https://innovation.cc/wp-content/uploads/2011_16_1_1_johnston-kim_intro-policy-infomatics.pdf",
+          "https://search.asu.edu/profile/561604",
+          "https://sustainability-innovation.asu.edu/person/erik-johnston/"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://innovation.cc/wp-content/uploads/2011_16_1_1_johnston-kim_intro-policy-infomatics.pdf",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://search.asu.edu/profile/561604",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://sustainability-innovation.asu.edu/person/erik-johnston/",
+            "status": null,
+            "accessible": false
+          }
+        ],
+        "verification_notes": "Confidence lowered because some supplied sources were blocked or unreachable during the accessibility check; this is not proof the claim is false. HTTP success does not independently verify the claim."
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "ning-nan",
+      "strength": 8,
+      "evidence": {
+        "claim": "Frequent coauthor including JPART 2011 Managing the Inclusion Process in Collaborative Governance (with Hicks & Auer).",
+        "basis": "coauthorship",
+        "basis_detail": "DOI 10.1093/jopart/muq045; ASU publications list; Semantic Scholar ~7",
+        "urls": [
+          "https://doi.org/10.1093/jopart/muq045",
+          "https://search.asu.edu/profile/561604",
+          "https://asu.elsevierpure.com/en/publications/managing-the-inclusion-process-in-collaborative-governance/"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://doi.org/10.1093/jopart/muq045",
+            "status": 403,
+            "accessible": false
+          },
+          {
+            "url": "https://search.asu.edu/profile/561604",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://asu.elsevierpure.com/en/publications/managing-the-inclusion-process-in-collaborative-governance/",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Confidence lowered because some supplied sources were blocked or unreachable during the accessibility check; this is not proof the claim is false. HTTP success does not independently verify the claim."
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "darrin-hicks",
+      "strength": 8,
+      "evidence": {
+        "claim": "Repeated coauthor on collaborative governance / civic collaboration (JPART 2011 and earlier NFP-related work cited in dissertation).",
+        "basis": "coauthorship",
+        "basis_detail": "JPART DOI; dual committee+coauthor relationship",
+        "urls": [
+          "https://doi.org/10.1093/jopart/muq045",
+          "https://exa.ai/library/publication/60h0dlkhd3g"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://doi.org/10.1093/jopart/muq045",
+            "status": 403,
+            "accessible": false
+          },
+          {
+            "url": "https://exa.ai/library/publication/60h0dlkhd3g",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Confidence lowered because some supplied sources were blocked or unreachable during the accessibility check; this is not proof the claim is false. HTTP success does not independently verify the claim."
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "yushim-kim",
+      "strength": 8,
+      "evidence": {
+        "claim": "Co-edited Introduction to the Special Issue on Policy Informatics; coauthored PPMR networked governance paper.",
+        "basis": "coauthorship",
+        "basis_detail": "Innovation Journal PDF; ASU pubs list",
+        "urls": [
+          "https://innovation.cc/wp-content/uploads/2011_16_1_1_johnston-kim_intro-policy-infomatics.pdf",
+          "https://search.asu.edu/profile/561604",
+          "https://doi.org/10.2753/PMR1530-9576340407"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://innovation.cc/wp-content/uploads/2011_16_1_1_johnston-kim_intro-policy-infomatics.pdf",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://search.asu.edu/profile/561604",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.2753/PMR1530-9576340407",
+            "status": 403,
+            "accessible": false
+          }
+        ],
+        "verification_notes": "Confidence lowered because some supplied sources were blocked or unreachable during the accessibility check; this is not proof the claim is false. HTTP success does not independently verify the claim."
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "qian-hu",
+      "strength": 7,
+      "evidence": {
+        "claim": "Repeated coauthor on wiki-based courses, simulation-based scenario learning, and IT tools for cooperative community behavior.",
+        "basis": "coauthorship",
+        "basis_detail": "ASU publications list; Semantic Scholar ~4",
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://doi.org/10.15353/joci.v9i1.3183"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://search.asu.edu/profile/561604",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.15353/joci.v9i1.3183",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "chul-hyun-park",
+      "strength": 8,
+      "evidence": {
+        "claim": "Highest-frequency recent coauthor on open/collaborative governance; Park completed CPI dissertation under Johnston’s guidance.",
+        "basis": "coauthorship",
+        "basis_detail": "Semantic Scholar ~8; opening-governance.org note on CPI PhDs under Johnston",
+        "urls": [
+          "http://opening-governance.org/members-corner/2016/7/28/phds-awarded-to-arizona-state-university-center-for-policy-informatics-students-under-erik-johnstons-guidance",
+          "https://doi.org/10.1080/15309576.2019.1677253"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "http://opening-governance.org/members-corner/2016/7/28/phds-awarded-to-arizona-state-university-center-for-policy-informatics-students-under-erik-johnstons-guidance",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1080/15309576.2019.1677253",
+            "status": 403,
+            "accessible": false
+          }
+        ],
+        "verification_notes": "Confidence lowered because some supplied sources were blocked or unreachable during the accessibility check; this is not proof the claim is false. HTTP success does not independently verify the claim."
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "kevin-desouza",
+      "strength": 7,
+      "evidence": {
+        "claim": "Coauthored CAIS policy-informatics / participatory platforms paper; NSF VOSS collaborator on hybrid participatory governance.",
+        "basis": "coauthorship",
+        "basis_detail": "ASU publications + research activity list",
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "https://doi.org/10.17705/1CAIS.03321"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://search.asu.edu/profile/561604",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.17705/1CAIS.03321",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "erik-johnston",
+      "target": "tanya-kelley",
+      "strength": 7,
+      "evidence": {
+        "claim": "Coauthored participatory platforms / serious games work; Kelley was a CPI PhD student under Johnston.",
+        "basis": "coauthorship",
+        "basis_detail": "ASU pubs; opening-governance PhD announcement",
+        "urls": [
+          "https://search.asu.edu/profile/561604",
+          "http://opening-governance.org/members-corner/2016/7/28/phds-awarded-to-arizona-state-university-center-for-policy-informatics-students-under-erik-johnstons-guidance"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://search.asu.edu/profile/561604",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "http://opening-governance.org/members-corner/2016/7/28/phds-awarded-to-arizona-state-university-center-for-policy-informatics-students-under-erik-johnstons-guidance",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "judith-s-olson",
+      "target": "erik-johnston",
+      "strength": 6,
+      "evidence": {
+        "claim": "Also coauthored agent-based modeling paper on unintended consequences of collocation (Computational & Mathematical Organization Theory, 2008).",
+        "basis": "coauthorship",
+        "basis_detail": "Semantic Scholar lists J. S. Olson as coauthor (~4); dual advisor+coauthor",
+        "urls": [
+          "https://doi.org/10.1007/S10588-008-9024-4"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "medium",
+        "expansion_root": "erik-johnston",
+        "source_checks": [
+          {
+            "url": "https://doi.org/10.1007/S10588-008-9024-4",
+            "status": 200,
+            "accessible": true
+          }
+        ],
+        "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
       }
     }
   ]
