@@ -3,3 +3,4 @@
 - [x] Build glass canvas, evidence inspector, search, and JSON export.
 - [x] Add ranked Path highlights and filtered vertical Lineage with root focus/collapse.
 - [x] Verify interactions, evidence honesty, and mobile layout.
+- [ ] Apply light-blue/matte charcoal gradients and verify a gentle selected-node glow.
