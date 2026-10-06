@@ -6,3 +6,6 @@
 - [x] Apply light-blue/matte charcoal gradients and verify a gentle selected-node glow.
 - [x] Reorient Path as horizontal Augusto-to-target trajectories with adaptive target/path/filter views.
 - [x] Verify both target flows, evidence inspection, and preserved Lineage behavior.
+- [ ] Merge Lauría and Johnston evidence packets, confidence, committee support, and report exact additions.
+- [ ] Resolve Duch scope blocker: supplied graph has no Augusto–Duch edge; obtain direct-edge evidence or permission to expand this existing two-hop neighbor.
+- [ ] Preserve failed evidence URLs, lower confidence where necessary, and verify lineage/export flows.
