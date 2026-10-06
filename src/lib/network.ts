@@ -54,7 +54,7 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
   const positions = new Map<string, { x:number; y:number }>();
   const levels = new Map<number,string[]>();
   for (const [id,level] of depth) if (!hidden.has(id)) levels.set(level,[...(levels.get(level) ?? []),id]);
-  for (const [level, ids] of levels) ids.forEach((id,index) => positions.set(id, { x: (index-(ids.length-1)/2)*180, y:level*180 }));
+  for (const [level, ids] of levels) ids.forEach((id,index) => positions.set(id, { x: (index-(ids.length-1)/2)*135, y:level*190 }));
   return { positions, depth, parent, hidden, edges: legal.filter(e => positions.has(e.source) && positions.has(e.target)) };
 }
 type ForceNode = SimulationNodeDatum & { id: string };
