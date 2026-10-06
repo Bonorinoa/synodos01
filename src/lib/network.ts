@@ -23,7 +23,7 @@ export function edgeCost(edge: NetworkEdge) {
 export type RankedPath = { nodes: string[]; edges: string[]; cost: number };
 export function rankedPaths(target: string, coreOnly = false): RankedPath[] {
   const adjacency = new Map<string, { next: string; edge: NetworkEdge }[]>();
-  for (const edge of legalEdges('path', coreOnly)) for (const [a,b] of [[edge.source,edge.target],[edge.target,edge.source]]) adjacency.set(a, [...(adjacency.get(a) ?? []), { next: b, edge }]);
+  for (const edge of legalEdges('path', coreOnly)) for (const [a,b] of [[edge.source,edge.target],[edge.target,edge.source]] as [string,string][]) adjacency.set(a, [...(adjacency.get(a) ?? []), { next: b, edge }]);
   const queue: RankedPath[] = [{ nodes: ['augusto'], edges: [], cost: 0 }];
   const results: RankedPath[] = [];
   const signatures = new Set<string>();
@@ -46,6 +46,7 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
   const queue = [root];
   for (let i = 0; i < queue.length; i++) {
     const id = queue[i];
+    if (!id) continue;
     for (const edge of legal) { const next = edge.source === id ? edge.target : edge.target === id ? edge.source : undefined; if (next && !depth.has(next)) { depth.set(next, (depth.get(id) ?? 0) + 1); parent.set(next,id); queue.push(next); } }
   }
   const hidden = new Set<string>();
