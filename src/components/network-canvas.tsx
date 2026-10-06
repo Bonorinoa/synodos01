@@ -17,7 +17,7 @@ function canvasColor(token:string) {
 function styles():StylesheetCSS[] {
   const color = canvasColor;
   return [
-    { selector:'node',css:{ 'background-color':color('--person'),'background-opacity':.9,width:22,height:22,label:'data(displayLabel)',color:color('--foreground'),'font-family':'DM Sans','font-size':11,'text-valign':'bottom','text-margin-y':10,'text-outline-color':color('--background'),'text-outline-width':3,'border-width':5,'border-color':color('--person'),'border-opacity':.12,'text-wrap':'wrap','text-max-width':145 } },
+    { selector:'node',css:{ 'background-color':color('--person'),'background-opacity':.9,width:22,height:22,label:'data(displayLabel)',color:color('--foreground'),'font-family':'DM Sans','font-size':11,'text-valign':'bottom','text-margin-y':10,'text-outline-color':color('--background'),'text-outline-width':3,'border-width':5,'border-color':color('--person'),'border-opacity':.12,'text-wrap':'wrap','text-max-width':'145px' } },
     { selector:'node[kind = "lab"]',css:{shape:'round-rectangle','background-color':color('--lab'),'border-color':color('--lab'),width:27,height:27} },
     { selector:'node[kind = "university"]',css:{shape:'diamond','background-color':color('--university'),'border-color':color('--university'),width:29,height:29} },
     { selector:'node[kind = "institution"]',css:{shape:'hexagon','background-color':color('--institution'),'border-color':color('--institution'),width:29,height:29} },
@@ -61,7 +61,7 @@ export function NetworkCanvas(props:Props) {
     const visibleNodes=graph.nodes.filter(n=>(!coreOnly||!n.candidate||n.id===root)&&(mode==='path'||positions.has(n.id)));
     const ids=new Set(visibleNodes.map(n=>n.id));
     const visibleEdges=(mode==='lineage'?lineage.edges:legalEdges(mode,coreOnly)).filter(e=>ids.has(e.source)&&ids.has(e.target));
-    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:n.id==='augusto'?'Augusto':n.label},position:positions.get(n.id),classes:[n.candidate?'candidate':'',n.target?'target':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee')?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':''].join(' ')}))];
+    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:n.id==='augusto'?'Augusto':n.label},position:positions.get(n.id) ?? {x:0,y:0},classes:[n.candidate?'candidate':'',n.target?'target':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee')?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':''].join(' ')}))];
     const previous={zoom:cy.zoom(),pan:cy.pan()};
     cy.batch(()=>{cy.elements().remove();cy.add(elements);});
     cy.layout({name:'preset',fit:false}).run();
@@ -92,7 +92,7 @@ export function NetworkCanvas(props:Props) {
     const cy=cyRef.current;if(!cy)return;
     cy.elements().removeClass('dim highlight focused');
     if(props.highlighted.length){cy.elements().addClass('dim');for(const id of props.highlighted){const edge=cy.getElementById(id);edge.removeClass('dim').addClass('highlight');edge.connectedNodes().removeClass('dim').addClass('highlight');}}
-    if(props.selected){const selected=cy.getElementById(props.selected);selected.removeClass('dim').addClass('focused');if(selected.isNode()){selected.connectedEdges().removeClass('dim');selected.neighborhood('node').removeClass('dim');}else selected.connectedNodes().removeClass('dim').addClass('highlight');}
+    if(props.selected){const selected=cy.getElementById(props.selected);selected.removeClass('dim').addClass('focused');if(selected.isNode()){selected.connectedEdges().removeClass('dim');selected.neighborhood('node').removeClass('dim');}else cy.edges().filter(e=>e.id()===props.selected).connectedNodes().removeClass('dim').addClass('highlight');}
   },[props.highlighted,props.selected,props.mode,props.coreOnly,props.root,props.collapsed]);
   return <div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Organic relationship' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? graph.nodes.length : lineageLayout(props.root,props.coreOnly,props.collapsed).positions.size} nodes.`}/>;
 }
