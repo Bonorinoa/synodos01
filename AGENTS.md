@@ -14,3 +14,4 @@
 - Use Cytoscape for the freeform canvas, deterministic D3 force positions for Path, and legal-edge BFS levels for Lineage; mode-specific graph logic stays independent of presentation.
 - Treat all graph links as undirected traversal unless a claim explicitly establishes direction; root-relative lineage levels are relationship hops, not generations or advisor claims.
 - Keep all canvas colors and glass styling in global semantic tokens; Cytoscape reads these tokens at runtime to match HTML controls.
+- Anchor the selection halo to Cytoscape rendered node coordinates on pan, zoom, position, and resize events; this keeps presentation-only motion aligned without modifying graph data.

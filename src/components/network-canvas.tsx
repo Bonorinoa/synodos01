@@ -43,6 +43,7 @@ function styles():StylesheetCSS[] {
 
 export function NetworkCanvas(props:Props) {
   const container = useRef<HTMLDivElement>(null);
+  const halo = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core|null>(null);
   const current = useRef(props); current.current=props;
   const pathPositions = useRef<ReturnType<typeof organicPositions>|null>(null);
@@ -50,6 +51,21 @@ export function NetworkCanvas(props:Props) {
   const lastMode = useRef<Mode>(props.mode);
   const lastRoot = useRef(props.root);
   const renderGraph = useRef<()=>void>(()=>{});
+  const updateHalo = () => {
+    const element=halo.current;
+    const cy=cyRef.current;
+    if(!element||!cy)return;
+    const selected=current.current.selected;
+    const node=selected?cy.getElementById(selected):null;
+    if(!node?.length||!node.isNode()){element.hidden=true;return;}
+    const position=node.renderedPosition();
+    const size=Math.max(30,node.renderedWidth()+20);
+    element.hidden=false;
+    element.style.left=`${position.x}px`;
+    element.style.top=`${position.y}px`;
+    element.style.width=`${size}px`;
+    element.style.height=`${size}px`;
+  };
 
   renderGraph.current = () => {
     const cy=cyRef.current; if (!cy) return;
@@ -86,6 +102,7 @@ export function NetworkCanvas(props:Props) {
       cy.on('tap','node, edge',event=>current.current.onSelect(event.target.id()));
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
       cy.on('zoom',()=>current.current.onZoom(cy.zoom()));
+      cy.on('pan zoom position resize',updateHalo);
       cy.on('dragfree','node',event=>{if(current.current.mode==='path')pathPositions.current?.set(event.target.id(),event.target.position());});
       current.current.apiRef.current={fit:()=>cy.fit(cy.elements(),80),zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:id=>{const n=cy.getElementById(id);if(n.length)cy.pan({x:cy.width()*.53-n.position('x')*cy.zoom(),y:cy.height()*.52-n.position('y')*cy.zoom()});},home:()=>{cy.zoom(initialZoom());const n=cy.getElementById(current.current.mode==='lineage'?current.current.root:'augusto');if(n.length)cy.pan({x:cy.width()*.54-n.position('x')*cy.zoom(),y:cy.height()*(cy.width()<640?.59:.54)-n.position('y')*cy.zoom()});}};
       observer=new ResizeObserver(()=>cy.resize());observer.observe(container.current);
@@ -98,6 +115,7 @@ export function NetworkCanvas(props:Props) {
     cy.elements().removeClass('dim highlight focused');
     if(props.highlighted.length){cy.elements().addClass('dim');for(const id of props.highlighted){const edge=cy.getElementById(id);edge.removeClass('dim').addClass('highlight');edge.connectedNodes().removeClass('dim').addClass('highlight');}}
     if(props.selected){const selected=cy.getElementById(props.selected);selected.removeClass('dim').addClass('focused');if(selected.isNode()){selected.connectedEdges().removeClass('dim');selected.neighborhood('node').removeClass('dim');}else cy.edges().filter(e=>e.id()===props.selected).connectedNodes().removeClass('dim').addClass('highlight');}
+    updateHalo();
   },[props.highlighted,props.selected,props.mode,props.coreOnly,props.root,props.collapsed]);
-  return <div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Organic relationship' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? graph.nodes.length : lineageLayout(props.root,props.coreOnly,props.collapsed).positions.size} nodes.`}/>;
+  return <><div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Organic relationship' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? graph.nodes.length : lineageLayout(props.root,props.coreOnly,props.collapsed).positions.size} nodes.`}/><div ref={halo} className="selection-halo" aria-hidden="true" hidden/></>;
 }
