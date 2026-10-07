@@ -528,6 +528,12 @@
       "profiles": {
         "linkedin": "https://www.linkedin.com/in/demishassabis/"
       },
+      "nobel_prize": {
+        "category": "Chemistry",
+        "year": 2024,
+        "motivation": "for protein structure prediction",
+        "url": "https://www.nobelprize.org/prizes/chemistry/2024/hassabis/"
+      },
       "evidence_packet": {
         "urls": [
           "https://deepmind.google/about/"

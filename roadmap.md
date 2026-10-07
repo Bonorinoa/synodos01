@@ -16,3 +16,4 @@
 - [x] Verify horizontal scrolling pans without zooming and vertical scrolling retains zoom.
 - [x] Apply the Pixel Observatory visual system to the canvas, controls, and evidence inspector.
 - [x] Verify the redesigned Path, Lineage, inspector, and responsive layouts.
+- [x] Add an officially sourced, Lineage-only Nobel laureate marker and evidence detail.
