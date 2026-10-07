@@ -78,7 +78,7 @@ export function NetworkCanvas(props:Props) {
   };
   const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;const zoom=cy.zoom(),pan=cy.pan();topoTransform.current?.setAttribute('transform',`translate(${pan.x} ${pan.y}) scale(${zoom})`);const labels:{x:number;y:number;w:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{
     text.setAttribute('font-size',`${11/zoom}px`);
-    const anchorX=Number(text.dataset.anchorX)*zoom+pan.x,anchorY=Number(text.dataset.anchorY)*zoom+pan.y;
+    const anchorX=Number(text.dataset['anchorX'])*zoom+pan.x,anchorY=Number(text.dataset['anchorY'])*zoom+pan.y;
     const w=text.getComputedTextLength()*zoom;
     const x=Math.max(12,Math.min(cy.width()-w-12,anchorX)),y=anchorY;
     const hidden=anchorX<0||anchorX>cy.width()||y<16||y>cy.height()-12||w>cy.width()-24||labels.some(p=>x<p.x+p.w+12&&x+w+12>p.x&&Math.abs(p.y-y)<18);
