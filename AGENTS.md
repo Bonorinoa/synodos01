@@ -22,5 +22,8 @@
 - Keep both Path destinations in the graph and permanent destination controls, and distinguish relevance ghosts from evidence weakness; exploration must not hide goals or promote unsupported claims.
 - Render collapsed Lineage evidence as bounded context previews separate from visible hop counts, with zoom-gated labels; this reveals layers without expanding traversal or implying new relationships.
 - Intercept horizontal-dominant wheel gestures only for canvas panning and leave vertical zoom and pinch to Cytoscape; this prevents sideways trackpad motion from changing scale.
-- Express the interface through the tokenized Pixel Observatory system with pixel details confined to presentation; this keeps graph meaning and evidence semantics independent from visual styling.
+- Express the interface through the tokenized Trail cartography system with map details confined to presentation; this keeps graph meaning and evidence semantics independent from visual styling.
 - Store major distinctions as optional sourced node metadata and render them only in the relevant view; this preserves evidence provenance without changing graph traversal semantics.
+
+- Preserve Path viewport scale and existing node positions on selections and expansions, fitting only explicitly or on mode/target changes; this prevents evidence exploration from sacrificing readability.
+- Clear expansion state on mode changes and keep ranked routes collapsible; this prevents stale branches and protects canvas space.
