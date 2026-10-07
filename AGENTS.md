@@ -20,10 +20,12 @@
 - Append imported edges without reordering the seed, preserve prior evidence on in-place upgrades, and retain URL accessibility checks separately from reported confidence; this keeps edge IDs stable and accessibility distinct from claim verification.
 - Gate every Augusto-rooted traversal through the four explicit ego-gateway edges; affiliations remain factual evidence but never imply first-degree social proximity.
 - Keep both Path destinations in the graph and permanent destination controls, and distinguish relevance ghosts from evidence weakness; exploration must not hide goals or promote unsupported claims.
-- Render collapsed Lineage evidence as bounded context previews separate from visible hop counts, with zoom-gated labels; this reveals layers without expanding traversal or implying new relationships.
+- Render Lineage from explicit cumulative node expansion with bounded context previews, legal-edge BFS bands and chair-prioritized placement; this keeps hop depth honest while enabling multi-branch exploration.
 - Intercept horizontal-dominant wheel gestures only for canvas panning and leave vertical zoom and pinch to Cytoscape; this prevents sideways trackpad motion from changing scale.
 - Express the interface through the tokenized Trail cartography system with map details confined to presentation; this keeps graph meaning and evidence semantics independent from visual styling.
 - Store major distinctions as optional sourced node metadata and render them only in the relevant view; this preserves evidence provenance without changing graph traversal semantics.
 
-- Preserve Path viewport scale and existing node positions on selections and expansions, fitting only explicitly or on mode/target changes; this prevents evidence exploration from sacrificing readability.
+- Preserve Path viewport scale and existing node positions on selections, target picks and expansions, fitting active routes only explicitly or on mode changes; this prevents evidence exploration from sacrificing readability.
 - Clear expansion state on mode changes and keep ranked routes collapsible; this prevents stale branches and protects canvas space.
+- Dock the itinerary and evidence record outside a dedicated canvas region, with rendered-coordinate accessible hit targets; this protects graph space and reliable selection.
+- Bound cross-branch discovery to recorded legal links into tagged packets, excluding ego and the Capra gateway; this avoids presenting a shared origin as an advisor connection.

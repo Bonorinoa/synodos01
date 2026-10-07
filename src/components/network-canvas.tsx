@@ -82,7 +82,7 @@ export function NetworkCanvas(props:Props) {
     const nodes=cy.nodes().sort((a,b)=>Number(b.id()===current.current.selected||b.data('target')||b.id()==='augusto')-Number(a.id()===current.current.selected||a.data('target')||a.id()==='augusto')||Number(a.hasClass('ghost'))-Number(b.hasClass('ghost')));
     nodes.forEach(node=>{
       const ghost=node.hasClass('ghost')||node.hasClass('lineage-context');
-      const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected;
+      const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected||node.hasClass('direct-contact');
       const point=node.renderedPosition(),width=ghost?80:compact?92:130;
       const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+5,w:width,h:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
@@ -93,7 +93,8 @@ export function NetworkCanvas(props:Props) {
        node.style('text-opacity',hide?0:ghost?.25:1);
       node.style('font-size',`${(ghost?11:12)/zoom}px`);
       node.style('text-max-width',`${width/zoom}px`);
-      node.style('text-margin-y',`${5/zoom}px`);
+      const stagger=compact&&node.hasClass('direct-contact')?(['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*26:0;
+      node.style('text-margin-y',`${(5+stagger)/zoom}px`);
     });
   };
   const updateHitTargets = () => {
