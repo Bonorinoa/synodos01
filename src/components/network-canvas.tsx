@@ -82,7 +82,7 @@ export function NetworkCanvas(props:Props) {
     const nodes=cy.nodes().sort((a,b)=>Number(b.id()===current.current.selected||b.data('target')||b.id()==='augusto')-Number(a.id()===current.current.selected||a.data('target')||a.id()==='augusto')||Number(a.hasClass('ghost'))-Number(b.hasClass('ghost')));
     nodes.forEach(node=>{
       const ghost=node.hasClass('ghost')||node.hasClass('lineage-context');
-      const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected||node.hasClass('direct-contact');
+      const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected||(current.current.mode==='lineage'&&node.hasClass('direct-contact'));
       const point=node.renderedPosition(),width=ghost?80:compact?92:130;
       const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+5,w:width,h:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
