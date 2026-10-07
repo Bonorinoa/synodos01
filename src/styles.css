@@ -220,6 +220,7 @@
 .evidence-legend span { display:flex; gap:7px; align-items:center; }
 .evidence-legend i { width:20px; border-top:2px solid var(--primary); opacity:.6; }
 .evidence-legend .weak-line { border-top:1px dashed var(--muted-foreground); }
+.evidence-legend .ghost-line { border-top:1px solid var(--canvas-edge); opacity:.25; }
 .canvas-tools { position:absolute; right:30px; bottom:26px; display:flex; gap:2px; padding:5px; border-radius:8px; z-index:10; align-items:center; }
 .canvas-tools .divider { height:20px; width:1px; background:var(--border); margin:0 5px; }
 .zoom-value { min-width:44px; font-size:10px; color:var(--muted-foreground); text-align:center; font-variant-numeric:tabular-nums; }
