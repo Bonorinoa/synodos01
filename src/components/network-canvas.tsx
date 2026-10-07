@@ -3,7 +3,7 @@ import type { Core, StylesheetCSS, ElementDefinition } from 'cytoscape';
 import { graph, legalEdges, lineageLayout, trajectoryLayout, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
 
 export type CanvasAPI = { fit: () => void; zoom: (delta:number) => void; focus: (id:string) => void; home: () => void };
-type Props = { trajectory:ReturnType<typeof trajectoryLayout>; trajectoryKey:string; mode:Mode; coreOnly:boolean; root:string; collapsed:Set<string>; highlighted:string[]; selected:string|null; onSelect:(id:string|null)=>void; onZoom:(zoom:number)=>void; apiRef:React.RefObject<CanvasAPI|null> };
+type Props = { trajectory:ReturnType<typeof trajectoryLayout>; trajectoryKey:string; mode:Mode; coreOnly:boolean; root:string; collapsed:Set<string>; highlighted:string[]; selected:string|null; onSelect:(id:string|null)=>void; onExpand:(id:string)=>void; onZoom:(zoom:number)=>void; apiRef:React.RefObject<CanvasAPI|null> };
 
 // Cytoscape's canvas parser needs sRGB values; colors remain sourced from semantic CSS tokens.
 function canvasColor(token:string) {
@@ -40,6 +40,10 @@ function styles():StylesheetCSS[] {
     { selector:'edge.ego-gateway',css:{width:2.8,'line-color':color('--primary'),opacity:.9} },
     { selector:'node.focused',css:{'border-color':color('--primary'),'border-width':7,'border-opacity':.8,'text-opacity':1,opacity:1} },
     { selector:'edge.focused',css:{'line-color':color('--primary'),opacity:1} },
+    { selector:'node.ghost',css:{opacity:.26,'text-opacity':.65,'border-opacity':.08} },
+    { selector:'edge.ghost',css:{opacity:.12} },
+    { selector:'node.target',css:{opacity:1,'text-opacity':1} },
+    { selector:'edge.ego-gateway.unverified',css:{width:.8,'line-style':'dotted',opacity:.4} },
     { selector:'edge.low-confidence',css:{width:1,'line-style':'dashed',opacity:.4} },
   ];
 }
@@ -59,8 +63,8 @@ export function NetworkCanvas(props:Props) {
     const box={x1,y1,w:x2-x1,h:y2-y1};
     const width=cy.width(),height=cy.height();
     const right=current.current.selected&&width>640?390:65;
-    const top=width<640?270:260;
-    const availableHeight=Math.max(130,height-top-(width<640?300:280));
+    const top=width<640?310:280;
+    const availableHeight=Math.max(130,height-top-(width<640?190:current.current.highlighted.length?290:135));
     const zoom=Math.max(.15,Math.min(1.1,(width-right-80)/Math.max(box.w,1),availableHeight/Math.max(box.h,1)));
     cy.zoom(zoom);cy.pan({x:50+(width-right-50)/2-(box.x1+box.w/2)*zoom,y:top+availableHeight/2-(box.y1+box.h/2)*zoom});
   };
@@ -95,7 +99,7 @@ export function NetworkCanvas(props:Props) {
     const ids=new Set(visibleNodes.map(n=>n.id));
     const visibleEdges=(mode==='lineage'?lineage.edges:current.current.trajectory.edges).filter(e=>ids.has(e.source)&&ids.has(e.target));
     const collapsedCount=(id:string)=>{let count=0;for(const descendant of lineage.depth.keys()){let ancestor=lineage.parent.get(descendant);while(ancestor){if(ancestor===id){count++;break;}ancestor=lineage.parent.get(ancestor);}}return count;};
-    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:(n.id==='augusto'?'Augusto':n.label)+(mode==='lineage'&&collapsed.has(n.id)?`\n+${collapsedCount(n.id)} collapsed`:'')},position:positions.get(n.id) ?? {x:0,y:0},classes:[n.candidate?'candidate':'',n.target?'target':'',n.id!=='augusto'&&(mode==='lineage'?lineage.depth.get(n.id)===1:current.current.trajectory.depths.get(n.id)===1)?'direct-contact':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',e.evidence.confidence==='low'?'low-confidence':'',e.evidence.ego_gateway?'ego-gateway':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',(e.evidence.basis==='committee'||e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee'))?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':''].join(' ')}))];
+    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:(n.id==='augusto'?'Augusto':n.label)+(mode==='lineage'&&collapsed.has(n.id)?`\n+${collapsedCount(n.id)} collapsed`:'')},position:positions.get(n.id) ?? {x:0,y:0},classes:[mode==='path'&&current.current.trajectory.ghostNodes.has(n.id)?'ghost':'',n.candidate?'candidate':'',n.target?'target':'',n.id!=='augusto'&&(mode==='lineage'?lineage.depth.get(n.id)===1:current.current.trajectory.depths.get(n.id)===1)?'direct-contact':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[mode==='path'&&current.current.trajectory.ghostEdges.has(e.id)?'ghost':'',weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',e.evidence.confidence==='low'?'low-confidence':'',e.evidence.ego_gateway?'ego-gateway':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',(e.evidence.basis==='committee'||e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee'))?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':''].join(' ')}))];
     const previous={zoom:cy.zoom(),pan:cy.pan()};
     const existing=new Map(cy.nodes().map(node=>[node.id(),node.position()] as const));
     const wanted=new Set(elements.map(element=>element.data.id));
@@ -120,13 +124,13 @@ export function NetworkCanvas(props:Props) {
       const initialZoom=()=>cy.width()<640?.43:Math.min(.83,Math.max(.48,(cy.height()-200)/1100));
       if(current.current.mode==='path')fitView();else {cy.zoom(initialZoom());cy.pan({x:cy.width()*.54,y:cy.height()*.54});}
       current.current.onZoom(cy.zoom());
-      cy.on('tap','node, edge',event=>current.current.onSelect(event.target.id()));
+      cy.on('tap','node, edge',event=>{const id=event.target.id();if(current.current.mode==='path'&&event.target.isNode()&&!event.target.data('target'))current.current.onExpand(id);else current.current.onSelect(id);});
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
       cy.on('zoom',()=>current.current.onZoom(cy.zoom()));
       cy.on('pan zoom position resize',updateHalo);
       cy.on('dragfree','node',event=>{if(current.current.mode==='path')current.current.trajectory.positions.set(event.target.id(),event.target.position());});
-      current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:id=>{const n=cy.getElementById(id);if(n.length)cy.pan({x:cy.width()*.53-n.position('x')*cy.zoom(),y:cy.height()*.52-n.position('y')*cy.zoom()});},home:()=>{if(current.current.mode==='path'){fitView();return;}cy.zoom(initialZoom());const n=cy.getElementById(current.current.mode==='lineage'?current.current.root:'augusto');if(n.length)cy.pan({x:cy.width()*.54-n.position('x')*cy.zoom(),y:cy.height()*(cy.width()<640?.59:.54)-n.position('y')*cy.zoom()});}};
-      observer=new ResizeObserver(()=>cy.resize());observer.observe(container.current);
+      current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:id=>{if(current.current.mode==='path'){fitView();return;}const n=cy.getElementById(id);if(n.length)cy.pan({x:cy.width()*.53-n.position('x')*cy.zoom(),y:cy.height()*.52-n.position('y')*cy.zoom()});},home:()=>{if(current.current.mode==='path'){fitView();return;}cy.zoom(initialZoom());const n=cy.getElementById(current.current.mode==='lineage'?current.current.root:'augusto');if(n.length)cy.pan({x:cy.width()*.54-n.position('x')*cy.zoom(),y:cy.height()*(cy.width()<640?.59:.54)-n.position('y')*cy.zoom()});}};
+      observer=new ResizeObserver(()=>{cy.resize();if(current.current.mode==='path')fitView();});observer.observe(container.current);
     });
     return()=>{cancelled=true;observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
   },[]);
@@ -136,6 +140,7 @@ export function NetworkCanvas(props:Props) {
     cy.elements().removeClass('dim highlight focused');
     if(props.highlighted.length){cy.elements().addClass('dim');for(const id of props.highlighted){const edge=cy.getElementById(id);edge.removeClass('dim').addClass('highlight');edge.connectedNodes().removeClass('dim').addClass('highlight');}}
     if(props.selected){const selected=cy.getElementById(props.selected);selected.removeClass('dim').addClass('focused');if(selected.isNode()){selected.connectedEdges().removeClass('dim');selected.neighborhood('node').removeClass('dim');}else cy.edges().filter(e=>e.id()===props.selected).connectedNodes().removeClass('dim').addClass('highlight');}
+    cy.nodes('.target').removeClass('dim');
     updateHalo();
   },[props.highlighted,props.selected,props.mode,props.coreOnly,props.root,props.collapsed,props.trajectory]);
   return <><div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Horizontal Augusto-to-target trajectory' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? props.trajectory.positions.size : lineageLayout(props.root,props.coreOnly,props.collapsed).positions.size} nodes.`}/><div ref={halo} className="selection-halo" aria-hidden="true" hidden/></>;

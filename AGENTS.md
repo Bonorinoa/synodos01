@@ -11,7 +11,7 @@
 
 ## Application architecture
 - Keep the supplied graph in validated client-side JSON with stable edge IDs derived from original order; this preserves claims and parallel relationships without introducing a backend.
-- Use Cytoscape for the freeform canvas, deterministic horizontal ranked-path unions for Path, and legal-edge BFS levels for Lineage; mode-specific graph logic stays independent of presentation and left-to-right progress does not establish relationship direction.
+- Use Cytoscape for the freeform canvas, cumulative Path expansion with hop-ranked kind clusters and a non-recursive ghost ring, and legal-edge BFS levels for Lineage; mode-specific graph logic stays independent of presentation and left-to-right progress does not establish relationship direction.
 - Treat all graph links as undirected traversal unless a claim explicitly establishes direction; root-relative lineage levels are relationship hops, not generations or advisor claims.
 - Keep all canvas colors and glass styling in global semantic tokens; Cytoscape reads these tokens at runtime to match HTML controls.
 - Anchor the selection halo to Cytoscape rendered node coordinates on pan, zoom, position, and resize events; this keeps presentation-only motion aligned without modifying graph data.
@@ -19,3 +19,4 @@
 - Store committee as a distinct lineage-legal basis and PhD institution as a Path-only factual basis; this preserves chair/committee distinctions without counting universities as lineage hops.
 - Append imported edges without reordering the seed, preserve prior evidence on in-place upgrades, and retain URL accessibility checks separately from reported confidence; this keeps edge IDs stable and accessibility distinct from claim verification.
 - Gate every Augusto-rooted traversal through the four explicit ego-gateway edges; affiliations remain factual evidence but never imply first-degree social proximity.
+- Keep both Path destinations in the graph and permanent destination controls, and distinguish relevance ghosts from evidence weakness; exploration must not hide goals or promote unsupported claims.
