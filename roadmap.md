@@ -14,3 +14,5 @@
 - [x] Verify expansion, branch switching, target routes, evidence, and unchanged Lineage.
 - [x] Make Lineage a quiet zoomable tree with smaller labels and subtle collapsed-layer context.
 - [x] Verify horizontal scrolling pans without zooming and vertical scrolling retains zoom.
+- [x] Apply the Pixel Observatory visual system to the canvas, controls, and evidence inspector.
+- [x] Verify the redesigned Path, Lineage, inspector, and responsive layouts.

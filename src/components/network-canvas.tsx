@@ -17,13 +17,13 @@ function canvasColor(token:string) {
 function styles():StylesheetCSS[] {
   const color = canvasColor;
   return [
-    { selector:'node',css:{ 'background-color':color('--person'),'background-opacity':.9,width:22,height:22,label:'data(displayLabel)',color:color('--foreground'),'font-family':'DM Sans','font-size':11,'text-valign':'bottom','text-margin-y':10,'text-outline-color':color('--background'),'text-outline-width':3,'border-width':5,'border-color':color('--person'),'border-opacity':.12,'text-wrap':'wrap','text-max-width':'145px' } },
-    { selector:'node[kind = "lab"]',css:{shape:'round-rectangle','background-color':color('--lab'),'border-color':color('--lab'),width:27,height:27} },
-    { selector:'node[kind = "university"]',css:{shape:'diamond','background-color':color('--university'),'border-color':color('--university'),width:29,height:29} },
-    { selector:'node[kind = "institution"]',css:{shape:'hexagon','background-color':color('--institution'),'border-color':color('--institution'),width:29,height:29} },
+    { selector:'node',css:{ shape:'rectangle','background-color':color('--person'),'background-opacity':.9,width:20,height:20,label:'data(displayLabel)',color:color('--foreground'),'font-family':'Rubik','font-size':10,'text-valign':'bottom','text-margin-y':9,'text-outline-color':color('--background'),'text-outline-width':3,'border-width':3,'border-color':color('--person'),'border-opacity':.25,'text-wrap':'wrap','text-max-width':'145px' } },
+    { selector:'node[kind = "lab"]',css:{shape:'round-rectangle','background-color':color('--lab'),'border-color':color('--lab'),width:24,height:24} },
+    { selector:'node[kind = "university"]',css:{shape:'diamond','background-color':color('--university'),'border-color':color('--university'),width:25,height:25} },
+    { selector:'node[kind = "institution"]',css:{shape:'hexagon','background-color':color('--institution'),'border-color':color('--institution'),width:25,height:25} },
     { selector:'node.candidate',css:{'background-opacity':.48,'border-style':'dashed','border-width':1.5,'border-opacity':.55,'text-opacity':.55,width:18,height:18,'font-size':10} },
-    { selector:'node.target',css:{'background-color':color('--target'),'border-color':color('--target'),color:color('--target'),'border-width':8,'border-opacity':.1,width:38,height:38,'font-size':12} },
-    { selector:'#augusto',css:{width:64,height:64,'background-color':color('--primary'),'border-color':color('--primary'),'border-width':14,'border-opacity':.08,'font-size':14,'font-weight':600,'text-margin-y':17} },
+    { selector:'node.target',css:{shape:'diamond','background-color':color('--target'),'border-color':color('--target'),color:color('--target'),'border-width':5,'border-opacity':.24,width:34,height:34,'font-size':11} },
+    { selector:'#augusto',css:{shape:'rectangle',width:50,height:50,'background-color':color('--focus'),'border-color':color('--primary'),'border-width':6,'border-opacity':.5,'font-size':12,'font-weight':600,'text-margin-y':15} },
     { selector:'edge',css:{width:'data(weight)','line-color':color('--canvas-edge'),opacity:.45,'curve-style':'bezier','control-point-step-size':35,'overlay-padding':7} },
     { selector:'edge.weak',css:{width:1,'line-style':'dashed','line-color':color('--canvas-weak'),opacity:.36} },
     { selector:'edge.unverified',css:{width:.8,'line-style':'dotted',opacity:.24,label:'unverified','font-size':8,color:color('--muted-foreground'),'text-rotation':'autorotate','text-background-color':color('--background'),'text-background-opacity':.9,'text-background-padding':'3px'} },
@@ -36,7 +36,7 @@ function styles():StylesheetCSS[] {
     { selector:'edge.highlight.weak',css:{width:1.1,'line-style':'dashed',opacity:.6} },
     { selector:'edge.highlight.unverified',css:{width:.8,'line-style':'dotted',opacity:.4} },
     { selector:'node.highlight',css:{opacity:1,'text-opacity':1,'border-opacity':.4} },
-    { selector:'node.direct-contact',css:{width:32,height:32,'border-width':9,'border-color':color('--primary'),'border-opacity':.22,'font-weight':600,'font-size':12} },
+    { selector:'node.direct-contact',css:{shape:'diamond',width:28,height:28,'border-width':4,'border-color':color('--primary'),'border-opacity':.4,'font-weight':600,'font-size':10} },
     { selector:'edge.ego-gateway',css:{width:2.8,'line-color':color('--primary'),opacity:.9} },
     { selector:'node.focused',css:{'border-color':color('--primary'),'border-width':7,'border-opacity':.8,'text-opacity':1,opacity:1} },
     { selector:'edge.focused',css:{'line-color':color('--primary'),opacity:1} },
@@ -45,9 +45,9 @@ function styles():StylesheetCSS[] {
     { selector:'node.target',css:{opacity:1,'text-opacity':1} },
     { selector:'edge.ego-gateway.unverified',css:{width:.8,'line-style':'dotted',opacity:.4} },
     { selector:'edge.low-confidence',css:{width:1,'line-style':'dashed',opacity:.4} },
-    { selector:'node.lineage-node',css:{width:16,height:16,'font-size':9,'font-weight':400,'text-max-width':'115px','text-margin-y':7,'border-width':3} },
-    { selector:'node.lineage-node.direct-contact',css:{width:23,height:23,'font-size':9,'font-weight':500,'border-width':5} },
-    { selector:'#augusto.lineage-node',css:{width:38,height:38,'font-size':11,'font-weight':600,'border-width':8} },
+    { selector:'node.lineage-node',css:{width:13,height:13,'font-size':8,'font-weight':400,'text-max-width':'110px','text-margin-y':6,'border-width':2} },
+    { selector:'node.lineage-node.direct-contact',css:{width:20,height:20,'font-size':8.5,'font-weight':500,'border-width':3} },
+    { selector:'#augusto.lineage-node',css:{width:32,height:32,'font-size':9.5,'font-weight':600,'border-width':5} },
     { selector:'node.lineage-context',css:{width:9,height:9,opacity:.2,'text-opacity':.45,'border-width':0,'font-size':6.5} },
     { selector:'edge.lineage-context',css:{opacity:.09,label:'',width:.6} },
   ];
@@ -59,6 +59,19 @@ export function NetworkCanvas(props:Props) {
   const cyRef = useRef<Core|null>(null);
   const current = useRef(props); current.current=props;
   const lastTrajectory = useRef('');
+  const updatePathLabels = () => {
+    const cy=cyRef.current;if(!cy||current.current.mode!=='path')return;
+    const zoom=cy.zoom(),compact=cy.width()<640;
+    cy.nodes().forEach(node=>{
+      const ghost=node.hasClass('ghost');
+      const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected;
+      const hide=(ghost&&zoom<.4)||(compact&&zoom<.3&&!landmark);
+      node.style('label',hide?'\u00a0':'data(displayLabel)');
+      node.style('font-size',`${(ghost?7:compact?8:node.data('target')?12:11)/zoom}px`);
+      node.style('text-max-width',`${(ghost?70:compact?70:135)/zoom}px`);
+      node.style('text-margin-y',`${5/zoom}px`);
+    });
+  };
   const fitView = () => {
     const cy=cyRef.current;if(!cy)return;
     if(current.current.mode==='lineage'){
@@ -83,7 +96,7 @@ export function NetworkCanvas(props:Props) {
     const availableHeight=Math.max(130,height-top-(width<640?190:current.current.highlighted.length?290:135));
     const zoom=Math.max(.04,Math.min(1.1,(width-right-80)/Math.max(box.w,1),availableHeight/Math.max(box.h,1)));
     cy.zoom(zoom);cy.pan({x:50+(width-right-50)/2-(box.x1+box.w/2)*zoom,y:top+availableHeight/2-(box.y1+box.h/2)*zoom});
-    cy.nodes().forEach(node=>{const ghost=node.hasClass('ghost');const compact=width<640&&zoom<.3;const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected;node.style('label',(ghost&&zoom<.4)||(compact&&!landmark)?'':'data(displayLabel)');node.style('font-size',`${(ghost?7:width<640?8:node.data('target')?12:11)/zoom}px`);node.style('text-max-width',`${(ghost?70:width<640?70:135)/zoom}px`);node.style('text-margin-y',`${5/zoom}px`);});
+    updatePathLabels();
   };
   const viewports = useRef<Partial<Record<Mode,{zoom:number;pan:{x:number;y:number}}>>>({});
   const lastMode = useRef<Mode>(props.mode);
@@ -144,7 +157,7 @@ export function NetworkCanvas(props:Props) {
       current.current.onZoom(cy.zoom());
       cy.on('tap','node, edge',event=>{const id=event.target.id();if(current.current.mode==='path'&&event.target.isNode()&&!event.target.data('target'))current.current.onExpand(id);else current.current.onSelect(id);});
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
-      cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'':'data(displayLabel)');});
+      cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'':'data(displayLabel)');else updatePathLabels();});
       const surface=container.current.parentElement;
       const horizontalWheel=(event:WheelEvent)=>{
         if(!(event.target instanceof Node)||!container.current?.contains(event.target))return;
@@ -169,6 +182,7 @@ export function NetworkCanvas(props:Props) {
     if(props.highlighted.length){cy.elements().addClass('dim');for(const id of props.highlighted){const edge=cy.getElementById(id);edge.removeClass('dim').addClass('highlight');edge.connectedNodes().removeClass('dim').addClass('highlight');}}
     if(props.selected){const selected=cy.getElementById(props.selected);selected.removeClass('dim').addClass('focused');if(selected.isNode()){selected.connectedEdges().removeClass('dim');selected.neighborhood('node').removeClass('dim');}else cy.edges().filter(e=>e.id()===props.selected).connectedNodes().removeClass('dim').addClass('highlight');}
     cy.nodes('.target').removeClass('dim');
+    updatePathLabels();
     updateHalo();
   },[props.highlighted,props.selected,props.mode,props.coreOnly,props.root,props.collapsed,props.trajectory]);
   return <><div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Horizontal Augusto-to-target trajectory' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? props.trajectory.positions.size : lineageLayout(props.root,props.coreOnly,props.collapsed).positions.size} nodes.`}/><div ref={halo} className="selection-halo" aria-hidden="true" hidden/></>;
