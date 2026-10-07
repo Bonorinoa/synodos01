@@ -67,7 +67,7 @@ export function NetworkCanvas(props:Props) {
     const availableHeight=Math.max(130,height-top-(width<640?190:current.current.highlighted.length?290:135));
     const zoom=Math.max(.04,Math.min(1.1,(width-right-80)/Math.max(box.w,1),availableHeight/Math.max(box.h,1)));
     cy.zoom(zoom);cy.pan({x:50+(width-right-50)/2-(box.x1+box.w/2)*zoom,y:top+availableHeight/2-(box.y1+box.h/2)*zoom});
-    cy.nodes().forEach(node=>{const ghost=node.hasClass('ghost');node.style('label',ghost&&zoom<.4?'':'data(displayLabel)');node.style('font-size',`${(ghost?7:width<640?8:node.data('target')?12:11)/zoom}px`);node.style('text-max-width',`${(ghost?70:width<640?70:135)/zoom}px`);node.style('text-margin-y',`${5/zoom}px`);});
+    cy.nodes().forEach(node=>{const ghost=node.hasClass('ghost');const compact=width<640&&zoom<.3;const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected;node.style('label',(ghost&&zoom<.4)||(compact&&!landmark)?'':'data(displayLabel)');node.style('font-size',`${(ghost?7:width<640?8:node.data('target')?12:11)/zoom}px`);node.style('text-max-width',`${(ghost?70:width<640?70:135)/zoom}px`);node.style('text-margin-y',`${5/zoom}px`);});
   };
   const viewports = useRef<Partial<Record<Mode,{zoom:number;pan:{x:number;y:number}}>>>({});
   const lastMode = useRef<Mode>(props.mode);
