@@ -59,6 +59,19 @@ export function NetworkCanvas(props:Props) {
   const cyRef = useRef<Core|null>(null);
   const current = useRef(props); current.current=props;
   const lastTrajectory = useRef('');
+  const updatePathLabels = () => {
+    const cy=cyRef.current;if(!cy||current.current.mode!=='path')return;
+    const zoom=cy.zoom(),compact=cy.width()<640;
+    cy.nodes().forEach(node=>{
+      const ghost=node.hasClass('ghost');
+      const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected;
+      const hide=(ghost&&zoom<.4)||(compact&&zoom<.3&&!landmark);
+      node.style('label',hide?'':'data(displayLabel)');
+      node.style('font-size',`${(ghost?7:compact?8:node.data('target')?12:11)/zoom}px`);
+      node.style('text-max-width',`${(ghost?70:compact?70:135)/zoom}px`);
+      node.style('text-margin-y',`${5/zoom}px`);
+    });
+  };
   const fitView = () => {
     const cy=cyRef.current;if(!cy)return;
     if(current.current.mode==='lineage'){
@@ -83,7 +96,7 @@ export function NetworkCanvas(props:Props) {
     const availableHeight=Math.max(130,height-top-(width<640?190:current.current.highlighted.length?290:135));
     const zoom=Math.max(.04,Math.min(1.1,(width-right-80)/Math.max(box.w,1),availableHeight/Math.max(box.h,1)));
     cy.zoom(zoom);cy.pan({x:50+(width-right-50)/2-(box.x1+box.w/2)*zoom,y:top+availableHeight/2-(box.y1+box.h/2)*zoom});
-    cy.nodes().forEach(node=>{const ghost=node.hasClass('ghost');const compact=width<640&&zoom<.3;const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected;node.style('label',(ghost&&zoom<.4)||(compact&&!landmark)?'':'data(displayLabel)');node.style('font-size',`${(ghost?7:width<640?8:node.data('target')?12:11)/zoom}px`);node.style('text-max-width',`${(ghost?70:width<640?70:135)/zoom}px`);node.style('text-margin-y',`${5/zoom}px`);});
+    updatePathLabels();
   };
   const viewports = useRef<Partial<Record<Mode,{zoom:number;pan:{x:number;y:number}}>>>({});
   const lastMode = useRef<Mode>(props.mode);
@@ -144,7 +157,7 @@ export function NetworkCanvas(props:Props) {
       current.current.onZoom(cy.zoom());
       cy.on('tap','node, edge',event=>{const id=event.target.id();if(current.current.mode==='path'&&event.target.isNode()&&!event.target.data('target'))current.current.onExpand(id);else current.current.onSelect(id);});
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
-      cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'':'data(displayLabel)');});
+      cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'':'data(displayLabel)');else updatePathLabels();});
       const surface=container.current.parentElement;
       const horizontalWheel=(event:WheelEvent)=>{
         if(!(event.target instanceof Node)||!container.current?.contains(event.target))return;
@@ -169,6 +182,7 @@ export function NetworkCanvas(props:Props) {
     if(props.highlighted.length){cy.elements().addClass('dim');for(const id of props.highlighted){const edge=cy.getElementById(id);edge.removeClass('dim').addClass('highlight');edge.connectedNodes().removeClass('dim').addClass('highlight');}}
     if(props.selected){const selected=cy.getElementById(props.selected);selected.removeClass('dim').addClass('focused');if(selected.isNode()){selected.connectedEdges().removeClass('dim');selected.neighborhood('node').removeClass('dim');}else cy.edges().filter(e=>e.id()===props.selected).connectedNodes().removeClass('dim').addClass('highlight');}
     cy.nodes('.target').removeClass('dim');
+    updatePathLabels();
     updateHalo();
   },[props.highlighted,props.selected,props.mode,props.coreOnly,props.root,props.collapsed,props.trajectory]);
   return <><div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Horizontal Augusto-to-target trajectory' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? props.trajectory.positions.size : lineageLayout(props.root,props.coreOnly,props.collapsed).positions.size} nodes.`}/><div ref={halo} className="selection-halo" aria-hidden="true" hidden/></>;
