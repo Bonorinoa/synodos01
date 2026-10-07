@@ -80,11 +80,12 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
     const total=widths.reduce((sum,width)=>sum+width,0)+Math.max(0,ordered.length-1)*65;
     let cursor=-total/2;
     let rows=1;
-    ordered.forEach(([,children],groupIndex)=>{
+    ordered.forEach(([ancestor,children],groupIndex)=>{
       const width=widths[groupIndex]??180;
       const columns=Math.min(4,children.length);
        children.sort((a,b)=>Number(legal.some(e=>e.evidence.basis==='phd_advisor'&&[e.source,e.target].includes(b)&&[e.source,e.target].includes(parent.get(b)??'')&&!e.evidence.claim.startsWith('Dissertation committee')))-Number(legal.some(e=>e.evidence.basis==='phd_advisor'&&[e.source,e.target].includes(a)&&[e.source,e.target].includes(parent.get(a)??'')&&!e.evidence.claim.startsWith('Dissertation committee'))));
-       children.forEach((id,index)=>positions.set(id,{x:cursor+width/2+(index%columns-(columns-1)/2)*180,y:layerY+Math.floor(index/columns)*100}));
+       const chair=children.find(id=>legal.some(e=>e.evidence.basis==='phd_advisor'&&[e.source,e.target].includes(id)&&[e.source,e.target].includes(ancestor)&&!e.evidence.claim.startsWith('Dissertation committee')));
+       children.forEach((id,index)=>{const peerIndex=chair?index-1:index;positions.set(id,{x:id===chair?(positions.get(ancestor)?.x??0):cursor+width/2+(Math.max(0,peerIndex)%columns-(columns-1)/2)*180,y:layerY+(id===chair?0:(chair?85:0)+Math.floor(Math.max(0,peerIndex)/columns)*100)});});
       rows=Math.max(rows,Math.ceil(children.length/columns));cursor+=width+65;
     });
      layerY+=240+(rows-1)*100;
