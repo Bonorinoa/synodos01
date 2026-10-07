@@ -246,3 +246,6 @@
 .canvas-tools{left:10px;right:auto;bottom:9px}.canvas-tools button[aria-label=Fullscreen]{display:none}.network-app[data-inspector=true] .canvas-tools{bottom:calc(55dvh + 8px);z-index:21}
 }
 @media(max-width:600px){.hop-topography{display:none}}
+
+.waypoint-number{position:absolute;z-index:4;pointer-events:none;display:grid;place-items:center;width:18px;height:18px;font:11px var(--font-sans);color:var(--primary);background:var(--card);border:1px solid var(--primary);border-radius:50%}
+@media(max-width:640px){.network-app[data-guide=true] .canvas-stage{right:235px;left:10px}.network-app[data-guide=true] .trail-guide{width:215px}.network-app[data-guide=true][data-inspector=true] .trail-guide{max-height:calc(45dvh - 112px)}.network-app[data-guide=true][data-inspector=true] .canvas-stage{right:235px}.canvas-tools{max-width:calc(100% - 20px)}}
