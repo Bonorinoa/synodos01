@@ -130,7 +130,8 @@ export function trajectoryLayout(paths: RankedPath[], targets: string[], coreOnl
   const targetX = rankX(Math.max(3, ...[...depths.values()].map(depth => depth + 1))) + 100;
   destinations.forEach((id,i) => positions.set(id, { x: targetX, y: (i - (destinations.length-1)/2) * 260 }));
   const relevant = selectedEdge ? new Set([selectedEdge.source, selectedEdge.target]) : selected && nodeById.has(selected) ? new Set([selected, ...neighbors(selected).flatMap(edge => [edge.source, edge.target])]) : activeNodes;
-  const ghostNodes = new Set([...positions.keys()].filter(id => !destinations.includes(id) && id !== 'augusto' && (!activeNodes.has(id) || !relevant.has(id))));
+  const pathNodes = new Set(paths.flatMap(path => path.nodes));
+  const ghostNodes = new Set([...positions.keys()].filter(id => !destinations.includes(id) && id !== 'augusto' && (!activeNodes.has(id) || (!relevant.has(id) && !pathNodes.has(id)))));
   const ghostEdges = new Set(displayed.filter(edge => !activeEdges.has(edge.id) || (selected && edge.id !== selected && edge.source !== selected && edge.target !== selected && !paths.some(path => path.edges.includes(edge.id)))).map(edge => edge.id));
   return { positions, depths, ghostNodes, ghostEdges, expanded: new Set(anchors), edges: displayed.filter(edge => positions.has(edge.source) && positions.has(edge.target)) };
 }
