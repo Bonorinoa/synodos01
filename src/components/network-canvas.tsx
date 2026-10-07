@@ -38,6 +38,7 @@ function styles():StylesheetCSS[] {
     { selector:'node.highlight',css:{opacity:1,'text-opacity':1,'border-opacity':.4} },
     { selector:'node.focused',css:{'border-color':color('--primary'),'border-width':7,'border-opacity':.8,'text-opacity':1,opacity:1} },
     { selector:'edge.focused',css:{'line-color':color('--primary'),opacity:1} },
+    { selector:'edge.low-confidence',css:{width:1,'line-style':'dashed',opacity:.4} },
   ];
 }
 
@@ -92,7 +93,7 @@ export function NetworkCanvas(props:Props) {
     const ids=new Set(visibleNodes.map(n=>n.id));
     const visibleEdges=(mode==='lineage'?lineage.edges:current.current.trajectory.edges).filter(e=>ids.has(e.source)&&ids.has(e.target));
     const collapsedCount=(id:string)=>{let count=0;for(const descendant of lineage.depth.keys()){let ancestor=lineage.parent.get(descendant);while(ancestor){if(ancestor===id){count++;break;}ancestor=lineage.parent.get(ancestor);}}return count;};
-    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:(n.id==='augusto'?'Augusto':n.label)+(mode==='lineage'&&collapsed.has(n.id)?`\n+${collapsedCount(n.id)} collapsed`:'')},position:positions.get(n.id) ?? {x:0,y:0},classes:[n.candidate?'candidate':'',n.target?'target':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee')?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':''].join(' ')}))];
+    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:(n.id==='augusto'?'Augusto':n.label)+(mode==='lineage'&&collapsed.has(n.id)?`\n+${collapsedCount(n.id)} collapsed`:'')},position:positions.get(n.id) ?? {x:0,y:0},classes:[n.candidate?'candidate':'',n.target?'target':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',e.evidence.confidence==='low'?'low-confidence':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',(e.evidence.basis==='committee'||e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee'))?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':''].join(' ')}))];
     const previous={zoom:cy.zoom(),pan:cy.pan()};
     const existing=new Map(cy.nodes().map(node=>[node.id(),node.position()] as const));
     const wanted=new Set(elements.map(element=>element.data.id));

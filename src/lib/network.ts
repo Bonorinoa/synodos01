@@ -2,9 +2,9 @@ import { z } from 'zod';
 import seed from '@/data/network.json';
 import { forceSimulation, forceLink, forceManyBody, forceCollide, forceX, forceY, type SimulationNodeDatum } from 'd3-force';
 
-export const bases = ['coauthorship', 'joint_project', 'shared_appointment', 'shared_institution', 'shared_venue', 'shared_field', 'phd_advisor', 'research_group'] as const;
+export const bases = ['coauthorship', 'joint_project', 'shared_appointment', 'shared_institution', 'shared_venue', 'shared_field', 'phd_advisor', 'committee', 'phd_institution', 'research_group'] as const;
 const nodeSchema = z.object({ id: z.string(), label: z.string(), kind: z.enum(['person', 'lab', 'institution', 'university']), blurb: z.string(), tags: z.array(z.string()), candidate: z.boolean().optional(), target: z.boolean().optional(), profiles: z.record(z.string()).optional(), evidence_packet: z.object({ urls: z.array(z.string().url()), notes: z.string() }) });
-const edgeSchema = z.object({ source: z.string(), target: z.string(), strength: z.number().int().min(1).max(10), evidence: z.object({ claim: z.string(), basis: z.enum(bases), urls: z.array(z.string().url()), institutional_hop: z.boolean().optional() }) });
+const edgeSchema = z.object({ source: z.string(), target: z.string(), strength: z.number().int().min(1).max(10), evidence: z.object({ claim: z.string(), basis: z.enum(bases), urls: z.array(z.string().url()), institutional_hop: z.boolean().optional(), confidence:z.enum(['high','medium','low']).optional(), reported_confidence:z.enum(['high','medium','low']).optional(), basis_detail:z.string().optional(), expansion_root:z.string().optional(), verification_notes:z.string().optional(), source_checks:z.array(z.object({url:z.string().url(),status:z.number().nullable(),accessible:z.boolean()})).optional() }).passthrough() });
 export type NetworkNode = z.infer<typeof nodeSchema>;
 export type NetworkEdge = z.infer<typeof edgeSchema> & { id: string };
 export type Mode = 'path' | 'lineage';
@@ -12,13 +12,13 @@ export const graph = z.object({ nodes: z.array(nodeSchema), edges: z.array(edgeS
 export const edges: NetworkEdge[] = graph.edges.map((edge, i) => ({ ...edge, id: `edge-${i}` }));
 export const nodeById = new Map(graph.nodes.map(node => [node.id, node]));
 for (const edge of edges) if (!nodeById.has(edge.source) || !nodeById.has(edge.target)) throw new Error('Graph contains an unknown endpoint');
-export const lineageBases = new Set(['phd_advisor', 'research_group', 'coauthorship', 'joint_project']);
+export const lineageBases = new Set(['phd_advisor', 'committee', 'research_group', 'coauthorship', 'joint_project']);
 export const weakBases = new Set(['shared_field', 'shared_venue', 'shared_institution']);
 export const basisLabel = (basis: string) => basis.replaceAll('_', ' ');
 export const legalEdges = (mode: Mode, coreOnly = false) => edges.filter(e => (mode === 'path' || lineageBases.has(e.evidence.basis)) && (!coreOnly || (!nodeById.get(e.source)?.candidate && !nodeById.get(e.target)?.candidate)));
 export function edgeCost(edge: NetworkEdge) {
   const basis = edge.evidence.basis;
-  return 1 + (10 - edge.strength) / 10 + (weakBases.has(basis) ? 3 : basis === 'shared_appointment' ? 1 : 0) + (edge.evidence.urls.length ? 0 : 6) + (edge.evidence.institutional_hop ? 1 : 0) + (nodeById.get(edge.source)?.candidate || nodeById.get(edge.target)?.candidate ? 0.75 : 0);
+  return 1 + (10 - edge.strength) / 10 + (weakBases.has(basis) ? 3 : basis === 'shared_appointment' ? 1 : 0) + (edge.evidence.urls.length ? 0 : 6) + (edge.evidence.confidence==='low'?3:edge.evidence.confidence==='medium'?1:0) + (edge.evidence.institutional_hop ? 1 : 0) + (nodeById.get(edge.source)?.candidate || nodeById.get(edge.target)?.candidate ? 0.75 : 0);
 }
 export type RankedPath = { nodes: string[]; edges: string[]; cost: number };
 export function rankedPaths(target: string, coreOnly = false): RankedPath[] {
