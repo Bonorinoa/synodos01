@@ -525,6 +525,9 @@
       ],
       "target": false,
       "candidate": true,
+      "profiles": {
+        "linkedin": "https://www.linkedin.com/in/demishassabis/"
+      },
       "evidence_packet": {
         "urls": [
           "https://deepmind.google/about/"
@@ -1492,6 +1495,142 @@
         ],
         "notes": "Supplied direct-neighbor lineage report; affiliations and roles are reported claims. Coauthored participatory platforms / serious games work; Kelley was a CPI PhD student under Johnston."
       }
+    },
+    {
+      "id": "university-rochester",
+      "label": "University of Rochester",
+      "kind": "university",
+      "blurb": "PhD institution for Raymond Duch (Political Science, 1982).",
+      "tags": [
+        "rochester",
+        "phd"
+      ],
+      "candidate": true,
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://www.sas.rochester.edu/psc/graduate/alumni.html"
+        ],
+        "notes": "Imported from the supplied Grok lineage research packet."
+      }
+    },
+    {
+      "id": "cess-nuffield",
+      "label": "Centre for Experimental Social Sciences (CESS)",
+      "kind": "lab",
+      "blurb": "Nuffield College experimental social science research network directed by Raymond Duch from 2008–2024.",
+      "tags": [
+        "cess",
+        "nuffield"
+      ],
+      "candidate": true,
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://cess.raymondduch.com/people/staff/raymond-duch/"
+        ],
+        "notes": "Imported from the supplied Grok lineage research packet."
+      }
+    },
+    {
+      "id": "randolph-stevenson",
+      "label": "Randolph T. Stevenson",
+      "kind": "person",
+      "blurb": "Rice political scientist and Raymond Duch’s highest-frequency coauthor.",
+      "tags": [
+        "coauthor",
+        "political-science"
+      ],
+      "candidate": true,
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://profiles.rice.edu/faculty/randolph-t-stevenson"
+        ],
+        "notes": "Imported from the supplied Grok lineage research packet."
+      }
+    },
+    {
+      "id": "james-l-gibson",
+      "label": "James L. Gibson",
+      "kind": "person",
+      "blurb": "Political scientist and frequent early Duch coauthor on political culture and tolerance.",
+      "tags": [
+        "coauthor",
+        "political-science"
+      ],
+      "candidate": true,
+      "target": false,
+      "evidence_packet": {
+        "urls": [],
+        "notes": "Imported from the supplied Grok lineage research packet."
+      }
+    },
+    {
+      "id": "harvey-palmer",
+      "label": "Harvey D. Palmer",
+      "kind": "person",
+      "blurb": "Political scientist and repeated Duch coauthor on voting and economic perceptions.",
+      "tags": [
+        "coauthor",
+        "political-science"
+      ],
+      "candidate": true,
+      "target": false,
+      "evidence_packet": {
+        "urls": [],
+        "notes": "Imported from the supplied Grok lineage research packet."
+      }
+    },
+    {
+      "id": "denise-laroze",
+      "label": "Denise Laroze",
+      "kind": "person",
+      "blurb": "Experimental political scientist and repeated Raymond Duch collaborator.",
+      "tags": [
+        "coauthor",
+        "cess"
+      ],
+      "candidate": true,
+      "target": false,
+      "evidence_packet": {
+        "urls": [
+          "https://cess.raymondduch.com/people/staff/raymond-duch/"
+        ],
+        "notes": "Imported from the supplied Grok lineage research packet."
+      }
+    },
+    {
+      "id": "thomas-robinson",
+      "label": "Thomas S. Robinson",
+      "kind": "person",
+      "blurb": "Experimental political scientist and repeated Raymond Duch coauthor.",
+      "tags": [
+        "coauthor",
+        "experiments"
+      ],
+      "candidate": true,
+      "target": false,
+      "evidence_packet": {
+        "urls": [],
+        "notes": "Imported from the supplied Grok lineage research packet."
+      }
+    },
+    {
+      "id": "david-armstrong",
+      "label": "David A. Armstrong",
+      "kind": "person",
+      "blurb": "Political methodologist and Raymond Duch coauthor on coalition-directed voting.",
+      "tags": [
+        "coauthor",
+        "methods"
+      ],
+      "candidate": true,
+      "target": false,
+      "evidence_packet": {
+        "urls": [],
+        "notes": "Imported from the supplied Grok lineage research packet."
+      }
     }
   ],
   "edges": [
@@ -1506,7 +1645,8 @@
           "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714",
           "https://talkingtomachines.org/partners/",
           "https://econllm-lab.com/team"
-        ]
+        ],
+        "ego_gateway": true
       }
     },
     {
@@ -1520,7 +1660,8 @@
           "https://talkingtomachines.org/partners/",
           "https://econllm-lab.com/team",
           "https://econllm-lab.com/"
-        ]
+        ],
+        "ego_gateway": false
       }
     },
     {
@@ -1573,7 +1714,8 @@
           "https://talkingtomachines.org/partners/",
           "https://scholar.google.com/citations?user=xdO0FqwAAAAJ",
           "https://econllm-lab.com/"
-        ]
+        ],
+        "ego_gateway": false
       }
     },
     {
@@ -1598,7 +1740,8 @@
         "basis": "joint_project",
         "urls": [
           "https://talkingtomachines.org/partners/"
-        ]
+        ],
+        "ego_gateway": false
       }
     },
     {
@@ -1711,7 +1854,8 @@
         "basis": "shared_institution",
         "urls": [
           "https://scholar.google.com/citations?user=xdO0FqwAAAAJ"
-        ]
+        ],
+        "ego_gateway": false
       }
     },
     {
@@ -1767,7 +1911,8 @@
             "https://www.marist.edu/computer-science-math/faculty/eitel-lauria",
             "https://scholar.google.com/citations?user=xdO0FqwAAAAJ"
           ]
-        }
+        },
+        "ego_gateway": true
       }
     },
     {
@@ -1780,7 +1925,8 @@
         "urls": [
           "https://talkingtomachines.org/partners/",
           "https://scholar.google.com/citations?user=xdO0FqwAAAAJ"
-        ]
+        ],
+        "ego_gateway": false
       }
     },
     {
@@ -1798,14 +1944,25 @@
     {
       "source": "augusto",
       "target": "erik-johnston",
-      "strength": 5,
+      "strength": 8,
       "evidence": {
-        "claim": "Shared ASU affiliation; shared complexity / computational social science field.",
-        "basis": "shared_institution",
-        "urls": [
-          "https://search.asu.edu/profile/561604",
-          "https://talkingtomachines.org/partners/"
-        ]
+        "claim": "Erik Johnston is a direct connection of Augusto Gonzalez-Bonorino (privately attested by Augusto).",
+        "basis": "joint_project",
+        "urls": [],
+        "ego_gateway": true,
+        "confidence": "high",
+        "reported_confidence": "high",
+        "verification_notes": "Private first-party attestation; no public source URL supplied.",
+        "attestation": "user",
+        "previous_evidence": {
+          "claim": "Shared ASU affiliation; shared complexity / computational social science field.",
+          "basis": "shared_institution",
+          "urls": [
+            "https://search.asu.edu/profile/561604",
+            "https://talkingtomachines.org/partners/"
+          ],
+          "ego_gateway": true
+        }
       }
     },
     {
@@ -1817,7 +1974,8 @@
         "basis": "coauthorship",
         "urls": [
           "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714"
-        ]
+        ],
+        "ego_gateway": false
       }
     },
     {
@@ -3738,6 +3896,261 @@
           }
         ],
         "verification_notes": "Source URLs accessible during import; claims are supplied by the report, not independently audited."
+      }
+    },
+    {
+      "source": "augusto",
+      "target": "raymond-duch",
+      "strength": 8,
+      "evidence": {
+        "claim": "Raymond Duch is a direct connection of Augusto Gonzalez-Bonorino (privately attested by Augusto).",
+        "basis": "joint_project",
+        "urls": [],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "attestation": "user",
+        "ego_gateway": true,
+        "verification_notes": "Private first-party attestation; no public source URL supplied."
+      }
+    },
+    {
+      "source": "university-rochester",
+      "target": "raymond-duch",
+      "strength": 9,
+      "evidence": {
+        "claim": "Raymond Duch earned a Ph.D. in Political Science at the University of Rochester in 1982.",
+        "basis": "phd_institution",
+        "urls": [
+          "https://raymondduch.com/cv/RDuch-CV_full.pdf",
+          "https://www.sas.rochester.edu/psc/graduate/alumni.html"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "basis_detail": "Supplied Grok research packet.",
+        "expansion_root": "raymond-duch",
+        "verification_notes": "Source URL accessibility checked.",
+        "source_checks": [
+          {
+            "url": "https://raymondduch.com/cv/RDuch-CV_full.pdf",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://www.sas.rochester.edu/psc/graduate/alumni.html",
+            "status": 200,
+            "accessible": true
+          }
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "cess-nuffield",
+      "strength": 9,
+      "evidence": {
+        "claim": "Duch directed Nuffield CESS from 2008–2024 and remains listed with CESS/Nuffield.",
+        "basis": "research_group",
+        "urls": [
+          "https://raymondduch.com/cv/RDuch-CV_full.pdf",
+          "https://cess.raymondduch.com/people/staff/raymond-duch/"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "basis_detail": "Supplied Grok research packet.",
+        "expansion_root": "raymond-duch",
+        "verification_notes": "Source URL accessibility checked.",
+        "source_checks": [
+          {
+            "url": "https://raymondduch.com/cv/RDuch-CV_full.pdf",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://cess.raymondduch.com/people/staff/raymond-duch/",
+            "status": 200,
+            "accessible": true
+          }
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "randolph-stevenson",
+      "strength": 10,
+      "evidence": {
+        "claim": "Highest-frequency coauthor; The Economic Vote and many economic-voting articles.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://raymondduch.com/cv/RDuch-CV_full.pdf",
+          "https://profiles.rice.edu/faculty/randolph-t-stevenson",
+          "https://doi.org/10.1017/S0022381609990508"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "basis_detail": "Supplied Grok research packet.",
+        "expansion_root": "raymond-duch",
+        "verification_notes": "Some sources blocked automated access; URLs retained.",
+        "source_checks": [
+          {
+            "url": "https://raymondduch.com/cv/RDuch-CV_full.pdf",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://profiles.rice.edu/faculty/randolph-t-stevenson",
+            "status": 406,
+            "accessible": false
+          },
+          {
+            "url": "https://doi.org/10.1017/S0022381609990508",
+            "status": 403,
+            "accessible": false
+          }
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "james-l-gibson",
+      "strength": 8,
+      "evidence": {
+        "claim": "Frequent early coauthor on Soviet political culture and tolerance.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://raymondduch.com/cv/RDuch-CV_full.pdf"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "basis_detail": "Supplied Grok research packet.",
+        "expansion_root": "raymond-duch",
+        "verification_notes": "Source URL accessibility checked.",
+        "source_checks": [
+          {
+            "url": "https://raymondduch.com/cv/RDuch-CV_full.pdf",
+            "status": 200,
+            "accessible": true
+          }
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "harvey-palmer",
+      "strength": 8,
+      "evidence": {
+        "claim": "Repeated coauthor on post-communist voting and economic perceptions.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://raymondduch.com/cv/RDuch-CV_full.pdf",
+          "https://doi.org/10.1017/S0003055404001261"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "basis_detail": "Supplied Grok research packet.",
+        "expansion_root": "raymond-duch",
+        "verification_notes": "Source URL accessibility checked.",
+        "source_checks": [
+          {
+            "url": "https://raymondduch.com/cv/RDuch-CV_full.pdf",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1017/S0003055404001261",
+            "status": 200,
+            "accessible": true
+          }
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "denise-laroze",
+      "strength": 8,
+      "evidence": {
+        "claim": "Repeated experimental coauthor across Political Analysis, SSQ, and Applied Economics.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://doi.org/10.1017/pan.2019.34",
+          "https://cess.raymondduch.com/people/staff/raymond-duch/"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "basis_detail": "Supplied Grok research packet.",
+        "expansion_root": "raymond-duch",
+        "verification_notes": "Source URL accessibility checked.",
+        "source_checks": [
+          {
+            "url": "https://doi.org/10.1017/pan.2019.34",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://cess.raymondduch.com/people/staff/raymond-duch/",
+            "status": 200,
+            "accessible": true
+          }
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "thomas-robinson",
+      "strength": 8,
+      "evidence": {
+        "claim": "Repeated coauthor on experimental methods and COVID preference surveys.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://doi.org/10.1017/pan.2019.34",
+          "https://doi.org/10.1073/pnas.2026382118"
+        ],
+        "confidence": "medium",
+        "reported_confidence": "high",
+        "basis_detail": "Supplied Grok research packet.",
+        "expansion_root": "raymond-duch",
+        "verification_notes": "Some sources blocked automated access; URLs retained.",
+        "source_checks": [
+          {
+            "url": "https://doi.org/10.1017/pan.2019.34",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1073/pnas.2026382118",
+            "status": 403,
+            "accessible": false
+          }
+        ]
+      }
+    },
+    {
+      "source": "raymond-duch",
+      "target": "david-armstrong",
+      "strength": 7,
+      "evidence": {
+        "claim": "Coauthored work on coalition-directed voting and coalition anticipation.",
+        "basis": "coauthorship",
+        "urls": [
+          "https://doi.org/10.1017/S0003055410000420",
+          "https://doi.org/10.1016/j.electstud.2010.03.007"
+        ],
+        "confidence": "high",
+        "reported_confidence": "high",
+        "basis_detail": "Supplied Grok research packet.",
+        "expansion_root": "raymond-duch",
+        "verification_notes": "Source URL accessibility checked.",
+        "source_checks": [
+          {
+            "url": "https://doi.org/10.1017/S0003055410000420",
+            "status": 200,
+            "accessible": true
+          },
+          {
+            "url": "https://doi.org/10.1016/j.electstud.2010.03.007",
+            "status": 200,
+            "accessible": true
+          }
+        ]
       }
     }
   ]
