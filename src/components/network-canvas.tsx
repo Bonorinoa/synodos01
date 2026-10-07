@@ -98,7 +98,7 @@ export function NetworkCanvas(props:Props) {
   };
   const updateHitTargets = () => {
     const cy=cyRef.current;if(!cy)return;
-    setHitNodes(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')).toArray().map(n=>({id:n.id(),label:n.data('label'),...n.renderedPosition()})).filter(n=>n.x>0&&n.x<cy.width()&&n.y>0&&n.y<cy.height()));
+    setHitNodes(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')).toArray().flatMap(n=>n.isNode()?[{id:n.id(),label:n.data('label'),...n.renderedPosition()}]:[]).filter(n=>n.x>0&&n.x<cy.width()&&n.y>0&&n.y<cy.height()));
     if(current.current.mode==='lineage'){
       const layout=lineageLayout(current.current.root,current.current.coreOnly,current.current.collapsed,current.current.lineageExpanded);
       const levels=new Map<number,number>();for(const [id,point] of layout.positions){const depth=layout.depth.get(id)??0;levels.set(depth,Math.min(levels.get(depth)??Infinity,point.y));}
@@ -116,7 +116,7 @@ export function NetworkCanvas(props:Props) {
       const top=20;const bottom=35;
       const availableHeight=Math.max(150,height-top-bottom);
       const zoom=Math.max(.15,Math.min(1.15,(width-right-55)/Math.max(box.w+80,1),availableHeight/Math.max(box.h+160,1)));
-      cy.zoom(zoom);cy.pan({x:30+(width-right-30)/2-(box.x1+box.w/2)*zoom,y:top+availableHeight*.5-(box.y1+box.h/2)*zoom});
+      cy.zoom(zoom);cy.pan({x:30+(width-right-30)/2-(box.x1+box.w/2)*zoom,y:top+Math.min(availableHeight*.25,170)-box.y1*zoom});
       return;
     }
      const horizontalScale=cy.width()<640?.28:1;
@@ -214,7 +214,8 @@ export function NetworkCanvas(props:Props) {
           cy.stop();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)cy.pan(pan);else cy.animate({pan},{duration:300});
        };
        current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:focusNode,home:()=>focusNode(current.current.mode==='lineage'?current.current.root:'augusto')};
-      observer=new ResizeObserver(()=>{cy.resize();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
+      let previousSize={width:cy.width(),height:cy.height()};
+      observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};if((old.width<640)!==(next.width<640))fitView();else cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
     });
     return()=>{cancelled=true;removeWheel?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
   },[]);
