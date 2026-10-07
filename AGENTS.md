@@ -23,3 +23,4 @@
 - Render collapsed Lineage evidence as bounded context previews separate from visible hop counts, with zoom-gated labels; this reveals layers without expanding traversal or implying new relationships.
 - Intercept horizontal-dominant wheel gestures only for canvas panning and leave vertical zoom and pinch to Cytoscape; this prevents sideways trackpad motion from changing scale.
 - Express the interface through the tokenized Pixel Observatory system with pixel details confined to presentation; this keeps graph meaning and evidence semantics independent from visual styling.
+- Store major distinctions as optional sourced node metadata and render them only in the relevant view; this preserves evidence provenance without changing graph traversal semantics.
