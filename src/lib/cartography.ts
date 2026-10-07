@@ -19,8 +19,9 @@ export function hopContours(points:ElevationPoint[], padding=76) {
     if(!first||!last)return {depth,path:'',label:{x:0,y:0},members:[] as string[]};
     const start=midpoint(last,first);
     const path=`M ${start.x} ${start.y} `+outline.map((p,i)=>{const next=outline[(i+1)%outline.length]??first;const end=midpoint(p,next);return `Q ${p.x} ${p.y} ${end.x} ${end.y}`;}).join(' ')+' Z';
-    const top=outline.reduce((a,b)=>a.y<b.y?a:b,first);
-    return {depth,path,label:{x:top.x,y:top.y-6},members:members.map(p=>p.id)};
+    // Label the entry into this elevation, not the hull's farthest/highest vertex.
+    const entry=points.filter(p=>p.depth===depth).sort((a,b)=>a.y-b.y||a.x-b.x)[0]??first;
+    return {depth,path,label:{x:entry.x-padding*.5,y:entry.y-padding*.65},members:members.map(p=>p.id)};
   });
 }
 

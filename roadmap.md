@@ -26,3 +26,7 @@
 - [x] Add graph-derived closed hop contours and one active trail without changing evidence or traversal.
 - [x] Rebuild narrow-screen chrome, vertical Path steps, and draggable half-height records.
 - [x] Verify desktop and 500px Path/Lineage, viewport stability, and graph evidence invariants.
+- [ ] Make private lock markers non-interactive and verify all mobile gateway taps.
+- [ ] Anchor and bound contour labels after destination/layout changes.
+- [ ] Frame newly expanded Lineage children without fitting ghosts.
+- [ ] Show mobile route itineraries and hide zoom tools behind open records; verify desktop/390px/500px.
