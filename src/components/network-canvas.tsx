@@ -66,7 +66,7 @@ export function NetworkCanvas(props:Props) {
       const ghost=node.hasClass('ghost');
       const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected;
       const hide=(ghost&&zoom<.4)||(compact&&zoom<.3&&!landmark);
-      node.style('label',hide?'':'data(displayLabel)');
+      node.style('label',hide?'\u00a0':'data(displayLabel)');
       node.style('font-size',`${(ghost?7:compact?8:node.data('target')?12:11)/zoom}px`);
       node.style('text-max-width',`${(ghost?70:compact?70:135)/zoom}px`);
       node.style('text-margin-y',`${5/zoom}px`);
