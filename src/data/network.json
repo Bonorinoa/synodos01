@@ -307,9 +307,6 @@
       ],
       "target": false,
       "candidate": true,
-      "profiles": {
-        "linkedin": "https://www.linkedin.com/in/demishassabis/"
-      },
       "evidence_packet": {
         "urls": [
           "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714"
@@ -528,6 +525,9 @@
       ],
       "target": false,
       "candidate": true,
+      "profiles": {
+        "linkedin": "https://www.linkedin.com/in/demishassabis/"
+      },
       "evidence_packet": {
         "urls": [
           "https://deepmind.google/about/"
