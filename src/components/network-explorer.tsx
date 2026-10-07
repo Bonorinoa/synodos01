@@ -25,11 +25,11 @@ export function NetworkExplorer() {
   const paths=useMemo(()=>target&&mode==='path'?rankedPaths(target,coreOnly):[],[target,mode,coreOnly]);
   const overviewPaths=useMemo<RankedPath[]>(()=>egoGatewayEdges().filter(edge=>!coreOnly||!nodeById.get(edge.source==='augusto'?edge.target:edge.source)?.candidate).map(edge=>({nodes:['augusto',edge.source==='augusto'?edge.target:edge.source],edges:[edge.id],cost:0})),[coreOnly]);
   const visiblePaths=useMemo(()=>target?(activePath===null?paths:paths.slice(activePath,activePath+1)):overviewPaths,[target,activePath,paths,overviewPaths]);
-  const trajectory=useMemo(()=>trajectoryLayout(visiblePaths,target?[target]:[],coreOnly,selected),[visiblePaths,target,coreOnly,selected]);
+  const trajectory=useMemo(()=>trajectoryLayout(visiblePaths,target?[target]:[...egoGatewayIds],coreOnly,selected),[visiblePaths,target,coreOnly,selected]);
   const highlighted=useMemo(()=>activePath===null?paths.flatMap(p=>p.edges):(paths[activePath]?.edges??[]),[paths,activePath]);
   const lineage=useMemo(()=>lineageLayout(root,coreOnly,collapsed),[root,coreOnly,collapsed]);
   const matches=useMemo(()=>graph.nodes.filter(n=>`${n.label} ${n.tags.join(' ')}`.toLowerCase().includes(query.toLowerCase())).slice(0,15),[query]);
-  const changeMode=(next:Mode)=>{setMode(next);setSelected(null);setTarget(null);setActivePath(null);setCommandOpen(false);};
+  const changeMode=(next:Mode)=>{setMode(next);setSelected(null);setTarget(null);setActivePath(null);setCommandOpen(false);setRoot('augusto');setBreadcrumbs(['augusto']);setCollapsed(next==='lineage'?new Set(egoGatewayIds):new Set());};
   const focusRoot=(id:string)=>{setRoot(id);setCollapsed(new Set());setBreadcrumbs(previous=>previous.includes(id)?previous.slice(0,previous.indexOf(id)+1):[...previous,id]);setSelected(null);};
   const selectNode=(id:string)=>{if(coreOnly&&nodeById.get(id)?.candidate)setCoreOnly(false);if(mode==='lineage'&&!lineage.positions.has(id))focusRoot(id);setSelected(id);setCommandOpen(false);requestAnimationFrame(()=>apiRef.current?.focus(id));};
   const exportGraph=()=>{const blob=new Blob([JSON.stringify(graph,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='augusto-network.json';a.click();URL.revokeObjectURL(url);setExported(true);setTimeout(()=>setExported(false),2000);};

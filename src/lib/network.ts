@@ -32,7 +32,7 @@ export function rankedPaths(target: string, coreOnly = false): RankedPath[] {
   const results: RankedPath[] = [];
   const signatures = new Set<string>();
   let examined = 0;
-  while (queue.length && results.length < 3 && examined++ < 20000) {
+  while (queue.length && results.length < 24 && examined++ < 30000) {
     queue.sort((a,b) => a.cost - b.cost);
     const path = queue.shift();
     if (!path) break;
@@ -41,7 +41,9 @@ export function rankedPaths(target: string, coreOnly = false): RankedPath[] {
     if (path.edges.length >= 5) continue;
     for (const { next, edge } of adjacency.get(last) ?? []) if (!path.nodes.includes(next)) queue.push({ nodes: [...path.nodes,next], edges: [...path.edges,edge.id], cost: path.cost + edgeCost(edge) });
   }
-  return results;
+  const bestByGateway = new Map<string,RankedPath>();
+  for(const path of results){const gateway=path.nodes[1];if(gateway&&!bestByGateway.has(gateway))bestByGateway.set(gateway,path);}
+  return [...bestByGateway.values()].sort((a,b)=>a.cost-b.cost).slice(0,3);
 }
 export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<string>) {
   const allLegal = legalEdges('lineage', coreOnly);
