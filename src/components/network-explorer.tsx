@@ -49,7 +49,7 @@ export function NetworkExplorer() {
   const toggleFullscreen=()=>{if(document.fullscreenElement)void document.exitFullscreen();else void appRef.current?.requestFullscreen().catch(()=>{});};
   useEffect(()=>{const handler=(event:KeyboardEvent)=>{if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){event.preventDefault();setCommandOpen(o=>!o);}if(event.key==='Escape'){setCommandOpen(false);setSelected(null);}};window.addEventListener('keydown',handler);return()=>window.removeEventListener('keydown',handler);},[]);
   useEffect(()=>{if(commandOpen){setQuery('');setTimeout(()=>searchRef.current?.focus(),30);}},[commandOpen]);
-  useEffect(()=>{inspectorRef.current?.querySelector('.inspector')?.scrollTo({top:0});if(selected&&window.matchMedia('(max-width:640px)').matches){const timer=setTimeout(()=>apiRef.current?.focus(selected),100);return ()=>clearTimeout(timer);}},[selected]);
+  useEffect(()=>{inspectorRef.current?.querySelector('.inspector')?.scrollTo({top:0});if(selected&&window.matchMedia('(max-width:640px)').matches){const timer=setTimeout(()=>apiRef.current?.focus(selected),100);return ()=>clearTimeout(timer);}return undefined;},[selected]);
   const visibleNodeCount=mode==='path'?trajectory.positions.size:lineage.positions.size;
   const visibleEdgeCount=mode==='path'?trajectory.edges.length:lineage.edges.length;
   return <div className="network-app" data-mode={mode} data-details={detailsOpen} data-legend={legendOpen} data-inspector={!!selected} data-guide={mode==='path'&&routesOpen} ref={appRef}>

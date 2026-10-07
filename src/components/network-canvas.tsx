@@ -76,7 +76,7 @@ export function NetworkCanvas(props:Props) {
     if(cy&&p.routeNodes.length){const step=Math.max(140,(cy.width()-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2? -70:70)/cy.zoom()}));for(const id of ['google-deepmind','santa-fe-institute'])if(!p.routeNodes.includes(id))positions.set(id,{x:(p.routeNodes.length-1)*step,y:180/cy.zoom()});}
     return positions;
   };
-  const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;topoTransform.current?.setAttribute('transform',`translate(${cy.pan().x} ${cy.pan().y}) scale(${cy.zoom()})`);topoTransform.current?.querySelectorAll('text').forEach(text=>text.setAttribute('font-size',`${11/cy.zoom()}px`));};
+  const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;topoTransform.current?.setAttribute('transform',`translate(${cy.pan().x} ${cy.pan().y}) scale(${cy.zoom()})`);const labels:{x:number;y:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{text.setAttribute('font-size',`${11/cy.zoom()}px`);const x=Number(text.getAttribute('x'))*cy.zoom(),y=Number(text.getAttribute('y'))*cy.zoom();const hidden=labels.some(p=>Math.abs(p.x-x)<170&&Math.abs(p.y-y)<20);text.style.visibility=hidden?'hidden':'visible';if(!hidden)labels.push({x,y});});};
   const rebuildContours=()=>{
     const cy=cyRef.current;if(!cy)return;const p=current.current;
     const depths=p.mode==='lineage'?lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded).depth:p.trajectory.depths;
