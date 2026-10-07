@@ -108,7 +108,7 @@ export function NetworkCanvas(props:Props) {
     }
      const horizontalScale=cy.width()<640?.28:1;
      cy.nodes().forEach(node=>{const point=current.current.trajectory.positions.get(node.id());if(point)node.position({x:point.x*horizontalScale,y:point.y});});
-     const points=cy.nodes().filter(node=>!current.current.trajectory.ghostNodes.has(node.id())).map(node=>node.position());
+     const points=cy.nodes().filter(node=>!current.current.trajectory.ghostNodes.has(node.id())).toArray().flatMap(node=>node.isNode()?[node.position()]:[]);
     const x1=Math.min(...points.map(p=>p.x))-80,x2=Math.max(...points.map(p=>p.x))+80;
     const y1=Math.min(...points.map(p=>p.y))-65,y2=Math.max(...points.map(p=>p.y))+85;
     const box={x1,y1,w:x2-x1,h:y2-y1};
