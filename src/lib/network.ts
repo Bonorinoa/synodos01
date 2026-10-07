@@ -45,12 +45,13 @@ export function rankedPaths(target: string, coreOnly = false): RankedPath[] {
   for(const path of results){const gateway=path.nodes[1];if(gateway&&!bestByGateway.has(gateway))bestByGateway.set(gateway,path);}
   return [...bestByGateway.values()].sort((a,b)=>a.cost-b.cost).slice(0,3);
 }
-export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<string>) {
+export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<string>, expanded?: Set<string>) {
   const allLegal = legalEdges('lineage', coreOnly);
   // Augusto's lineage is deliberately bounded to his four confirmed gateways and
   // each gateway's own researched packet. It must not silently fan into later hops.
-  const legal = root==='augusto' ? allLegal.filter(edge=>{
+   const legal = root==='augusto' ? allLegal.filter(edge=>{
     if(isAugustoEdge(edge))return edge.evidence.ego_gateway===true;
+     if(expanded)return true;
     const expansion=edge.evidence.expansion_root;
     if(expansion)return egoGatewayIds.includes(expansion as typeof egoGatewayIds[number]);
     return egoGatewayIds.some(id=>edge.source===id||edge.target===id);
@@ -64,7 +65,7 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
     for (const edge of legal) { const next = edge.source === id ? edge.target : edge.target === id ? edge.source : undefined; if (next && !depth.has(next)) { depth.set(next, (depth.get(id) ?? 0) + 1); parent.set(next,id); queue.push(next); } }
   }
   const hidden = new Set<string>();
-  for (const id of depth.keys()) { let ancestor = parent.get(id); while (ancestor) { if (collapsed.has(ancestor)) { hidden.add(id); break; } ancestor = parent.get(ancestor); } }
+   for (const id of depth.keys()) { let ancestor = parent.get(id); while (ancestor) { if (collapsed.has(ancestor) || (expanded && ancestor!==root && !expanded.has(ancestor))) { hidden.add(id); break; } ancestor = parent.get(ancestor); } }
   const positions = new Map<string, { x:number; y:number }>();
   const levels = new Map<number,string[]>();
   for (const [id,level] of depth) if (!hidden.has(id)) levels.set(level,[...(levels.get(level) ?? []),id]);
@@ -75,24 +76,33 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
     const groups=new Map<string,string[]>();
     for(const id of ids){const ancestor=parent.get(id)??root;groups.set(ancestor,[...(groups.get(ancestor)??[]),id]);}
     const ordered=[...groups].sort(([a],[b])=>(positions.get(a)?.x??0)-(positions.get(b)?.x??0));
-    const widths=ordered.map(([,children])=>Math.max(180,Math.min(4,children.length)*130));
+     const widths=ordered.map(([,children])=>Math.max(230,Math.min(4,children.length)*180));
     const total=widths.reduce((sum,width)=>sum+width,0)+Math.max(0,ordered.length-1)*65;
     let cursor=-total/2;
     let rows=1;
     ordered.forEach(([,children],groupIndex)=>{
       const width=widths[groupIndex]??180;
       const columns=Math.min(4,children.length);
-      children.forEach((id,index)=>positions.set(id,{x:cursor+width/2+(index%columns-(columns-1)/2)*130,y:layerY+Math.floor(index/columns)*76}));
+       children.sort((a,b)=>Number(legal.some(e=>e.evidence.basis==='phd_advisor'&&[e.source,e.target].includes(b)&&[e.source,e.target].includes(parent.get(b)??'')&&!e.evidence.claim.startsWith('Dissertation committee')))-Number(legal.some(e=>e.evidence.basis==='phd_advisor'&&[e.source,e.target].includes(a)&&[e.source,e.target].includes(parent.get(a)??'')&&!e.evidence.claim.startsWith('Dissertation committee'))));
+       children.forEach((id,index)=>positions.set(id,{x:cursor+width/2+(index%columns-(columns-1)/2)*180,y:layerY+Math.floor(index/columns)*100}));
       rows=Math.max(rows,Math.ceil(children.length/columns));cursor+=width+65;
     });
-    layerY+=220+(rows-1)*76;
+     layerY+=240+(rows-1)*100;
   }
   // Hidden evidence remains a faint, bounded preview, not an extra traversal hop.
   const contextPositions=new Map<string,{x:number;y:number}>();
   const previews=new Map<string,string[]>();
   for(const id of hidden){let ancestor=parent.get(id);while(ancestor&&!positions.has(ancestor))ancestor=parent.get(ancestor);if(ancestor)previews.set(ancestor,[...(previews.get(ancestor)??[]),id]);}
-  for(const [ancestor,ids] of previews){const anchor=positions.get(ancestor);if(!anchor)continue;ids.forEach((id,index)=>contextPositions.set(id,{x:anchor.x+(index%3-1)*48,y:anchor.y+105+Math.floor(index/3)*42}));}
+   for(const [ancestor,ids] of previews){const anchor=positions.get(ancestor);if(!anchor)continue;(expanded?ids.slice(0,3):ids).forEach((id,index)=>contextPositions.set(id,{x:anchor.x+(index%3-1)*48,y:anchor.y+105+Math.floor(index/3)*42}));}
   return { positions, contextPositions, depth, parent, hidden, edges: legal.filter(e => positions.has(e.source) && positions.has(e.target)), contextEdges:legal.filter(e=>(positions.has(e.source)||contextPositions.has(e.source))&&(positions.has(e.target)||contextPositions.has(e.target))&&(hidden.has(e.source)||hidden.has(e.target))) };
+}
+export function branchPacket(root:string) {
+  return new Set([root,...edges.filter(e=>e.evidence.expansion_root===root).flatMap(e=>[e.source,e.target]).filter(id=>id!=='augusto')]);
+}
+// Discovery is bounded to recorded packet links, never routed back through ego or the selected branch gateway.
+export function crossBranchLinks(id:string, targetRoot:string) {
+  const packet=branchPacket(targetRoot);
+  return legalEdges('lineage').filter(e=>[e.source,e.target].includes(id)&&packet.has(e.source===id?e.target:e.source)&&![e.source,e.target].includes('augusto')&&![e.source,e.target].includes('monica-capra'));
 }
 // Horizontal progress is a viewing convention, not a direction or introduction claim.
 export const pathTargetIds = ['google-deepmind', 'santa-fe-institute'] as const;
