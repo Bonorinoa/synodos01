@@ -97,7 +97,7 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
   return { positions, contextPositions, depth, parent, hidden, edges: legal.filter(e => positions.has(e.source) && positions.has(e.target)), contextEdges:legal.filter(e=>(positions.has(e.source)||contextPositions.has(e.source))&&(positions.has(e.target)||contextPositions.has(e.target))&&(hidden.has(e.source)||hidden.has(e.target))) };
 }
 export function branchPacket(root:string) {
-  return new Set([root,...edges.filter(e=>e.evidence.expansion_root===root).flatMap(e=>[e.source,e.target]).filter(id=>id!=='augusto')]);
+  return new Set([root,...edges.filter(e=>e.evidence.expansion_root===root || ([e.source,e.target].includes(root)&&lineageBases.has(e.evidence.basis))).flatMap(e=>[e.source,e.target]).filter(id=>id!=='augusto')]);
 }
 // Discovery is bounded to recorded packet links, never routed back through ego or the selected branch gateway.
 export function crossBranchLinks(id:string, targetRoot:string) {
