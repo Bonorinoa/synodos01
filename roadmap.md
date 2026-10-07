@@ -20,6 +20,6 @@
 - [x] Apply Trail cartography tokens, map symbols, and light evidence panels.
 - [x] Stabilize Path zoom, quiet ghosts, compact routes, and reset expansion on mode switches.
 - [x] Verify graph invariants and desktop/mobile interaction flows.
-- [ ] Remove contour decoration and rebuild a space-reserving trail itinerary with stable Path zoom and readable labels.
-- [ ] Add expandable multi-branch Lineage depth bands, reliable node clicks, and honest cross-branch discovery.
-- [ ] Tag existing Capra packet edges without changing evidence; verify desktop and narrow-width flows.
+- [x] Remove contour decoration and rebuild a space-reserving trail itinerary with stable Path zoom and readable labels.
+- [x] Add expandable multi-branch Lineage depth bands, reliable node clicks, and honest cross-branch discovery.
+- [x] Tag existing Capra packet edges without changing evidence; verify desktop and narrow-width flows.
