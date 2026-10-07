@@ -29,3 +29,5 @@
 - Clear expansion state on mode changes and keep ranked routes collapsible; this prevents stale branches and protects canvas space.
 - Dock the itinerary and evidence record outside a dedicated canvas region, with rendered-coordinate accessible hit targets; this protects graph space and reliable selection.
 - Bound cross-branch discovery to recorded legal links into tagged packets, excluding ego and the Capra gateway; this avoids presenting a shared origin as an advisor connection.
+- Derive closed cartographic superlevel contours from visible non-ghost hop geometry behind Cytoscape; this gives elevation a recorded relationship meaning without modifying traversal or evidence.
+- Render narrow Path waypoints in vertical itinerary order and use a bounded draggable record sheet; this protects readable labels and selected-node visibility without fitting the whole graph on selection.
