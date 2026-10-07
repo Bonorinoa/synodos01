@@ -10,5 +10,5 @@
 - [x] Add the privately attested Augusto–Duch gateway and ingest Duch's bounded Grok research branch.
 - [x] Restrict ego traversal to exactly four confirmed people and clarify every trajectory stage.
 - [x] Preserve failed evidence URLs, lower confidence where necessary, and verify lineage/export flows.
-- [ ] Add cumulative left-to-right Path expansion, kind clusters, ghost context, and persistent destinations.
-- [ ] Verify expansion, branch switching, target routes, evidence, and unchanged Lineage.
+- [x] Add cumulative left-to-right Path expansion, kind clusters, ghost context, and persistent destinations.
+- [x] Verify expansion, branch switching, target routes, evidence, and unchanged Lineage.
