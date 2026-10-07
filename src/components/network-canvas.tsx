@@ -106,7 +106,9 @@ export function NetworkCanvas(props:Props) {
       cy.zoom(zoom);cy.pan({x:30+(width-right-30)/2-(box.x1+box.w/2)*zoom,y:top+availableHeight*.35-(box.y1+box.h/2)*zoom});
       return;
     }
-    const points=[...current.current.trajectory.positions].filter(([id])=>!current.current.trajectory.ghostNodes.has(id)).map(([,point])=>point);
+     const horizontalScale=cy.width()<640?.28:1;
+     cy.nodes().forEach(node=>{const point=current.current.trajectory.positions.get(node.id());if(point)node.position({x:point.x*horizontalScale,y:point.y});});
+     const points=cy.nodes().filter(node=>!current.current.trajectory.ghostNodes.has(node.id())).map(node=>node.position());
     const x1=Math.min(...points.map(p=>p.x))-80,x2=Math.max(...points.map(p=>p.x))+80;
     const y1=Math.min(...points.map(p=>p.y))-65,y2=Math.max(...points.map(p=>p.y))+85;
     const box={x1,y1,w:x2-x1,h:y2-y1};
@@ -156,7 +158,7 @@ export function NetworkCanvas(props:Props) {
     cy.batch(()=>{cy.elements().filter(element=>!wanted.has(element.id())).remove();for(const element of elements){const previousElement=cy.getElementById(element.data.id??'');if(previousElement.length)previousElement.data(element.data).classes(element.classes??'');else cy.add(element);}});
     if(mode==='lineage')cy.nodes().removeStyle();
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    cy.nodes().forEach(node=>{const position=mode==='path'&&!changed&&lastViewportKey.current===current.current.viewportKey&&existing.has(node.id())?existing.get(node.id()):positions.get(node.id());if(!position)return;node.stop();if(existing.has(node.id())&&!reduced)node.animate({position},{duration:420});else node.position(position);});
+     cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;const point=positions.get(node.id());const position=oldPosition??(point?{x:point.x*(mode==='path'&&cy.width()<640?.28:1),y:point.y}:undefined);if(!position)return;node.stop();if(existing.has(node.id())&&!reduced)node.animate({position},{duration:420});else node.position(position);});
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
     if(mode==='lineage'&&(changed||lastRoot.current!==root||lastTrajectory.current!==`lineage:${coreOnly}:${[...collapsed].join(',')}`)){lastTrajectory.current=`lineage:${coreOnly}:${[...collapsed].join(',')}`;fitView();}
