@@ -84,7 +84,7 @@ export function NetworkCanvas(props:Props) {
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
       const hide=!landmark&&((ghost&&zoom<.9)||(compact&&zoom<.3)||collision);
       if(!hide)occupied.push(box);
-      node.style('label',hide?'':'data(displayLabel)');
+       node.style('label',hide?'\u00a0':'data(displayLabel)');
       node.style('font-size',`${(ghost?9:compact?10:12)/zoom}px`);
       node.style('text-max-width',`${width/zoom}px`);
       node.style('text-margin-y',`${5/zoom}px`);
@@ -158,7 +158,7 @@ export function NetworkCanvas(props:Props) {
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
     if(mode==='lineage'&&(changed||lastRoot.current!==root||lastTrajectory.current!==`lineage:${coreOnly}:${[...collapsed].join(',')}`)){lastTrajectory.current=`lineage:${coreOnly}:${[...collapsed].join(',')}`;fitView();}
-    cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'':'data(displayLabel)');
+     cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'\u00a0':'data(displayLabel)');
     if(mode==='path'&&(changed||lastViewportKey.current!==current.current.viewportKey)){lastViewportKey.current=current.current.viewportKey;fitView();}
     updatePathLabels();updateLocks();
     updateHalo();
@@ -177,7 +177,7 @@ export function NetworkCanvas(props:Props) {
       current.current.onZoom(cy.zoom());
       cy.on('tap','node, edge',event=>{const id=event.target.id();current.current.onSelect(id);if(event.target.isNode())current.current.apiRef.current?.focus(id);});
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
-      cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'':'data(displayLabel)');else updatePathLabels();});
+       cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'\u00a0':'data(displayLabel)');else updatePathLabels();});
       const surface=container.current.parentElement;
       const horizontalWheel=(event:WheelEvent)=>{
         if(!(event.target instanceof Node)||!container.current?.contains(event.target))return;
@@ -188,11 +188,11 @@ export function NetworkCanvas(props:Props) {
       };
       surface?.addEventListener('wheel',horizontalWheel,{capture:true,passive:false});
       removeWheel=()=>surface?.removeEventListener('wheel',horizontalWheel,true);
-      cy.on('pan zoom position resize',()=>{updateHalo();updateLocks();});
+       cy.on('pan zoom position resize',()=>{updateHalo();updateLocks();updatePathLabels();});
       cy.on('dragfree','node',event=>{if(current.current.mode==='path')current.current.trajectory.positions.set(event.target.id(),event.target.position());});
        const focusNode=(id:string)=>{const node=cy.getElementById(id);if(!node.length||!node.isNode())return;
          const width=cy.width(),height=cy.height(),point=node.position();
-         const pan={x:width*(width>640&&current.current.selected?.length?.33:.5)-point.x*cy.zoom(),y:Math.max(350,height*.5)-point.y*cy.zoom()};
+          const pan={x:width*(width>640&&current.current.selected?.length ? .33 : .5)-point.x*cy.zoom(),y:Math.max(350,height*.5)-point.y*cy.zoom()};
          cy.stop();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)cy.pan(pan);else cy.animate({pan},{duration:300});
        };
        current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:focusNode,home:()=>focusNode(current.current.mode==='lineage'?current.current.root:'augusto')};
