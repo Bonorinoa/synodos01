@@ -227,7 +227,7 @@
 .hop-topography{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:visible}
 .hop-topography path{fill:var(--topo-fill);stroke:var(--topo-line);stroke-width:1;vector-effect:non-scaling-stroke}
 .hop-topography text{font-family:var(--font-sans);fill:var(--topo-label);paint-order:stroke;stroke:var(--background);stroke-width:4px}
-.network-canvas{z-index:1}.depth-band{z-index:2;border-color:var(--topo-line)}.node-hit{z-index:5}.selection-halo{z-index:3}.canvas-lock{z-index:6}
+.network-canvas{z-index:1}.depth-band{z-index:2;border-color:var(--topo-line)}.node-hit{z-index:5}.selection-halo{z-index:3}.canvas-lock{z-index:4;pointer-events:none;display:grid;place-items:center;border:1px solid var(--border)}
 .mobile-details,.mobile-destination,.legend-toggle,.sheet-grip{display:none}
 .record-actions{position:sticky;top:0;z-index:2;background:var(--glass);backdrop-filter:blur(16px);display:flex;gap:6px;padding:10px 0;border-bottom:1px solid var(--border)}
 .itinerary[data-active=true]{border-top-color:var(--primary)}.itinerary[data-active=true] .step-number{border-color:var(--primary);box-shadow:0 0 0 3px var(--secondary)}
@@ -243,9 +243,10 @@
 .trail-guide{left:auto;right:10px;top:104px;width:215px;max-height:calc(100dvh - 170px)}.trail-guide[data-open=false]{top:64px;right:52px;width:auto;max-width:168px}.network-app:has(.trail-guide[data-open=false]) .target-dock{max-width:calc(100% - 235px)}.network-app:has(.trail-guide[data-open=false]) .mobile-destination select{max-width:95px}.trail-guide-header>button:first-child{font-size:11px}.trail-guide-header>button:last-child{display:none}
 .trail-guide[data-open=true] .itinerary-scroll{display:block;overflow:auto}.itinerary{min-width:0;border-top:1px solid var(--border);padding-top:8px;margin-top:8px}.itinerary ol{display:block;overflow:visible}.itinerary li{min-width:0;min-height:58px}.itinerary li:not(:last-child):before{display:block}.itinerary .itinerary-step{font-size:12px}.trail-guide[data-open=true] .guide-honesty{display:block}
 .inspector{height:var(--sheet-height,48dvh);max-height:55dvh;padding:0 16px 20px;overscroll-behavior:contain}.inspector::before{display:none}.sheet-grip{display:flex;position:sticky;top:0;width:100%;height:20px;min-height:20px;justify-content:center;z-index:3;touch-action:none;background:var(--glass);border-radius:0;padding:0}.sheet-grip span{width:36px;height:4px;border-radius:3px;background:var(--border)}.inspector-kicker{height:30px}.record-actions{top:20px;padding:7px 0}.inspector-identity{padding-top:10px}.inspector h2{font-size:18px}.inspector-close{top:23px;z-index:4;width:30px;height:30px}
-.canvas-tools{left:10px;right:auto;bottom:9px}.canvas-tools button[aria-label=Fullscreen]{display:none}.network-app[data-inspector=true] .canvas-tools{bottom:calc(55dvh + 8px);z-index:21}
+.canvas-tools{left:10px;right:auto;bottom:9px}.canvas-tools button[aria-label=Fullscreen]{display:none}.network-app[data-inspector=true] .canvas-tools{display:none}
 }
 @media(max-width:600px){.hop-topography{display:none}}
 
 .waypoint-number{position:absolute;z-index:4;pointer-events:none;display:grid;place-items:center;width:18px;height:18px;font:11px var(--font-sans);color:var(--primary);background:var(--card);border:1px solid var(--primary);border-radius:50%}
 @media(max-width:640px){.network-app[data-guide=true] .canvas-stage{right:235px;left:10px}.network-app[data-guide=true] .trail-guide{width:215px}.network-app[data-guide=true][data-inspector=true] .trail-guide{max-height:calc(45dvh - 112px)}.network-app[data-guide=true][data-inspector=true] .canvas-stage{right:235px}.canvas-tools{max-width:calc(100% - 20px)}}
+@media(max-width:640px){.node-hit{width:44px;height:44px}.network-app[data-guide=true] .trail-guide{width:190px}.network-app[data-guide=true] .canvas-stage,.network-app[data-guide=true][data-inspector=true] .canvas-stage{right:210px}.record-actions{flex-wrap:wrap}}

@@ -30,4 +30,7 @@
 - Dock the itinerary and evidence record outside a dedicated canvas region, with rendered-coordinate accessible hit targets; this protects graph space and reliable selection.
 - Bound cross-branch discovery to recorded legal links into tagged packets, excluding ego and the Capra gateway; this avoids presenting a shared origin as an advisor connection.
 - Derive closed cartographic superlevel contours from visible non-ghost hop geometry behind Cytoscape; this gives elevation a recorded relationship meaning without modifying traversal or evidence.
+- Anchor contour labels to their own hop entry and bound their rendered text to the visible canvas; this prevents hull extrema and zoom from detaching or clipping labels.
+- Keep private-attestation markers non-interactive below node hit targets; this preserves reliable person selection while evidence remains inspectable through relationships.
+- Frame an expanded Lineage parent and its immediate recorded children within the unobscured canvas, excluding context previews; this reveals new depth without fitting unrelated branches or ghosts.
 - Render narrow Path waypoints in vertical itinerary order and use a bounded draggable record sheet; this protects readable labels and selected-node visibility without fitting the whole graph on selection.

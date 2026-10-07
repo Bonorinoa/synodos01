@@ -13,4 +13,9 @@ describe('Hop cartography presentation',()=>{
     const positions=verticalTrailPositions(['augusto','contact','bridge','goal'],['goal','other-goal'],depths,new Map());
     expect(positions.get('augusto')).toEqual({x:0,y:0});expect(positions.get('contact')).toEqual({x:0,y:104});expect(positions.get('goal')).toEqual({x:0,y:312});expect(positions.has('other-goal')).toBe(true);expect(depths.get('bridge')).toBe(2);
   });
+  it('anchors each elevation label near its own hop entry rather than a far-right hull vertex',()=>{
+    const rings=hopContours([{id:'ego',x:0,y:0,depth:0},{id:'contact',x:200,y:-70,depth:1},{id:'destination',x:1400,y:-300,depth:2}]);
+    expect(rings[0]?.label.x).toBe(-38);expect(rings[0]?.label.y).toBe(-49.4);
+    expect(rings[1]?.label.x).toBe(162);expect(rings[2]?.label.x).toBe(1362);
+  });
 });
