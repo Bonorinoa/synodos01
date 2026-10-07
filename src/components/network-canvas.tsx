@@ -62,8 +62,10 @@ export function NetworkCanvas(props:Props) {
   const fitView = () => {
     const cy=cyRef.current;if(!cy)return;
     if(current.current.mode==='lineage'){
-      const nodes=cy.nodes().not('.lineage-context');
-      const box=nodes.boundingBox();const width=cy.width(),height=cy.height();
+      const layout=lineageLayout(current.current.root,current.current.coreOnly,current.current.collapsed);
+      const points=[...layout.positions.values()];
+      const x1=Math.min(...points.map(point=>point.x))-65,y1=Math.min(...points.map(point=>point.y))-30;
+      const box={x1,y1,w:Math.max(...points.map(point=>point.x))+65-x1,h:Math.max(...points.map(point=>point.y))+50-y1};const width=cy.width(),height=cy.height();
       const right=current.current.selected&&width>640?390:35;
       const top=width<640?300:220;const bottom=width<640?165:115;
       const availableHeight=Math.max(150,height-top-bottom);
@@ -118,6 +120,7 @@ export function NetworkCanvas(props:Props) {
     const existing=new Map(cy.nodes().map(node=>[node.id(),node.position()] as const));
     const wanted=new Set(elements.map(element=>element.data.id));
     cy.batch(()=>{cy.elements().filter(element=>!wanted.has(element.id())).remove();for(const element of elements){const previousElement=cy.getElementById(element.data.id??'');if(previousElement.length)previousElement.data(element.data).classes(element.classes??'');else cy.add(element);}});
+    if(mode==='lineage')cy.nodes().removeStyle();
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     cy.nodes().forEach(node=>{const position=positions.get(node.id());if(!position)return;node.stop();if(existing.has(node.id())&&!reduced)node.animate({position},{duration:420});else node.position(position);});
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
@@ -142,15 +145,16 @@ export function NetworkCanvas(props:Props) {
       cy.on('tap','node, edge',event=>{const id=event.target.id();if(current.current.mode==='path'&&event.target.isNode()&&!event.target.data('target'))current.current.onExpand(id);else current.current.onSelect(id);});
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
       cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'':'data(displayLabel)');});
-      const surface=container.current;
+      const surface=container.current.parentElement;
       const horizontalWheel=(event:WheelEvent)=>{
+        if(!(event.target instanceof Node)||!container.current?.contains(event.target))return;
         if(event.ctrlKey||Math.abs(event.deltaX)<=Math.abs(event.deltaY))return;
         event.preventDefault();event.stopImmediatePropagation();
         const unit=event.deltaMode===1?16:event.deltaMode===2?cy.width():1;
         cy.panBy({x:-event.deltaX*unit,y:-event.deltaY*unit});
       };
-      surface.addEventListener('wheel',horizontalWheel,{capture:true,passive:false});
-      removeWheel=()=>surface.removeEventListener('wheel',horizontalWheel,true);
+      surface?.addEventListener('wheel',horizontalWheel,{capture:true,passive:false});
+      removeWheel=()=>surface?.removeEventListener('wheel',horizontalWheel,true);
       cy.on('pan zoom position resize',updateHalo);
       cy.on('dragfree','node',event=>{if(current.current.mode==='path')current.current.trajectory.positions.set(event.target.id(),event.target.position());});
       current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:id=>{if(current.current.mode==='path'){fitView();return;}const n=cy.getElementById(id);if(n.length)cy.pan({x:cy.width()*.53-n.position('x')*cy.zoom(),y:cy.height()*.52-n.position('y')*cy.zoom()});},home:()=>{if(current.current.mode==='path'){fitView();return;}cy.zoom(initialZoom());const n=cy.getElementById(current.current.mode==='lineage'?current.current.root:'augusto');if(n.length)cy.pan({x:cy.width()*.54-n.position('x')*cy.zoom(),y:cy.height()*(cy.width()<640?.59:.54)-n.position('y')*cy.zoom()});}};
