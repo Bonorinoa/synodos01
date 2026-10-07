@@ -72,41 +72,62 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
   return { positions, depth, parent, hidden, edges: legal.filter(e => positions.has(e.source) && positions.has(e.target)) };
 }
 // Horizontal progress is a viewing convention, not a direction or introduction claim.
-export function trajectoryLayout(paths: RankedPath[], targets: string[], coreOnly = false, selected: string | null = null) {
-  const positions = new Map<string, { x:number; y:number }>([['augusto', {x:0,y:0}]]);
-  const depths = new Map<string,number>([['augusto',0]]);
-  const samples = new Map<string, {x:number;y:number}[]>();
-  const edgeIds = new Set(paths.flatMap(path=>path.edges));
-  targets.forEach((id,index)=>positions.set(id,{x:1000,y:(index-(targets.length-1)/2)*260}));
-  paths.forEach((path,index)=>path.nodes.slice(1,-1).forEach((id,hop)=>{
-    const point={x:(hop+1)/path.edges.length*1000,y:(index-(paths.length-1)/2)*150};
-    samples.set(id,[...(samples.get(id)??[]),point]);
-    depths.set(id,Math.min(depths.get(id)??Infinity,hop+1));
-  }));
-  for(const path of paths){const last=path.nodes.at(-1);if(last)depths.set(last,path.edges.length);}
-  for(const [id,points] of samples)positions.set(id,{x:points.reduce((sum,p)=>sum+p.x,0)/points.length,y:points.reduce((sum,p)=>sum+p.y,0)/points.length});
-  const placed:{x:number;y:number}[]=[];
-  for(const [id,point] of positions){
-    if(id==='augusto'||targets.includes(id))continue;
-    while(placed.some(p=>Math.abs(p.x-point.x)<145&&Math.abs(p.y-point.y)<115))point.y+=125;
-    placed.push(point);
+export const pathTargetIds = ['google-deepmind', 'santa-fe-institute'] as const;
+export function trajectoryLayout(paths: RankedPath[], targets: string[], coreOnly = false, selected: string | null = null, expanded: Set<string> = new Set()) {
+  const legal = pathTraversalEdges(coreOnly);
+  const destinations = [...new Set([...pathTargetIds, ...targets])];
+  const activeNodes = new Set(['augusto', ...egoGatewayIds, ...paths.flatMap(path => path.nodes)]);
+  const activeEdges = new Set([...egoGatewayEdges().map(edge => edge.id), ...paths.flatMap(path => path.edges)]);
+  const anchors = new Set(expanded);
+  if (selected && nodeById.has(selected)) anchors.add(selected);
+  const selectedEdge = legal.find(edge => edge.id === selected);
+  if (selectedEdge) { anchors.add(selectedEdge.source); anchors.add(selectedEdge.target); activeEdges.add(selectedEdge.id); }
+  const neighbors = (id: string) => legal.filter(edge => edge.source === id || edge.target === id);
+  for (const id of anchors) {
+    if (coreOnly && nodeById.get(id)?.candidate) continue;
+    activeNodes.add(id);
+    for (const edge of neighbors(id)) { activeEdges.add(edge.id); activeNodes.add(edge.source); activeNodes.add(edge.target); }
   }
-  const legal=pathTraversalEdges(coreOnly);
-  const selectedEdge=legal.find(edge=>edge.id===selected);
-  const anchors=selectedEdge?[selectedEdge.source,selectedEdge.target]:selected&&nodeById.has(selected)?[selected]:[];
-  for(const id of anchors)if(!positions.has(id))positions.set(id,{x:500,y:400});
-  for(const id of anchors){
-    const anchor=positions.get(id);
-    if(!anchor)continue;
-    const related=legal.filter(edge=>edge.source===id||edge.target===id);
-    related.forEach((edge,index)=>{
-      edgeIds.add(edge.id);
-      const next=edge.source===id?edge.target:edge.source;
-      if(!positions.has(next))positions.set(next,{x:anchor.x+(index%2===0?160:-160),y:anchor.y+180+Math.floor(index/2)*120});
-    });
+  const shownNodes = new Set([...activeNodes, ...destinations]);
+  const shownEdges = new Set(activeEdges);
+  // One ring of context only: ghost visibility is not recursive expansion.
+  for (const id of activeNodes) for (const edge of neighbors(id)) {
+    shownNodes.add(edge.source); shownNodes.add(edge.target); shownEdges.add(edge.id);
   }
-  return {positions,depths,edges:legal.filter(edge=>edgeIds.has(edge.id)&&positions.has(edge.source)&&positions.has(edge.target))};
+  const displayed = legal.filter(edge => shownEdges.has(edge.id) && shownNodes.has(edge.source) && shownNodes.has(edge.target));
+  const depths = new Map<string, number>([['augusto', 0]]);
+  const queue = ['augusto'];
+  for (let i = 0; i < queue.length; i++) {
+    const id = queue[i]; if (!id) continue;
+    for (const edge of displayed) {
+      const next = edge.source === id ? edge.target : edge.target === id ? edge.source : null;
+      if (next && !depths.has(next) && !destinations.includes(next)) { depths.set(next, (depths.get(id) ?? 0) + 1); queue.push(next); }
+    }
+  }
+  const positions = new Map<string, { x: number; y: number }>([['augusto', { x: 0, y: 0 }]]);
+  const groups = new Map<string, string[]>();
+  for (const id of shownNodes) {
+    if (id === 'augusto' || destinations.includes(id)) continue;
+    const node = nodeById.get(id); if (!node || (coreOnly && node.candidate)) continue;
+    const depth = depths.get(id) ?? 2;
+    const key = `${depth}:${node.kind}`;
+    groups.set(key, [...(groups.get(key) ?? []), id]);
+  }
+  const bands: Record<NetworkNode['kind'], number> = { person: 0, lab: 400, institution: 570, university: 740 };
+  for (const [key, ids] of groups) {
+    const [rank, kind] = key.split(':');
+    ids.sort((a,b) => egoGatewayIds.indexOf(a as typeof egoGatewayIds[number]) - egoGatewayIds.indexOf(b as typeof egoGatewayIds[number]) || a.localeCompare(b));
+    const rows = Math.ceil(ids.length / 2);
+    ids.forEach((id,i) => positions.set(id, { x: Number(rank) * 370 + (ids.length > 4 ? i % 2 * 150 : 0), y: bands[kind as NetworkNode['kind']] + (ids.length > 4 ? Math.floor(i/2) - (rows-1)/2 : i - (ids.length-1)/2) * 110 }));
+  }
+  const targetX = Math.max(3, ...[...depths.values()].map(depth => depth + 1)) * 370 + 100;
+  destinations.forEach((id,i) => positions.set(id, { x: targetX, y: (i - (destinations.length-1)/2) * 260 }));
+  const relevant = selectedEdge ? new Set([selectedEdge.source, selectedEdge.target]) : selected && nodeById.has(selected) ? new Set([selected, ...neighbors(selected).flatMap(edge => [edge.source, edge.target])]) : activeNodes;
+  const ghostNodes = new Set([...positions.keys()].filter(id => !destinations.includes(id) && id !== 'augusto' && (!activeNodes.has(id) || !relevant.has(id))));
+  const ghostEdges = new Set(displayed.filter(edge => !activeEdges.has(edge.id) || (selected && edge.id !== selected && edge.source !== selected && edge.target !== selected && !paths.some(path => path.edges.includes(edge.id)))).map(edge => edge.id));
+  return { positions, depths, ghostNodes, ghostEdges, expanded: new Set(anchors), edges: displayed.filter(edge => positions.has(edge.source) && positions.has(edge.target)) };
 }
+
 type ForceNode = SimulationNodeDatum & { id: string };
 export function organicPositions() {
   const nodes: ForceNode[] = graph.nodes.map((n,i) => ({ id:n.id, x:Math.cos(i*2.399)*Math.sqrt(i)*90, y:Math.sin(i*2.399)*Math.sqrt(i)*90, ...(n.id === 'augusto' ? { fx:0,fy:0 } : {}) }));
