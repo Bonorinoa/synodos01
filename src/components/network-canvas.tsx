@@ -3,7 +3,7 @@ import { LockKeyhole } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { hopContours, verticalTrailPositions } from '@/lib/cartography';
 import type { Core, StylesheetCSS, ElementDefinition } from 'cytoscape';
-import { graph, legalEdges, lineageLayout, trajectoryLayout, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
+import { graph, legalEdges, lineageLayout, trajectoryLayout, rankedPaths, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
 
 export type CanvasAPI = { fit: () => void; zoom: (delta:number) => void; focus: (id:string) => void; home: () => void };
 type Props = { routeNodes:string[]; viewportKey:string; lineageExpanded:Set<string>; trajectory:ReturnType<typeof trajectoryLayout>; trajectoryKey:string; mode:Mode; coreOnly:boolean; root:string; collapsed:Set<string>; highlighted:string[]; selected:string|null; onSelect:(id:string|null)=>void; onExpand:(id:string)=>void; onZoom:(zoom:number)=>void; apiRef:React.RefObject<CanvasAPI|null> };
@@ -73,10 +73,19 @@ export function NetworkCanvas(props:Props) {
     if(p.mode==='lineage'){const layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded);return new Map([...layout.positions,...layout.contextPositions]);}
     if(narrow())return verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions);
     const positions=new Map(p.trajectory.positions),cy=cyRef.current;
-    if(cy&&p.routeNodes.length){const step=Math.max(140,(cy.width()-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2? -70:70)/cy.zoom()}));}
+    if(cy&&p.routeNodes.length){const step=Math.max(140,(cy.width()-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2? -70:70)/cy.zoom()}));for(const id of ['google-deepmind','santa-fe-institute'])if(!p.routeNodes.includes(id))positions.set(id,{x:(p.routeNodes.length-1)*step,y:180/cy.zoom()});}
     return positions;
   };
-  const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;topoTransform.current?.setAttribute('transform',`translate(${cy.pan().x} ${cy.pan().y}) scale(${cy.zoom()})`);};
+  const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;topoTransform.current?.setAttribute('transform',`translate(${cy.pan().x} ${cy.pan().y}) scale(${cy.zoom()})`);topoTransform.current?.querySelectorAll('text').forEach(text=>text.setAttribute('font-size',`${11/cy.zoom()}px`));};
+  const rebuildContours=()=>{
+    const cy=cyRef.current;if(!cy)return;const p=current.current;
+    const depths=p.mode==='lineage'?lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded).depth:p.trajectory.depths;
+    const routeDepths=new Map(p.routeNodes.map((id,i)=>[id,i]));
+    setContours(hopContours(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
+      if(!n.isNode())return [];const depth=routeDepths.get(n.id())??depths.get(n.id())??rankedPaths(n.id(),p.coreOnly)[0]?.edges.length;if(depth===undefined)return [];
+      return [{id:n.id(),...n.position(),depth}];
+    }),Math.max(76,58/cy.zoom())));
+  };
   const [hitNodes,setHitNodes]=useState<{id:string;label:string;x:number;y:number}[]>([]);
   const [bands,setBands]=useState<{depth:number;y:number}[]>([]);
   const [locks,setLocks]=useState<{id:string;x:number;y:number}[]>([]);
@@ -189,9 +198,6 @@ export function NetworkCanvas(props:Props) {
     cy.batch(()=>{cy.elements().filter(element=>!wanted.has(element.id())).remove();for(const element of elements){const previousElement=cy.getElementById(element.data.id??'');if(previousElement.length)previousElement.data(element.data).classes(element.classes??'');else cy.add(element);}});
     
       cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&!narrow()&&!current.current.routeNodes.includes(node.id())&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;const position=oldPosition??positions.get(node.id());if(!position)return;node.stop();node.position(position);});
-      const depths=mode==='lineage'?lineage.depth:current.current.trajectory.depths;
-      const routeDepths=new Map(current.current.routeNodes.map((id,i)=>[id,i]));
-      setContours(hopContours(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')).toArray().flatMap(n=>n.isNode()?[{id:n.id(),...n.position(),depth:depths.get(n.id())??routeDepths.get(n.id())??Math.max(3,...depths.values())+1}]:[])));
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
     if(mode==='lineage'&&(changed||lastRoot.current!==root)){fitView();}
@@ -199,6 +205,7 @@ export function NetworkCanvas(props:Props) {
     const routeKey=current.current.routeNodes.join('|');
     if(mode==='path'&&routeKey&&routeKey!==lastRoute.current&&!narrow()){const end=positions.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}
     lastRoute.current=routeKey;
+    rebuildContours();
     updatePathLabels();updateLocks();updateHitTargets();
     updateHalo();
     lastRoot.current=root;
@@ -237,7 +244,7 @@ export function NetworkCanvas(props:Props) {
        };
        current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:focusNode,home:()=>focusNode(current.current.mode==='lineage'?current.current.root:'augusto')};
       let previousSize={width:cy.width(),height:cy.height()};
-       observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of current.current.routeNodes){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(narrow()&&current.current.selected)focusNode(current.current.selected);updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
+        observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,'google-deepmind','santa-fe-institute']){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(narrow()&&current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
     });
     return()=>{cancelled=true;removeWheel?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
   },[]);

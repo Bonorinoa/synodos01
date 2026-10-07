@@ -226,7 +226,7 @@
 /* Closed, hop-derived superlevel contours sit below the transparent Cytoscape surface. */
 .hop-topography{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:visible}
 .hop-topography path{fill:var(--topo-fill);stroke:var(--topo-line);stroke-width:1;vector-effect:non-scaling-stroke}
-.hop-topography text{font:12px var(--font-sans);fill:var(--topo-label);paint-order:stroke;stroke:var(--background);stroke-width:4px}
+.hop-topography text{font-family:var(--font-sans);fill:var(--topo-label);paint-order:stroke;stroke:var(--background);stroke-width:4px}
 .network-canvas{z-index:1}.depth-band{z-index:2;border-color:var(--topo-line)}.node-hit{z-index:5}.selection-halo{z-index:3}.canvas-lock{z-index:6}
 .mobile-details,.mobile-destination,.legend-toggle,.sheet-grip{display:none}
 .record-actions{position:sticky;top:0;z-index:2;background:var(--glass);backdrop-filter:blur(16px);display:flex;gap:6px;padding:10px 0;border-bottom:1px solid var(--border)}
