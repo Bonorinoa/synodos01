@@ -103,7 +103,7 @@ export function branchPacket(root:string) {
 // Discovery is bounded to recorded packet links, never routed back through ego or the selected branch gateway.
 export function crossBranchLinks(id:string, targetRoot:string) {
   const packet=branchPacket(targetRoot);
-  return legalEdges('lineage').filter(e=>[e.source,e.target].includes(id)&&packet.has(e.source===id?e.target:e.source)&&![e.source,e.target].includes('augusto')&&![e.source,e.target].includes('monica-capra'));
+  return legalEdges('lineage').filter(e=>[e.source,e.target].includes(id)&&packet.has(e.source===id?e.target:e.source)&&![e.source,e.target].includes('augusto')&&(id==='monica-capra'||![e.source,e.target].includes('monica-capra')));
 }
 // Horizontal progress is a viewing convention, not a direction or introduction claim.
 export const pathTargetIds = ['google-deepmind', 'santa-fe-institute'] as const;
