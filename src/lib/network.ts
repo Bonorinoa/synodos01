@@ -113,14 +113,21 @@ export function trajectoryLayout(paths: RankedPath[], targets: string[], coreOnl
     const key = `${depth}:${node.kind}`;
     groups.set(key, [...(groups.get(key) ?? []), id]);
   }
-  const bands: Record<NetworkNode['kind'], number> = { person: 0, lab: 400, institution: 570, university: 740 };
+  const bands: Record<NetworkNode['kind'], number> = { person: 0, lab: 390, institution: 620, university: 850 };
+  const rankWidths = new Map<number, number>();
+  for (const [key, ids] of groups) {
+    const [rank, kind] = key.split(':');
+    const columns = Math.ceil(ids.length / (kind === 'person' ? 5 : 3));
+    rankWidths.set(Number(rank), Math.max(rankWidths.get(Number(rank)) ?? 370, columns * 190 + 180));
+  }
+  const rankX = (rank: number) => { let x = 370; for (let i = 1; i < rank; i++) x += rankWidths.get(i) ?? 370; return x; };
   for (const [key, ids] of groups) {
     const [rank, kind] = key.split(':');
     ids.sort((a,b) => egoGatewayIds.indexOf(a as typeof egoGatewayIds[number]) - egoGatewayIds.indexOf(b as typeof egoGatewayIds[number]) || a.localeCompare(b));
-    const rows = Math.ceil(ids.length / 2);
-    ids.forEach((id,i) => positions.set(id, { x: Number(rank) * 370 + (ids.length > 4 ? i % 2 * 150 : 0), y: bands[kind as NetworkNode['kind']] + (ids.length > 4 ? Math.floor(i/2) - (rows-1)/2 : i - (ids.length-1)/2) * 110 }));
+    const rows = Math.min(ids.length, kind === 'person' ? 5 : 3);
+    ids.forEach((id,i) => positions.set(id, { x: rankX(Number(rank)) + Math.floor(i / rows) * 190, y: bands[kind as NetworkNode['kind']] + (i % rows - (rows-1)/2) * 110 }));
   }
-  const targetX = Math.max(3, ...[...depths.values()].map(depth => depth + 1)) * 370 + 100;
+  const targetX = rankX(Math.max(3, ...[...depths.values()].map(depth => depth + 1))) + 100;
   destinations.forEach((id,i) => positions.set(id, { x: targetX, y: (i - (destinations.length-1)/2) * 260 }));
   const relevant = selectedEdge ? new Set([selectedEdge.source, selectedEdge.target]) : selected && nodeById.has(selected) ? new Set([selected, ...neighbors(selected).flatMap(edge => [edge.source, edge.target])]) : activeNodes;
   const ghostNodes = new Set([...positions.keys()].filter(id => !destinations.includes(id) && id !== 'augusto' && (!activeNodes.has(id) || !relevant.has(id))));
