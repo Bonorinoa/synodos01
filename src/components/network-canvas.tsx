@@ -66,7 +66,7 @@ export function NetworkCanvas(props:Props) {
   const [locks,setLocks]=useState<{id:string;x:number;y:number}[]>([]);
   const updateLocks=()=>{
     const cy=cyRef.current;if(!cy)return;
-     setLocks(cy.edges('.private-attestation').filter(edge=>!edge.hasClass('ghost')).flatMap(edge=>{
+     setLocks(cy.edges('.private-attestation').filter(edge=>!edge.hasClass('ghost')).toArray().flatMap(edge=>{
        if(!edge.isEdge())return [];
       const a=edge.source().renderedPosition(),b=edge.target().renderedPosition();
        return [{id:edge.id(),x:(a.x+b.x)/2,y:(a.y+b.y)/2}];
@@ -86,6 +86,7 @@ export function NetworkCanvas(props:Props) {
       const hide=!landmark&&((ghost&&zoom<.9)||(compact&&zoom<.3)||collision);
       if(!hide)occupied.push(box);
        node.style('label',hide?'\u00a0':'data(displayLabel)');
+       node.style('text-opacity',hide?0:ghost?.35:1);
       node.style('font-size',`${(ghost?9:compact?10:12)/zoom}px`);
       node.style('text-max-width',`${width/zoom}px`);
       node.style('text-margin-y',`${5/zoom}px`);
@@ -159,7 +160,7 @@ export function NetworkCanvas(props:Props) {
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
     if(mode==='lineage'&&(changed||lastRoot.current!==root||lastTrajectory.current!==`lineage:${coreOnly}:${[...collapsed].join(',')}`)){lastTrajectory.current=`lineage:${coreOnly}:${[...collapsed].join(',')}`;fitView();}
-     cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'\u00a0':'data(displayLabel)');
+     cy.nodes('.lineage-context').style('text-opacity',cy.zoom()<1.5?0:.45);
     if(mode==='path'&&(changed||lastViewportKey.current!==current.current.viewportKey)){lastViewportKey.current=current.current.viewportKey;fitView();}
     updatePathLabels();updateLocks();
     updateHalo();
@@ -178,7 +179,7 @@ export function NetworkCanvas(props:Props) {
       current.current.onZoom(cy.zoom());
       cy.on('tap','node, edge',event=>{const id=event.target.id();current.current.onSelect(id);if(event.target.isNode())current.current.apiRef.current?.focus(id);});
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
-       cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'\u00a0':'data(displayLabel)');else updatePathLabels();});
+       cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('text-opacity',cy.zoom()<1.5?0:.45);else updatePathLabels();});
       const surface=container.current.parentElement;
       const horizontalWheel=(event:WheelEvent)=>{
         if(!(event.target instanceof Node)||!container.current?.contains(event.target))return;
