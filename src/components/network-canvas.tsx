@@ -66,9 +66,10 @@ export function NetworkCanvas(props:Props) {
   const [locks,setLocks]=useState<{id:string;x:number;y:number}[]>([]);
   const updateLocks=()=>{
     const cy=cyRef.current;if(!cy)return;
-    setLocks(cy.edges('.private-attestation').filter(edge=>!edge.hasClass('ghost')).map(edge=>{
+     setLocks(cy.edges('.private-attestation').filter(edge=>!edge.hasClass('ghost')).flatMap(edge=>{
+       if(!edge.isEdge())return [];
       const a=edge.source().renderedPosition(),b=edge.target().renderedPosition();
-      return {id:edge.id(),x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+       return [{id:edge.id(),x:(a.x+b.x)/2,y:(a.y+b.y)/2}];
     }));
   };
   const updatePathLabels = () => {
