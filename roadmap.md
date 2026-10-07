@@ -12,3 +12,5 @@
 - [x] Preserve failed evidence URLs, lower confidence where necessary, and verify lineage/export flows.
 - [x] Add cumulative left-to-right Path expansion, kind clusters, ghost context, and persistent destinations.
 - [x] Verify expansion, branch switching, target routes, evidence, and unchanged Lineage.
+- [x] Make Lineage a quiet zoomable tree with smaller labels and subtle collapsed-layer context.
+- [x] Verify horizontal scrolling pans without zooming and vertical scrolling retains zoom.
