@@ -57,16 +57,17 @@ export function NetworkCanvas(props:Props) {
   const fitView = () => {
     const cy=cyRef.current;if(!cy)return;
     if(current.current.mode==='lineage'){cy.fit(cy.elements(),80);return;}
-    const points=[...current.current.trajectory.positions.values()];
+    const points=[...current.current.trajectory.positions].filter(([id])=>!current.current.trajectory.ghostNodes.has(id)).map(([,point])=>point);
     const x1=Math.min(...points.map(p=>p.x))-80,x2=Math.max(...points.map(p=>p.x))+80;
     const y1=Math.min(...points.map(p=>p.y))-65,y2=Math.max(...points.map(p=>p.y))+85;
     const box={x1,y1,w:x2-x1,h:y2-y1};
     const width=cy.width(),height=cy.height();
-    const right=current.current.selected&&width>640?390:65;
+    const right=current.current.selected&&width>640?390:35;
     const top=width<640?310:280;
     const availableHeight=Math.max(130,height-top-(width<640?190:current.current.highlighted.length?290:135));
     const zoom=Math.max(.15,Math.min(1.1,(width-right-80)/Math.max(box.w,1),availableHeight/Math.max(box.h,1)));
     cy.zoom(zoom);cy.pan({x:50+(width-right-50)/2-(box.x1+box.w/2)*zoom,y:top+availableHeight/2-(box.y1+box.h/2)*zoom});
+    cy.nodes().forEach(node=>{const ghost=node.hasClass('ghost');node.style('font-size',`${(ghost?8:node.data('target')?12:11)/zoom}px`);node.style('text-max-width',`${(ghost?90:135)/zoom}px`);node.style('text-margin-y',`${8/zoom}px`);});
   };
   const viewports = useRef<Partial<Record<Mode,{zoom:number;pan:{x:number;y:number}}>>>({});
   const lastMode = useRef<Mode>(props.mode);
