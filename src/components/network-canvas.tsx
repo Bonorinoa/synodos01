@@ -45,6 +45,11 @@ function styles():StylesheetCSS[] {
     { selector:'node.target',css:{opacity:1,'text-opacity':1} },
     { selector:'edge.ego-gateway.unverified',css:{width:.8,'line-style':'dotted',opacity:.4} },
     { selector:'edge.low-confidence',css:{width:1,'line-style':'dashed',opacity:.4} },
+    { selector:'node.lineage-node',css:{width:16,height:16,'font-size':9,'font-weight':400,'text-max-width':'115px','text-margin-y':7,'border-width':3} },
+    { selector:'node.lineage-node.direct-contact',css:{width:23,height:23,'font-size':9,'font-weight':500,'border-width':5} },
+    { selector:'#augusto.lineage-node',css:{width:38,height:38,'font-size':11,'font-weight':600,'border-width':8} },
+    { selector:'node.lineage-context',css:{width:9,height:9,opacity:.2,'text-opacity':.45,'border-width':0,'font-size':6.5} },
+    { selector:'edge.lineage-context',css:{opacity:.09,label:'',width:.6} },
   ];
 }
 
@@ -56,7 +61,16 @@ export function NetworkCanvas(props:Props) {
   const lastTrajectory = useRef('');
   const fitView = () => {
     const cy=cyRef.current;if(!cy)return;
-    if(current.current.mode==='lineage'){cy.fit(cy.elements(),80);return;}
+    if(current.current.mode==='lineage'){
+      const nodes=cy.nodes().not('.lineage-context');
+      const box=nodes.boundingBox();const width=cy.width(),height=cy.height();
+      const right=current.current.selected&&width>640?390:35;
+      const top=width<640?300:220;const bottom=width<640?165:115;
+      const availableHeight=Math.max(150,height-top-bottom);
+      const zoom=Math.max(.15,Math.min(1.15,(width-right-55)/Math.max(box.w+80,1),availableHeight/Math.max(box.h+160,1)));
+      cy.zoom(zoom);cy.pan({x:30+(width-right-30)/2-(box.x1+box.w/2)*zoom,y:top+availableHeight*.35-(box.y1+box.h/2)*zoom});
+      return;
+    }
     const points=[...current.current.trajectory.positions].filter(([id])=>!current.current.trajectory.ghostNodes.has(id)).map(([,point])=>point);
     const x1=Math.min(...points.map(p=>p.x))-80,x2=Math.max(...points.map(p=>p.x))+80;
     const y1=Math.min(...points.map(p=>p.y))-65,y2=Math.max(...points.map(p=>p.y))+85;
@@ -95,12 +109,11 @@ export function NetworkCanvas(props:Props) {
     if (lastMode.current !== mode) viewports.current[lastMode.current]={zoom:cy.zoom(),pan:cy.pan()};
     const changed=lastMode.current!==mode;
     const lineage=lineageLayout(root,coreOnly,collapsed);
-    const positions=mode==='lineage'?lineage.positions:current.current.trajectory.positions;
+    const positions=mode==='lineage'?new Map([...lineage.positions,...lineage.contextPositions]):current.current.trajectory.positions;
     const visibleNodes=graph.nodes.filter(n=>(!coreOnly||!n.candidate||n.id===root)&&positions.has(n.id));
     const ids=new Set(visibleNodes.map(n=>n.id));
-    const visibleEdges=(mode==='lineage'?lineage.edges:current.current.trajectory.edges).filter(e=>ids.has(e.source)&&ids.has(e.target));
-    const collapsedCount=(id:string)=>{let count=0;for(const descendant of lineage.depth.keys()){let ancestor=lineage.parent.get(descendant);while(ancestor){if(ancestor===id){count++;break;}ancestor=lineage.parent.get(ancestor);}}return count;};
-    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:(n.id==='augusto'?'Augusto':n.label)+(mode==='lineage'&&collapsed.has(n.id)?`\n+${collapsedCount(n.id)} collapsed`:'')},position:positions.get(n.id) ?? {x:0,y:0},classes:[mode==='path'&&current.current.trajectory.ghostNodes.has(n.id)?'ghost':'',n.candidate?'candidate':'',n.target?'target':'',n.id!=='augusto'&&(mode==='lineage'?lineage.depth.get(n.id)===1:current.current.trajectory.depths.get(n.id)===1)?'direct-contact':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[mode==='path'&&current.current.trajectory.ghostEdges.has(e.id)?'ghost':'',weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',e.evidence.confidence==='low'?'low-confidence':'',e.evidence.ego_gateway?'ego-gateway':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',(e.evidence.basis==='committee'||e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee'))?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':''].join(' ')}))];
+    const visibleEdges=(mode==='lineage'?[...lineage.edges,...lineage.contextEdges]:current.current.trajectory.edges).filter(e=>ids.has(e.source)&&ids.has(e.target));
+    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:n.id==='augusto'?'Augusto':n.label},position:positions.get(n.id) ?? {x:0,y:0},classes:[mode==='lineage'?'lineage-node':'',mode==='lineage'&&lineage.hidden.has(n.id)?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostNodes.has(n.id)?'ghost':'',n.candidate?'candidate':'',n.target?'target':'',n.id!=='augusto'&&(mode==='lineage'?lineage.depth.get(n.id)===1:current.current.trajectory.depths.get(n.id)===1)?'direct-contact':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[mode==='lineage'&&(lineage.hidden.has(e.source)||lineage.hidden.has(e.target))?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostEdges.has(e.id)?'ghost':'',weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',e.evidence.confidence==='low'?'low-confidence':'',e.evidence.ego_gateway?'ego-gateway':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',(e.evidence.basis==='committee'||e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee'))?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':''].join(' ')}))];
     const previous={zoom:cy.zoom(),pan:cy.pan()};
     const existing=new Map(cy.nodes().map(node=>[node.id(),node.position()] as const));
     const wanted=new Set(elements.map(element=>element.data.id));
@@ -109,7 +122,8 @@ export function NetworkCanvas(props:Props) {
     cy.nodes().forEach(node=>{const position=positions.get(node.id());if(!position)return;node.stop();if(existing.has(node.id())&&!reduced)node.animate({position},{duration:420});else node.position(position);});
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
-    if(mode==='lineage'&&lastRoot.current!==root)cy.pan({x:cy.width()*.53,y:Math.max(350,cy.height()*.35)});
+    if(mode==='lineage'&&(changed||lastRoot.current!==root||lastTrajectory.current!==`lineage:${coreOnly}:${[...collapsed].join(',')}`)){lastTrajectory.current=`lineage:${coreOnly}:${[...collapsed].join(',')}`;fitView();}
+    cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'':'data(displayLabel)');
     if(mode==='path'&&(changed||lastTrajectory.current!==current.current.trajectoryKey)){lastTrajectory.current=current.current.trajectoryKey;fitView();}
     updateHalo();
     lastRoot.current=root;
@@ -117,7 +131,7 @@ export function NetworkCanvas(props:Props) {
   };
 
   useEffect(()=>{
-    let cancelled=false; let observer:ResizeObserver|undefined;
+    let cancelled=false; let observer:ResizeObserver|undefined;let removeWheel:(()=>void)|undefined;
     import('cytoscape').then(({default:cytoscape})=>{
       if (cancelled||!container.current) return;
       const cy=cytoscape({container:container.current,elements:[],style:styles(),layout:{name:'preset'},minZoom:.04,maxZoom:3,wheelSensitivity:.18,boxSelectionEnabled:false,selectionType:'single'});
@@ -127,13 +141,22 @@ export function NetworkCanvas(props:Props) {
       current.current.onZoom(cy.zoom());
       cy.on('tap','node, edge',event=>{const id=event.target.id();if(current.current.mode==='path'&&event.target.isNode()&&!event.target.data('target'))current.current.onExpand(id);else current.current.onSelect(id);});
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
-      cy.on('zoom',()=>current.current.onZoom(cy.zoom()));
+      cy.on('zoom',()=>{current.current.onZoom(cy.zoom());if(current.current.mode==='lineage')cy.nodes('.lineage-context').style('label',cy.zoom()<1.5?'':'data(displayLabel)');});
+      const surface=container.current;
+      const horizontalWheel=(event:WheelEvent)=>{
+        if(event.ctrlKey||Math.abs(event.deltaX)<=Math.abs(event.deltaY))return;
+        event.preventDefault();event.stopImmediatePropagation();
+        const unit=event.deltaMode===1?16:event.deltaMode===2?cy.width():1;
+        cy.panBy({x:-event.deltaX*unit,y:-event.deltaY*unit});
+      };
+      surface.addEventListener('wheel',horizontalWheel,{capture:true,passive:false});
+      removeWheel=()=>surface.removeEventListener('wheel',horizontalWheel,true);
       cy.on('pan zoom position resize',updateHalo);
       cy.on('dragfree','node',event=>{if(current.current.mode==='path')current.current.trajectory.positions.set(event.target.id(),event.target.position());});
       current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:id=>{if(current.current.mode==='path'){fitView();return;}const n=cy.getElementById(id);if(n.length)cy.pan({x:cy.width()*.53-n.position('x')*cy.zoom(),y:cy.height()*.52-n.position('y')*cy.zoom()});},home:()=>{if(current.current.mode==='path'){fitView();return;}cy.zoom(initialZoom());const n=cy.getElementById(current.current.mode==='lineage'?current.current.root:'augusto');if(n.length)cy.pan({x:cy.width()*.54-n.position('x')*cy.zoom(),y:cy.height()*(cy.width()<640?.59:.54)-n.position('y')*cy.zoom()});}};
-      observer=new ResizeObserver(()=>{cy.resize();if(current.current.mode==='path')fitView();});observer.observe(container.current);
+      observer=new ResizeObserver(()=>{cy.resize();fitView();});observer.observe(container.current);
     });
-    return()=>{cancelled=true;observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
+    return()=>{cancelled=true;removeWheel?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
   },[]);
   useEffect(()=>renderGraph.current(),[props.mode,props.coreOnly,props.root,props.collapsed,props.trajectory,props.trajectoryKey]);
   useEffect(()=>{

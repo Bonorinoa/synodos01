@@ -68,8 +68,31 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
   const positions = new Map<string, { x:number; y:number }>();
   const levels = new Map<number,string[]>();
   for (const [id,level] of depth) if (!hidden.has(id)) levels.set(level,[...(levels.get(level) ?? []),id]);
-  for (const [level, ids] of levels) ids.forEach((id,index) => positions.set(id, { x: (index-(ids.length-1)/2)*135, y:level*190 }));
-  return { positions, depth, parent, hidden, edges: legal.filter(e => positions.has(e.source) && positions.has(e.target)) };
+  positions.set(root,{x:0,y:0});
+  let layerY=220;
+  for (const [level,ids] of levels) {
+    if(level===0)continue;
+    const groups=new Map<string,string[]>();
+    for(const id of ids){const ancestor=parent.get(id)??root;groups.set(ancestor,[...(groups.get(ancestor)??[]),id]);}
+    const ordered=[...groups].sort(([a],[b])=>(positions.get(a)?.x??0)-(positions.get(b)?.x??0));
+    const widths=ordered.map(([,children])=>Math.max(180,Math.min(4,children.length)*130));
+    const total=widths.reduce((sum,width)=>sum+width,0)+Math.max(0,ordered.length-1)*65;
+    let cursor=-total/2;
+    let rows=1;
+    ordered.forEach(([,children],groupIndex)=>{
+      const width=widths[groupIndex]??180;
+      const columns=Math.min(4,children.length);
+      children.forEach((id,index)=>positions.set(id,{x:cursor+width/2+(index%columns-(columns-1)/2)*130,y:layerY+Math.floor(index/columns)*76}));
+      rows=Math.max(rows,Math.ceil(children.length/columns));cursor+=width+65;
+    });
+    layerY+=220+(rows-1)*76;
+  }
+  // Hidden evidence remains a faint, bounded preview, not an extra traversal hop.
+  const contextPositions=new Map<string,{x:number;y:number}>();
+  const previews=new Map<string,string[]>();
+  for(const id of hidden){let ancestor=parent.get(id);while(ancestor&&!positions.has(ancestor))ancestor=parent.get(ancestor);if(ancestor)previews.set(ancestor,[...(previews.get(ancestor)??[]),id]);}
+  for(const [ancestor,ids] of previews){const anchor=positions.get(ancestor);if(!anchor)continue;ids.forEach((id,index)=>contextPositions.set(id,{x:anchor.x+(index%3-1)*48,y:anchor.y+105+Math.floor(index/3)*42}));}
+  return { positions, contextPositions, depth, parent, hidden, edges: legal.filter(e => positions.has(e.source) && positions.has(e.target)), contextEdges:legal.filter(e=>(positions.has(e.source)||contextPositions.has(e.source))&&(positions.has(e.target)||contextPositions.has(e.target))&&(hidden.has(e.source)||hidden.has(e.target))) };
 }
 // Horizontal progress is a viewing convention, not a direction or introduction claim.
 export const pathTargetIds = ['google-deepmind', 'santa-fe-institute'] as const;
