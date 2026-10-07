@@ -23,3 +23,6 @@
 - [x] Remove contour decoration and rebuild a space-reserving trail itinerary with stable Path zoom and readable labels.
 - [x] Add expandable multi-branch Lineage depth bands, reliable node clicks, and honest cross-branch discovery.
 - [x] Tag existing Capra packet edges without changing evidence; verify desktop and narrow-width flows.
+- [x] Add graph-derived closed hop contours and one active trail without changing evidence or traversal.
+- [x] Rebuild narrow-screen chrome, vertical Path steps, and draggable half-height records.
+- [x] Verify desktop and 500px Path/Lineage, viewport stability, and graph evidence invariants.

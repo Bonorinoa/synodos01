@@ -1732,6 +1732,7 @@
       "evidence": {
         "claim": "EconLLM Lab is an official Talking to Machines partner.",
         "basis": "joint_project",
+        "expansion_root": "monica-capra",
         "urls": [
           "https://talkingtomachines.org/partners/",
           "https://econllm-lab.com/team"
@@ -2006,6 +2007,7 @@
       "evidence": {
         "claim": "Lab collaborator / coauthor on EconLLM Synthetic Cultural Agents work.",
         "basis": "coauthorship",
+        "expansion_root": "monica-capra",
         "urls": [
           "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5082714",
           "https://econllm-lab.com/"
