@@ -94,6 +94,9 @@
   --glass: oklch(.995 .005 110 / 83%);
   --glass-gradient: linear-gradient(135deg, oklch(1 0 0 / 65%), oklch(.97 .015 165 / 18%));
   --canvas-gradient: var(--background);
+  --topo-line: oklch(.56 .055 150 / 19%);
+  --topo-fill: oklch(.70 .055 150 / 2.5%);
+  --topo-label: oklch(.46 .04 155 / 65%);
   --glass-shadow: 0 4px 20px oklch(.35 .03 175 / 6%), inset 0 1px 0 oklch(1 0 0 / 90%);
   --selection-glow: 0 0 0 5px oklch(.68 .12 35 / 12%), 0 0 18px oklch(.68 .12 35 / 14%);
   --font-sans: 'Rubik', sans-serif;
@@ -219,3 +222,27 @@
 
 .itinerary .itinerary-step{display:flex;flex:1;min-width:0;align-items:flex-start;flex-direction:column;height:auto;white-space:normal;padding:8px 2px;text-align:left;font-size:12px}.itinerary .itinerary-evidence{flex:0 0 28px;width:28px;height:28px}
 @media(max-width:640px){.itinerary .itinerary-step{font-size:11px;display:flex}.itinerary .itinerary-evidence{display:none}}
+
+/* Closed, hop-derived superlevel contours sit below the transparent Cytoscape surface. */
+.hop-topography{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:visible}
+.hop-topography path{fill:var(--topo-fill);stroke:var(--topo-line);stroke-width:1;vector-effect:non-scaling-stroke}
+.hop-topography text{font:12px var(--font-sans);fill:var(--topo-label);paint-order:stroke;stroke:var(--background);stroke-width:4px}
+.network-canvas{z-index:1}.depth-band{z-index:2;border-color:var(--topo-line)}.node-hit{z-index:5}.selection-halo{z-index:3}.canvas-lock{z-index:6}
+.mobile-details,.mobile-destination,.legend-toggle,.sheet-grip{display:none}
+.record-actions{position:sticky;top:0;z-index:2;background:var(--glass);backdrop-filter:blur(16px);display:flex;gap:6px;padding:10px 0;border-bottom:1px solid var(--border)}
+.itinerary[data-active=true]{border-top-color:var(--primary)}.itinerary[data-active=true] .step-number{border-color:var(--primary);box-shadow:0 0 0 3px var(--secondary)}
+@media(max-width:640px){
+.hud-header{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;height:54px;min-height:54px;padding:7px 10px;gap:3px}
+.wordmark{min-width:0;grid-column:1;grid-row:1}.wordmark h1{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mode-pill{grid-column:2;grid-row:1}.mode-pill button{padding:0 7px;font-size:11px}.mode-pill svg{display:none}.search-trigger{grid-column:3;grid-row:1}.mobile-details{display:flex;grid-column:4;grid-row:1;width:26px;height:30px}
+.canvas-heading{display:none}.network-app[data-details=true] .canvas-heading{display:block;top:104px}.network-app[data-details=true] .canvas-heading h2{font-size:15px}.network-app[data-details=true] .canvas-heading p{display:flex;font-size:10px}
+.target-dock{top:61px;left:10px;right:auto;max-width:calc(100% - 55px);height:34px;padding:2px 5px;gap:5px}.target-option,.target-dock>.micro-label,.target-dock>button{display:none}.mobile-destination{display:flex;align-items:center;gap:5px;color:var(--target-foreground);font-size:12px}.mobile-destination select{background:transparent;color:var(--foreground);font:12px var(--font-sans);max-width:180px;outline:none}.core-toggle{display:flex!important}
+.legend-toggle{display:flex;position:absolute;right:10px;top:62px;width:32px;height:32px;z-index:12}.canvas-footer{display:none;bottom:auto;top:100px;left:10px;right:10px;z-index:12}.network-app[data-legend=true] .canvas-footer{display:flex}.legend{flex-wrap:wrap;gap:10px}
+.canvas-stage,.network-app[data-guide=true] .canvas-stage,.network-app[data-inspector=true] .canvas-stage,.network-app:has(.trail-guide[data-open=false]) .canvas-stage{inset:104px 10px 60px}
+.network-app[data-details=true] .canvas-stage{top:157px}.network-app[data-mode=lineage] .canvas-stage{top:139px}
+.breadcrumb-dock{display:none}.branch-guide{top:61px;left:10px;right:50px;padding:3px}.branch-guide-title{display:none}.branch-guide-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}.branch-guide-options button{height:57px;padding:3px 4px;gap:2px;min-width:0}.branch-guide-options button>span{font-size:11px}.branch-guide-options small{font-size:9px}
+.trail-guide{left:auto;right:10px;top:104px;width:215px;max-height:calc(100dvh - 170px)}.trail-guide[data-open=false]{top:64px;right:52px;width:auto;max-width:168px}.network-app:has(.trail-guide[data-open=false]) .target-dock{max-width:calc(100% - 235px)}.network-app:has(.trail-guide[data-open=false]) .mobile-destination select{max-width:95px}.trail-guide-header>button:first-child{font-size:11px}.trail-guide-header>button:last-child{display:none}
+.trail-guide[data-open=true] .itinerary-scroll{display:block;overflow:auto}.itinerary{min-width:0;border-top:1px solid var(--border);padding-top:8px;margin-top:8px}.itinerary ol{display:block;overflow:visible}.itinerary li{min-width:0;min-height:58px}.itinerary li:not(:last-child):before{display:block}.itinerary .itinerary-step{font-size:12px}.trail-guide[data-open=true] .guide-honesty{display:block}
+.inspector{height:var(--sheet-height,48dvh);max-height:55dvh;padding:0 16px 20px;overscroll-behavior:contain}.inspector::before{display:none}.sheet-grip{display:flex;position:sticky;top:0;width:100%;height:20px;min-height:20px;justify-content:center;z-index:3;touch-action:none;background:var(--glass);border-radius:0;padding:0}.sheet-grip span{width:36px;height:4px;border-radius:3px;background:var(--border)}.inspector-kicker{height:30px}.record-actions{top:20px;padding:7px 0}.inspector-identity{padding-top:10px}.inspector h2{font-size:18px}.inspector-close{top:23px;z-index:4;width:30px;height:30px}
+.canvas-tools{left:10px;right:auto;bottom:9px}.canvas-tools button[aria-label=Fullscreen]{display:none}.network-app[data-inspector=true] .canvas-tools{bottom:calc(55dvh + 8px);z-index:21}
+}
+@media(max-width:600px){.hop-topography{display:none}}
