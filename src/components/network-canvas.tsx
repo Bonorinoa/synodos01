@@ -100,8 +100,14 @@ export function NetworkCanvas(props:Props) {
     const cy=cyRef.current;if(!cy)return;
      setLocks(cy.edges('.private-attestation').filter(edge=>!edge.hasClass('ghost')).toArray().flatMap(edge=>{
        if(!edge.isEdge())return [];
-      const a=edge.source().renderedPosition(),b=edge.target().renderedPosition();
-       return [{id:edge.id(),x:(a.x+b.x)/2,y:(a.y+b.y)/2}];
+       const a=edge.source().renderedPosition(),b=edge.target().renderedPosition();
+       if(narrow()){
+         const node=edge.source().id()===current.current.root?edge.target():edge.source();
+         const point=node.renderedPosition();
+         if(point.x<24||point.x>cy.width()-24||point.y<24||point.y>cy.height()-24)return [];
+         return [{id:edge.id(),x:point.x+16,y:point.y-16}];
+       }
+        return [{id:edge.id(),x:(a.x+b.x)/2,y:(a.y+b.y)/2}];
     }));
   };
   const updatePathLabels = () => {
@@ -112,10 +118,13 @@ export function NetworkCanvas(props:Props) {
     nodes.forEach(node=>{
       const ghost=node.hasClass('ghost')||node.hasClass('lineage-context');
       const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected||(current.current.mode==='lineage'&&node.hasClass('direct-contact'));
-      const point=node.renderedPosition(),width=ghost?80:compact?92:130;
-      const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+5,w:width,h:30};
+       const direct=current.current.mode==='lineage'&&node.hasClass('direct-contact');
+       const stagger=direct?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
+       const point=node.renderedPosition(),width=ghost?80:compact?92:130;
+       const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+5+stagger,w:width,h:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
-       const hide=!landmark&&((ghost&&(zoom<1.8||compact))||collision);
+       const clipped=box.x<0||box.x+box.w>cy.width()||box.y<0||box.y+box.h>cy.height();
+        const hide=(clipped&&!landmark)||(!landmark&&((ghost&&(zoom<1.8||compact))||collision));
        node.style('opacity',ghost?(compact?0:.035):node.hasClass('dim')?.14:1);
       node.style('width',`${(node.id()==='augusto'?28:node.data('target')?22:ghost?5:14)/zoom}px`);node.style('height',`${(node.id()==='augusto'?28:node.data('target')?22:ghost?5:14)/zoom}px`);
       if(!hide)occupied.push(box);
@@ -123,7 +132,6 @@ export function NetworkCanvas(props:Props) {
        node.style('text-opacity',hide?0:ghost?.25:1);
       node.style('font-size',`${(ghost?11:12)/zoom}px`);
       node.style('text-max-width',`${width/zoom}px`);
-       const stagger=compact&&current.current.mode==='lineage'&&node.hasClass('direct-contact')?(['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*26:0;
       node.style('text-margin-y',`${(5+stagger)/zoom}px`);
     });
   };
@@ -245,14 +253,14 @@ export function NetworkCanvas(props:Props) {
        cy.on('dragfree','node',event=>{if(current.current.mode==='path')current.current.trajectory.positions.set(event.target.id(),event.target.position());renderGraph.current();});
        const revealBranch=(id:string)=>{
          const p=current.current,layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded);
-         const points=[...layout.positions].filter(([key])=>key===id||layout.parent.get(key)===id).map(([,point])=>point);
+         const points=[...layout.positions].filter(([key])=>key===p.root||layout.depth.get(key)===1||key===id||layout.parent.get(key)===id).map(([,point])=>point);
          if(!points.length)return;
          const stage=container.current?.getBoundingClientRect(),sheet=document.querySelector('.inspector')?.getBoundingClientRect();
          const width=cy.width(),height=narrow()&&stage&&sheet?Math.min(cy.height(),sheet.top-stage.top):cy.height();
          const x1=Math.min(...points.map(point=>point.x)),x2=Math.max(...points.map(point=>point.x));
          const y1=Math.min(...points.map(point=>point.y)),y2=Math.max(...points.map(point=>point.y));
-         const zoom=Math.max(.15,Math.min(cy.zoom(),Math.max(100,width-90)/Math.max(1,x2-x1),Math.max(100,height-115)/Math.max(1,y2-y1)));
-         const pan={x:width/2-(x1+x2)/2*zoom,y:Math.max(100,height)/2-10-(y1+y2)/2*zoom};
+         const zoom=Math.max(.15,Math.min(cy.zoom(),Math.max(100,width-140)/Math.max(1,x2-x1),Math.max(100,height-145)/Math.max(1,y2-y1)));
+         const pan={x:width/2-(x1+x2)/2*zoom,y:70-y1*zoom};
          cy.stop();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){cy.zoom(zoom);cy.pan(pan);}else cy.animate({zoom,pan},{duration:320});
        };
        const focusNode=(id:string)=>{const node=cy.getElementById(id);if(!node.length||!node.isNode())return;

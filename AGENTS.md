@@ -32,5 +32,8 @@
 - Derive closed cartographic superlevel contours from visible non-ghost hop geometry behind Cytoscape; this gives elevation a recorded relationship meaning without modifying traversal or evidence.
 - Anchor contour labels to their own hop entry and bound their rendered text to the visible canvas; this prevents hull extrema and zoom from detaching or clipping labels.
 - Keep private-attestation markers non-interactive below node hit targets; this preserves reliable person selection while evidence remains inspectable through relationships.
-- Frame an expanded Lineage parent and its immediate recorded children within the unobscured canvas, excluding context previews; this reveals new depth without fitting unrelated branches or ghosts.
+- Frame an expanded Lineage parent, immediate recorded children, root, and first-hop gateways within the unobscured canvas, excluding context previews; this reveals new depth without losing the shared origin or fitting ghosts.
+- Stagger direct-gateway labels at every scale and suppress clipped off-route labels; this preserves readable names without changing graph placement or evidence.
+- Wrap inspector actions and temporarily collapse the narrow itinerary while a record is open; this avoids horizontal overflow and competing panels while retaining itinerary state.
+- Anchor narrow private-attestation markers to visible relationship endpoints with fixed rendered offsets; this keeps visual-only provenance attached during pan and zoom.
 - Render narrow Path waypoints in vertical itinerary order and use a bounded draggable record sheet; this protects readable labels and selected-node visibility without fitting the whole graph on selection.
