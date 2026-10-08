@@ -54,8 +54,8 @@ export function NetworkExplorer() {
   useEffect(()=>{if(commandOpen)setQuery('');},[commandOpen]);
   useEffect(()=>{const media=window.matchMedia('(max-width:640px)');const update=()=>setNarrowViewport(media.matches);update();media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
   useEffect(()=>{inspectorRef.current?.querySelector('.inspector')?.scrollTo({top:0});if(selected){const timer=setTimeout(()=>apiRef.current?.focus(selected),100);return ()=>clearTimeout(timer);}return undefined;},[selected]);
-  const visibleNodeCount=mode==='path'?trajectory.positions.size:lineage.positions.size;
-  const visibleEdgeCount=mode==='path'?trajectory.edges.length:lineage.edges.length;
+  const visibleNodeCount=mode==='path'?trajectory.positions.size-trajectory.ghostNodes.size:lineage.positions.size;
+  const visibleEdgeCount=mode==='path'?trajectory.edges.filter(e=>!trajectory.ghostEdges.has(e.id)).length:lineage.edges.length;
   return <div className="network-app" data-mode={mode} data-legend={legendOpen} data-inspector={!!selected} data-guide={mode==='path'&&guideOpen} ref={appRef}>
     <NetworkCanvas routeNodes={routeNodes} viewportKey="stable" lineageExpanded={lineageExpanded} trajectory={trajectory} trajectoryKey={`${target??"overview"}:${activePath??"all"}:${coreOnly}:${[...expanded].join(",")}:${selected??""}`} mode={mode} coreOnly={coreOnly} root={root} collapsed={collapsed} highlighted={highlighted} selected={selected} onSelect={setSelected} onExpand={mode==='lineage'?expandLineage:expandNode} onZoom={setZoom} apiRef={apiRef}/>
     <header className="hud-header glass">

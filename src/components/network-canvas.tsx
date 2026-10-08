@@ -20,12 +20,12 @@ function canvasColor(token:string) {
 function styles():StylesheetCSS[] {
   const color = canvasColor;
   return [
-    { selector:'node',css:{ shape:'ellipse','background-color':color('--foreground'),'background-opacity':.9,width:20,height:20,label:'data(displayLabel)',color:color('--foreground'),'font-family':'Geist','font-size':10,'text-valign':'bottom','text-margin-y':9,'text-outline-color':color('--background'),'text-outline-width':3,'border-width':3,'border-color':color('--background'),'border-opacity':.25,'text-wrap':'wrap','text-max-width':'145px' } },
+    { selector:'node',css:{ shape:'ellipse','background-color':color('--foreground'),'background-opacity':.9,width:20,height:20,label:'data(displayLabel)',color:color('--foreground'),'font-family':'Geist','font-size':12,'text-valign':'bottom','text-margin-y':9,'text-outline-color':color('--background'),'text-outline-width':3,'border-width':3,'border-color':color('--background'),'border-opacity':.25,'text-wrap':'wrap','text-max-width':'145px' } },
     { selector:'node.sourced-person',css:{'background-color':color('--verified')} },
     { selector:'node[kind = "lab"]',css:{shape:'round-rectangle','background-color':color('--lab'),'border-color':color('--lab'),width:24,height:24} },
     { selector:'node[kind = "university"]',css:{shape:'hexagon','background-color':color('--university'),'border-color':color('--university'),width:25,height:25} },
     { selector:'node[kind = "institution"]',css:{shape:'rectangle','background-color':color('--institution'),'border-color':color('--institution'),width:25,height:25} },
-    { selector:'node.candidate',css:{'background-opacity':.48,'border-style':'dashed','border-width':1.5,'border-opacity':.55,'text-opacity':.55,width:18,height:18,'font-size':10} },
+    { selector:'node.candidate',css:{'background-opacity':.48,'border-style':'dashed','border-width':1.5,'border-opacity':.55,'text-opacity':.55,width:18,height:18,'font-size':12} },
     { selector:'node.target',css:{shape:'diamond','background-color':color('--target'),'border-color':color('--target'),color:color('--target-foreground'),'border-width':5,'border-opacity':.24,width:34,height:34,'font-size':11} },
     { selector:'#augusto',css:{shape:'rectangle',width:50,height:50,'background-color':color('--focus'),'border-color':color('--background'),'border-width':4,'border-opacity':.5,'font-size':12,'font-weight':600,'text-margin-y':15} },
     { selector:'edge',css:{width:'data(weight)','line-color':color('--canvas-edge'),opacity:.45,'curve-style':'bezier','control-point-step-size':35,'overlay-padding':7} },
@@ -40,7 +40,7 @@ function styles():StylesheetCSS[] {
     { selector:'edge.highlight.weak',css:{width:1.1,'line-style':'dashed',opacity:.6} },
     { selector:'edge.highlight.unverified',css:{width:.8,'line-style':'dotted',opacity:.4} },
     { selector:'node.highlight',css:{opacity:1,'text-opacity':1,'border-opacity':.4} },
-    { selector:'node.direct-contact',css:{shape:'ellipse',width:28,height:28,'border-width':4,'border-color':color('--primary'),'border-opacity':.4,'font-weight':600,'font-size':10} },
+    { selector:'node.direct-contact',css:{shape:'ellipse',width:28,height:28,'border-width':4,'border-color':color('--primary'),'border-opacity':.4,'font-weight':600,'font-size':12} },
     { selector:'edge.ego-gateway',css:{width:2.8,'line-color':color('--verified'),opacity:.9} },
     { selector:'node.focused',css:{'border-color':color('--background'),'border-width':1,'border-opacity':1,'text-opacity':1,opacity:1} },
     { selector:'edge.focused',css:{opacity:1} },
@@ -49,12 +49,15 @@ function styles():StylesheetCSS[] {
     { selector:'node.target',css:{opacity:1,'text-opacity':1} },
     { selector:'edge.ego-gateway.unverified',css:{width:.8,'line-style':'dashed',opacity:.55} },
     { selector:'edge.low-confidence',css:{width:1,'line-style':'dashed',opacity:.4} },
-    { selector:'edge.private-attestation',css:{width:.8,'line-style':'dashed','line-dash-pattern':[5,5],opacity:.55,label:''} },
-    { selector:'node.lineage-node',css:{width:13,height:13,'font-size':8,'font-weight':400,'text-max-width':'110px','text-margin-y':6,'border-width':2} },
-    { selector:'node.lineage-node.direct-contact',css:{width:20,height:20,'font-size':8.5,'font-weight':500,'border-width':3} },
-    { selector:'#augusto.lineage-node',css:{width:32,height:32,'font-size':9.5,'font-weight':600,'border-width':5} },
+    { selector:'edge.private-attestation',css:{width:.8,'line-style':'dashed','line-dash-pattern':[5,5],opacity:.55,label:'','line-color':color('--foreground')} },
+    { selector:'edge.highlight.private-attestation',css:{'line-color':color('--trail')} },
+    { selector:'edge.unverified, edge.low-confidence, edge.weak',css:{'line-color':color('--foreground')} },
+    { selector:'edge.highlight.unverified, edge.highlight.low-confidence, edge.highlight.weak',css:{'line-color':color('--trail')} },
+    { selector:'node.lineage-node',css:{width:26,height:26,'font-size':12,'font-weight':400,'text-max-width':'110px','text-margin-y':6,'border-width':2} },
+    { selector:'node.lineage-node.direct-contact',css:{width:20,height:20,'font-size':12,'font-weight':500,'border-width':3} },
+    { selector:'#augusto.lineage-node',css:{width:32,height:32,'font-size':12,'font-weight':600,'border-width':5} },
     { selector:'node.lineage-node.nobel-laureate',css:{'font-weight':600} },
-    { selector:'node.lineage-context',css:{width:9,height:9,opacity:.2,'text-opacity':.45,'border-width':0,'font-size':6.5} },
+    { selector:'node.lineage-context',css:{width:9,height:9,opacity:.2,'text-opacity':.45,'border-width':0,'font-size':11} },
     { selector:'edge.branch-link',css:{'line-style':'dashed','line-color':color('--verified'),opacity:.5,'curve-style':'bezier'} },
     { selector:'edge.lineage-context',css:{opacity:.09,label:'',width:.6} },
   ];
@@ -74,6 +77,7 @@ export function NetworkCanvas(props:Props) {
     if(p.mode==='lineage'){const layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded);return new Map([...layout.positions,...layout.contextPositions]);}
     if(narrow())return verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions);
     const positions=new Map(p.trajectory.positions),cy=cyRef.current;
+    if(cy&&!p.routeNodes.length){const step=(cy.width()-240)/cy.zoom();positions.set('google-deepmind',{x:step,y:-120});positions.set('santa-fe-institute',{x:step,y:160});}
     if(cy&&p.routeNodes.length){const step=Math.max(140,(cy.width()-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2? -70:70)/cy.zoom()}));for(const id of ['google-deepmind','santa-fe-institute'])if(!p.routeNodes.includes(id))positions.set(id,{x:(p.routeNodes.length-1)*step,y:180/cy.zoom()});}
     return positions;
   };
@@ -175,7 +179,7 @@ export function NetworkCanvas(props:Props) {
     const right=!narrow()&&current.current.selected?400:64;
     const top=128;
     const availableHeight=Math.max(130,height-top-55);
-    const zoom=Math.max(.04,Math.min(1.1,(width-right-80)/Math.max(box.w,1),availableHeight/Math.max(box.h,1)));
+    const zoom=Math.max(.04,Math.min(.95,(width-right-80)/Math.max(box.w,1),availableHeight/Math.max(box.h,1)));
     cy.zoom(zoom);cy.pan({x:50+(width-right-50)/2-(box.x1+box.w/2)*zoom,y:top+availableHeight/2-(box.y1+box.h/2)*zoom});
     updatePathLabels();
   };
@@ -238,7 +242,7 @@ export function NetworkCanvas(props:Props) {
       const cy=cytoscape({container:container.current,elements:[],style:styles(),layout:{name:'preset'},minZoom:.04,maxZoom:3,wheelSensitivity:.18,boxSelectionEnabled:false,selectionType:'single'});
       cyRef.current=cy; renderGraph.current();
       const initialZoom=()=>cy.width()<640?.43:Math.min(.83,Math.max(.48,(cy.height()-200)/1100));
-      if(current.current.mode==='path')fitView();else {cy.zoom(initialZoom());cy.pan({x:cy.width()*.54,y:cy.height()*.54});}
+      if(current.current.mode==='path'){cy.zoom(.83);fitView();}else {cy.zoom(initialZoom());cy.pan({x:cy.width()*.54,y:cy.height()*.54});}
       current.current.onZoom(cy.zoom());
       cy.on('tap','node, edge',event=>{const id=event.target.id();current.current.onSelect(id);if(event.target.isNode())current.current.apiRef.current?.focus(id);});
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
