@@ -33,3 +33,6 @@
 - [x] Polish expanded Lineage root/gateway framing and label collisions.
 - [x] Wrap inspector actions, attach mobile locks, and collapse the guide beside open sheets.
 - [x] Verify the polish at desktop, 390px, and 500px without graph changes.
+- [x] Apply craft pass one: full-bleed chrome, semantic palette, type and shape hierarchy.
+- [x] Correct hop-label honesty and inspector neighbor framing; preserve graph data.
+- [x] Verify desktop Path, Lineage, keyboard search, and export.
