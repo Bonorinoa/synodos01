@@ -229,7 +229,8 @@
 .hop-topography text{font-family:var(--font-sans);fill:var(--topo-label);paint-order:stroke;stroke:var(--background);stroke-width:4px}
 .network-canvas{z-index:1}.depth-band{z-index:2;border-color:var(--topo-line)}.node-hit{z-index:5}.selection-halo{z-index:3}.canvas-lock{z-index:4;pointer-events:none;display:grid;place-items:center;border:1px solid var(--border)}
 .mobile-details,.mobile-destination,.legend-toggle,.sheet-grip{display:none}
-.record-actions{position:sticky;top:0;z-index:2;background:var(--glass);backdrop-filter:blur(16px);display:flex;gap:6px;padding:10px 0;border-bottom:1px solid var(--border)}
+.record-actions{position:sticky;top:0;z-index:2;background:var(--glass);backdrop-filter:blur(16px);display:flex;flex-wrap:wrap;gap:6px;padding:10px 0;border-bottom:1px solid var(--border)}
+.record-actions button{max-width:100%;white-space:normal;min-height:32px;height:auto;flex-shrink:0}.inspector{overflow-x:hidden;overflow-wrap:anywhere}.inspector-section,.inspector-identity,.record-actions{min-width:0;max-width:100%}.bridge-actions{flex-wrap:wrap}
 .itinerary[data-active=true]{border-top-color:var(--primary)}.itinerary[data-active=true] .step-number{border-color:var(--primary);box-shadow:0 0 0 3px var(--secondary)}
 @media(max-width:640px){
 .hud-header{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;height:54px;min-height:54px;padding:7px 10px;gap:3px}
