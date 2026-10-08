@@ -30,6 +30,6 @@
 - [x] Anchor and bound contour labels after destination/layout changes.
 - [x] Frame newly expanded Lineage children without fitting ghosts.
 - [x] Show mobile route itineraries and hide zoom tools behind open records; verify desktop/390px/500px.
-- [ ] Polish expanded Lineage root/gateway framing and label collisions.
-- [ ] Wrap inspector actions, attach mobile locks, and collapse the guide beside open sheets.
-- [ ] Verify the polish at desktop, 390px, and 500px without graph changes.
+- [x] Polish expanded Lineage root/gateway framing and label collisions.
+- [x] Wrap inspector actions, attach mobile locks, and collapse the guide beside open sheets.
+- [x] Verify the polish at desktop, 390px, and 500px without graph changes.
