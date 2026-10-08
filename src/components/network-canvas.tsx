@@ -228,6 +228,9 @@ export function NetworkCanvas(props:Props) {
     const routeKey=current.current.routeNodes.join('|');
     if(mode==='path'&&routeKey&&routeKey!==lastRoute.current&&!narrow()){const end=positions.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}
     lastRoute.current=routeKey;
+    if(current.current.highlighted.length){cy.elements().addClass('dim');for(const id of current.current.highlighted){const edge=cy.getElementById(id);edge.removeClass('dim').addClass('highlight');edge.connectedNodes().removeClass('dim').addClass('highlight');}}
+    if(current.current.selected){const selected=cy.getElementById(current.current.selected);selected.removeClass('dim').addClass('focused');if(selected.isNode()){selected.connectedEdges().removeClass('dim');selected.neighborhood('node').removeClass('dim');}}
+    cy.nodes('.target').removeClass('dim');
     rebuildContours();
     updatePathLabels();updateLocks();updateHitTargets();
     updateHalo();
