@@ -79,17 +79,28 @@ export function NetworkCanvas(props:Props) {
     const p=current.current,cy=cyRef.current,width=cy?.width()??window.innerWidth;
     if(p.mode==='lineage'){
       const layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded),positions=new Map([...layout.positions,...layout.contextPositions]);
-      if(narrow()){let y=0;for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);y=readablePositions(positions,ids,depth===0?1:depth===1?2:3,(width-40)/(depth===1?2:3),y,46)+8;}}
+      if(narrow()){
+        let y=0;
+        for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){
+          const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);
+          const columns=depth===0?1:depth===1?4:3;
+          y=readablePositions(positions,ids,columns,(width-32)/columns,y,depth===0?64:depth===1?72:48);
+        }
+      }
       return positions;
     }
     const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
     if(p.selected){
       const ids=[...positions.keys()].filter(id=>!p.trajectory.ghostNodes.has(id));const leading=[...new Set(['augusto',p.selected])].filter(id=>ids.includes(id));
       if(narrow()&&p.routeNodes.length){
-        const route=p.routeNodes.filter(id=>ids.includes(id)),spacing=(width-40)/2;
-        route.forEach((id,i)=>{const row=Math.floor(i/2),column=row%2?1-i%2:i%2;positions.set(id,{x:(column-.5)*spacing,y:row*50});});
-        const remainder=ids.filter(id=>!route.includes(id));
-        readablePositions(positions,remainder,4,(width-40)/4,Math.ceil(route.length/2)*50+12,45);return positions;
+        const route=p.routeNodes.filter(id=>ids.includes(id)),lane=-(width-48)*.22;
+        route.forEach((id,i)=>positions.set(id,{x:lane,y:i*68}));
+        const primary=new Set([...route,p.selected,...['google-deepmind','santa-fe-institute']]);
+        const sideX=(width-48)*.28;
+        for(const id of primary)if(!route.includes(id)&&ids.includes(id))positions.set(id,{x:sideX,y:(route.length-1)*68});
+        const remainder=ids.filter(id=>!primary.has(id));
+        remainder.forEach((id,i)=>positions.set(id,{x:sideX,y:i<3?68+i*68:600+(i-3)*72}));
+        return positions;
       }
       const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?50:140);
       readablePositions(positions,ids.filter(id=>!leading.includes(id)),4,narrow()?(width-40)/4:180,end+12,narrow()?50:100);return positions;
@@ -129,7 +140,7 @@ export function NetworkCanvas(props:Props) {
          const node=edge.source().id()===current.current.root?edge.target():edge.source();
          const point=node.renderedPosition();
          if(point.x<24||point.x>cy.width()-24||point.y<24||point.y>cy.height()-24)return [];
-         return [{id:edge.id(),x:point.x+16,y:point.y-16}];
+         return [{id:edge.id(),x:point.x+22,y:point.y-22}];
        }
         return [{id:edge.id(),x:(a.x+b.x)/2,y:(a.y+b.y)/2}];
     }));
@@ -143,13 +154,18 @@ export function NetworkCanvas(props:Props) {
       const ghost=node.hasClass('ghost')||node.hasClass('lineage-context');
       const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected||(current.current.mode==='lineage'&&node.hasClass('direct-contact'));
        const direct=current.current.mode==='lineage'&&node.hasClass('direct-contact');
+       const routeNode=current.current.mode==='path'&&current.current.routeNodes.includes(node.id());
+       const lineageNode=compact&&current.current.mode==='lineage'&&!ghost;
+       const destination=compact&&node.data('target');
        const stagger=direct&&!compact?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
-       const point=node.renderedPosition(),width=ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130;
-       const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+(compact?6:12)+stagger,w:width,h:compact?18:30};
+       const point=node.renderedPosition(),width=compact&&direct?(cy.width()-32)/4-6:compact&&(routeNode||destination)?(cy.width()-48)/2-12:lineageNode?(cy.width()-32)/3-12:ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130;
+       const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+(compact?6:12)+stagger,w:width,h:compact&&(direct||routeNode||lineageNode||destination)?36:compact?18:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
        const clipped=box.x<0||box.x+box.w>cy.width()||box.y<0||box.y+box.h>cy.height();
         const guide=document.querySelector('.trail-guide')?.getBoundingClientRect();const underGuide=guide&&box.x<guide.right&&box.x+box.w>guide.left&&box.y<guide.bottom&&box.y+box.h>guide.top;
-       const hide=(clipped&&!landmark)||(!landmark&&!!underGuide)||(!landmark&&((ghost&&(zoom<1.8||compact))||collision));
+       const sheet=document.querySelector('.inspector')?.getBoundingClientRect();
+       const behindSheet=compact&&sheet&&box.y+box.h>sheet.top;
+       const hide=!!behindSheet||(clipped&&!landmark)||(!landmark&&!!underGuide)||(!landmark&&((ghost&&(zoom<1.8||compact))||collision));
        node.style('opacity',ghost?(compact?0:.035):node.hasClass('dim')?.14:1);
       const base=node.id()==='augusto'?48:node.data('target')?38:ghost?9:compact?22:26;
        const size=Math.max(base*.72,Math.min(base*1.3,base*zoom));
@@ -158,7 +174,7 @@ export function NetworkCanvas(props:Props) {
        node.style('label',hide?'\u00a0':'data(displayLabel)');
        node.style('text-opacity',hide?0:ghost?.25:1);
       node.style('font-size',`${(ghost?11:12)/zoom}px`);
-      node.style('text-max-width',`${width/zoom}px`);node.style('text-wrap',compact?'ellipsis':'wrap');
+      node.style('text-max-width',`${width/zoom}px`);node.style('text-wrap',compact&&!direct&&!routeNode&&!lineageNode&&!destination?'ellipsis':'wrap');
       node.style('text-margin-y',`${((compact?6:12)+stagger)/zoom}px`);
     });
   };
@@ -233,7 +249,7 @@ export function NetworkCanvas(props:Props) {
     const visibleNodes=graph.nodes.filter(n=>(!coreOnly||!n.candidate||n.id===root)&&positions.has(n.id));
     const ids=new Set(visibleNodes.map(n=>n.id));
     const visibleEdges=(mode==='lineage'?[...lineage.edges,...lineage.contextEdges]:current.current.trajectory.edges).filter(e=>ids.has(e.source)&&ids.has(e.target));
-    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:n.id==='augusto'?'Augusto':n.label},position:positions.get(n.id) ?? {x:0,y:0},classes:[n.kind==='person'&&visibleEdges.some(e=>[e.source,e.target].includes(n.id)&&e.evidence.urls.length>0&&e.evidence.confidence!=='low')?'sourced-person':'',mode==='lineage'?'lineage-node':'',mode==='lineage'&&n.kind==='person'&&n.nobel_prize?'nobel-laureate':'',mode==='lineage'&&lineage.hidden.has(n.id)?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostNodes.has(n.id)?'ghost':'',n.candidate?'candidate':'',n.target?'target':'',n.id!=='augusto'&&(mode==='lineage'?lineage.depth.get(n.id)===1:current.current.trajectory.depths.get(n.id)===1)?'direct-contact':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[mode==='lineage'&&(lineage.hidden.has(e.source)||lineage.hidden.has(e.target))?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostEdges.has(e.id)?'ghost':'',weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',e.evidence.confidence==='low'?'low-confidence':'',e.evidence.ego_gateway?'ego-gateway':'',e.evidence.attestation==='user'?'private-attestation':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',(e.evidence.basis==='committee'||e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee'))?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':'',mode==='lineage'&&['talking-to-machines'].some(id=>[e.source,e.target].includes(id))?'branch-link':''].join(' ')}))];
+    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:n.id==='augusto'?'Augusto':n.label.startsWith('Concordia (')?'Concordia\n(DeepMind)':n.label},position:positions.get(n.id) ?? {x:0,y:0},classes:[n.kind==='person'&&visibleEdges.some(e=>[e.source,e.target].includes(n.id)&&e.evidence.urls.length>0&&e.evidence.confidence!=='low')?'sourced-person':'',mode==='lineage'?'lineage-node':'',mode==='lineage'&&n.kind==='person'&&n.nobel_prize?'nobel-laureate':'',mode==='lineage'&&lineage.hidden.has(n.id)?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostNodes.has(n.id)?'ghost':'',n.candidate?'candidate':'',n.target?'target':'',n.id!=='augusto'&&(mode==='lineage'?lineage.depth.get(n.id)===1:current.current.trajectory.depths.get(n.id)===1)?'direct-contact':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[mode==='lineage'&&(lineage.hidden.has(e.source)||lineage.hidden.has(e.target))?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostEdges.has(e.id)?'ghost':'',weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',e.evidence.confidence==='low'?'low-confidence':'',e.evidence.ego_gateway?'ego-gateway':'',e.evidence.attestation==='user'?'private-attestation':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',(e.evidence.basis==='committee'||e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee'))?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':'',mode==='lineage'&&['talking-to-machines'].some(id=>[e.source,e.target].includes(id))?'branch-link':''].join(' ')}))];
     const previous={zoom:cy.zoom(),pan:cy.pan()};
     const existing=new Map(cy.nodes().map(node=>[node.id(),node.position()] as const));
     const wanted=new Set(elements.map(element=>element.data.id));
@@ -285,14 +301,14 @@ export function NetworkCanvas(props:Props) {
           const node=cy.getElementById(id);if(!node.length||!node.isNode())return;
           const p=current.current;
            const positions=displayPositions();cy.batch(()=>cy.nodes().forEach(n=>{const point=positions.get(n.id());if(point)n.position(point);}));
-           const nodes=cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context'));
+           const nodes=cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(!narrow()||p.mode!=='path'||!p.routeNodes.length||n.position().y<600));
            const points=nodes.toArray().flatMap(n=>n.isNode()?[n.position()]:[]);if(!points.length)return;
            const stage=container.current?.getBoundingClientRect(),sheet=document.querySelector('.inspector')?.getBoundingClientRect();
            const left=!narrow()&&document.querySelector('.trail-guide[data-open=true]')?330:48,right=!narrow()&&p.selected?400:48;
-           const top=narrow()?180:160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-44:cy.height()-64;
+           const top=narrow()?174:160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-64:cy.height()-64;
            const width=cy.width()-left-right,height=Math.max(240,bottom-top);
            const x1=Math.min(...points.map(point=>point.x)),x2=Math.max(...points.map(point=>point.x)),y1=Math.min(...points.map(point=>point.y)),y2=Math.max(...points.map(point=>point.y));
-            const zoom=narrow()?Math.max(.65,Math.min(1,(bottom-top-26)/Math.max(1,y2-y1))):Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
+            const zoom=narrow()?Math.max(.3,Math.min(1,(bottom-top)/Math.max(1,y2-y1),(cy.width()-64)/Math.max(1,x2-x1))):Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
            const pan={x:narrow()?cy.width()/2:left+width/2-(x1+x2)/2*zoom,y:narrow()?top:top+height/2-(y1+y2)/2*zoom};
            rebuildContours();
            cy.stop();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){cy.zoom(zoom);cy.pan(pan);}else cy.animate({zoom,pan},{duration:300});
@@ -301,7 +317,7 @@ export function NetworkCanvas(props:Props) {
         const focusNode=(id:string)=>frameNodes(id,false);
         current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:focusNode,reveal:revealBranch,home:()=>focusNode(current.current.mode==='lineage'?current.current.root:'augusto')};
       let previousSize={width:cy.width(),height:cy.height()},previousNarrow=narrow();
-        observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;const breakpointChanged=previousNarrow!==narrow();previousNarrow=narrow();if(breakpointChanged){renderGraph.current();if(current.current.selected)focusNode(current.current.selected);else if(narrow()&&current.current.mode==='lineage'){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}else if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,'google-deepmind','santa-fe-institute']){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(narrow()&&current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
+        observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;const breakpointChanged=previousNarrow!==narrow();previousNarrow=narrow();if(breakpointChanged){renderGraph.current();if(current.current.selected)focusNode(current.current.selected);else if(narrow()&&current.current.mode==='lineage'){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}else if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,'google-deepmind','santa-fe-institute']){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
     });
     return()=>{cancelled=true;removeWheel?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
   },[]);
@@ -317,5 +333,6 @@ export function NetworkCanvas(props:Props) {
     updateHalo();
    },[props.highlighted,props.selected,props.mode,props.coreOnly,props.root,props.collapsed,props.trajectory]);
    useEffect(()=>{updateTopo();},[contours]);
-   return <div className="canvas-stage"><svg className="hop-topography" aria-hidden="true"><g ref={topoTransform}>{contours.map(c=><g key={c.depth} data-hop={c.depth}><path d={c.path}/>{props.mode==='path'&&<text data-anchor-x={c.label.x} data-anchor-y={c.label.y} x={c.label.x} y={c.label.y}>Hop {c.depth}</text>}</g>)}</g></svg><div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Augusto-to-target trail' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? props.trajectory.positions.size : lineageLayout(props.root,props.coreOnly,props.collapsed,props.lineageExpanded).positions.size} nodes.`}/>{bands.map(b=><div className="depth-band" key={b.depth} style={{top:b.y}}><span>Hop {b.depth}</span></div>)}{hitNodes.map(n=><Button key={n.id} className="node-hit" variant="ghost" size="icon" aria-label={`Select ${n.label}`} title={n.label} style={{left:n.x,top:n.y}} onClick={()=>{props.onSelect(n.id);props.apiRef.current?.focus(n.id);}}/>)}{props.mode==='path'&&props.routeNodes.length>0&&props.routeNodes.flatMap((id,index)=>{const n=hitNodes.find(n=>n.id===id);return n?[{...n,index}]:[];}).map(n=><span className="waypoint-number" key={`waypoint-${n.id}`} style={{left:n.x-38,top:n.y-34}}>{n.index+1}</span>)}{props.mode==='lineage'&&hitNodes.filter(n=>graph.nodes.find(node=>node.id===n.id)?.nobel_prize).map(n=><span className="nobel-badge" key={`nobel-${n.id}`} style={{left:n.x+12,top:n.y-22}} aria-label="Nobel laureate">★</span>)}<div ref={halo} className="selection-halo" aria-hidden="true" hidden/>{locks.map(lock=><span key={lock.id} className="canvas-lock" aria-hidden="true" style={{left:lock.x,top:lock.y}}><LockKeyhole size={11}/></span>)}</div>;
+   useEffect(()=>{const sheet=document.querySelector('.inspector');if(!sheet||!props.selected)return;const observer=new ResizeObserver(()=>{if(props.selected)props.apiRef.current?.focus(props.selected);});observer.observe(sheet);return()=>observer.disconnect();},[props.selected]);
+   return <div className="canvas-stage"><svg className="hop-topography" aria-hidden="true"><g ref={topoTransform}>{contours.map(c=><g key={c.depth} data-hop={c.depth}><path d={c.path}/>{props.mode==='path'&&<text data-anchor-x={c.label.x} data-anchor-y={c.label.y} x={c.label.x} y={c.label.y}>Hop {c.depth}</text>}</g>)}</g></svg><div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Augusto-to-target trail' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? props.trajectory.positions.size : lineageLayout(props.root,props.coreOnly,props.collapsed,props.lineageExpanded).positions.size} nodes.`}/>{bands.map(b=><div className="depth-band" key={b.depth} style={{top:b.y}}><span>Hop {b.depth}</span></div>)}{hitNodes.map(n=><Button key={n.id} className="node-hit" variant="ghost" size="icon" aria-label={`Select ${n.label}`} title={n.label} style={{left:n.x,top:n.y}} onClick={()=>{props.onSelect(n.id);props.apiRef.current?.focus(n.id);}}/>)}{props.mode==='path'&&props.routeNodes.length>0&&props.routeNodes.flatMap((id,index)=>{const n=hitNodes.find(n=>n.id===id);return n?[{...n,index}]:[];}).map(n=><span className="waypoint-number" key={`waypoint-${n.id}`} style={{left:n.x-48,top:n.y-18}}>{n.index+1}</span>)}{props.mode==='lineage'&&hitNodes.filter(n=>graph.nodes.find(node=>node.id===n.id)?.nobel_prize).map(n=><span className="nobel-badge" key={`nobel-${n.id}`} style={{left:n.x+12,top:n.y-22}} aria-label="Nobel laureate">★</span>)}<div ref={halo} className="selection-halo" aria-hidden="true" hidden/>{locks.map(lock=><span key={lock.id} className="canvas-lock" aria-hidden="true" style={{left:lock.x,top:lock.y}}><LockKeyhole size={11}/></span>)}</div>;
 }
