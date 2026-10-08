@@ -158,7 +158,8 @@ export function NetworkCanvas(props:Props) {
        const lineageNode=compact&&current.current.mode==='lineage'&&!ghost;
        const destination=compact&&node.data('target');
        const stagger=direct&&!compact?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
-       const point=node.renderedPosition(),width=compact&&direct?(cy.width()-32)/4-6:compact&&(routeNode||destination)?(cy.width()-48)/2-12:lineageNode?(cy.width()-32)/3-12:ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130;
+         const point=node.renderedPosition(),width=Math.max(44,compact&&direct?(cy.width()-32)/4-6:compact&&(routeNode||destination)?(cy.width()-48)/2-12:lineageNode?(cy.width()-32)/3-12:ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130);
+        const labelWidth=Math.max(44,width/Math.max(zoom,.01));
        const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+(compact?6:12)+stagger,w:width,h:compact&&(direct||routeNode||lineageNode||destination)?36:compact?18:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
        const clipped=box.x<0||box.x+box.w>cy.width()||box.y<0||box.y+box.h>cy.height();
@@ -171,10 +172,10 @@ export function NetworkCanvas(props:Props) {
        const size=Math.max(base*.72,Math.min(base*1.3,base*zoom));
        node.style('width',`${size/zoom}px`);node.style('height',`${size/zoom}px`);
       if(!hide)occupied.push(box);
-       node.style('label',hide?'\u00a0':'data(displayLabel)');
+        node.style('label',hide?'\u00a0':String(node.data('displayLabel')??''));
        node.style('text-opacity',hide?0:ghost?.25:1);
       node.style('font-size',`${(ghost?11:12)/zoom}px`);
-      node.style('text-max-width',`${width/zoom}px`);node.style('text-wrap',compact&&!direct&&!routeNode&&!lineageNode&&!destination?'ellipsis':'wrap');
+       node.style('text-max-width',`${labelWidth}px`);node.style('text-wrap',compact&&!direct&&!routeNode&&!lineageNode&&!destination?'ellipsis':'wrap');
       node.style('text-margin-y',`${((compact?6:12)+stagger)/zoom}px`);
     });
   };

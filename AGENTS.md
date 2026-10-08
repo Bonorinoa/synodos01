@@ -27,7 +27,7 @@
 
 - Preserve Path scale on target picks; selections may frame recorded neighbors and expansions auto-fit them, excluding ghosts, to keep evidence exploration clear of floating records.
 - Clear expansion on mode changes and keep ranked routes collapsible; this prevents stale branches and saves canvas space.
-- Float atlas controls and evidence records over a full-bleed canvas, with camera framing in the unobscured region and rendered-coordinate accessible hit targets; this maximizes map space without sacrificing selection.
+- Float controls and records over the canvas; frame the unobscured region and keep rendered-coordinate hit targets.
 - Bound cross-branch discovery to recorded legal links into tagged packets, excluding ego and the Capra gateway; this avoids presenting a shared origin as an advisor connection.
 - Derive closed cartographic superlevel contours from visible non-ghost hop geometry behind Cytoscape; this gives elevation a recorded relationship meaning without modifying traversal or evidence.
 - Anchor contour labels to their own hop entry and bound their rendered text to the visible canvas; this prevents hull extrema and zoom from detaching or clipping labels.
@@ -41,4 +41,5 @@
 - Encode node kind through shapes with destination-only diamonds and zoom-clamped size hierarchy; this prevents decorative color from implying evidence quality.
 - Render one depth-sorted hop label per band without relationship-type assumptions; this preserves honest distance labels.
 
-- Frame selection and expansion against actual record bounds; observe sheet resizes and exclude peripheral Path context so trails and hop rows stay readable without canvas reflow.
+- Frame selection and expansion against record bounds; observe sheet resizes and exclude peripheral Path context.
+- Present exploration as mission → story → evidence, with one prominent contextual surface; this reduces overload without changing graph meaning.

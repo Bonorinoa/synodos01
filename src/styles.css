@@ -48,23 +48,23 @@
 
 :root {
  --radius: .625rem;
- --background: oklch(.959 .010 86.9); --foreground: oklch(.274 .016 179.2);
+ --background: oklch(.971 .004 145); --foreground: oklch(.292 .024 177);
  --primary: var(--foreground); --primary-foreground: var(--background);
  --card: var(--background); --card-foreground: var(--foreground); --popover: var(--background); --popover-foreground: var(--foreground);
  --secondary: color-mix(in oklch,var(--foreground) 7%,var(--background)); --secondary-foreground: var(--foreground);
  --muted: var(--secondary); --muted-foreground: color-mix(in oklch,var(--foreground) 70%,var(--background)); --accent: var(--secondary); --accent-foreground: var(--foreground);
  --destructive: var(--foreground); --destructive-foreground: var(--background);
  --border: color-mix(in oklch,var(--foreground) 8%,transparent); --input: var(--border); --ring: var(--foreground);
- --verified: oklch(.48 .085 195); --trail: oklch(.590 .151 34.7); --target: oklch(.707 .126 79.4); --target-foreground: var(--target);
+ --verified: oklch(.521 .075 186); --trail: oklch(.543 .128 31); --target: oklch(.671 .105 83); --target-foreground: var(--target);
  --focus: var(--foreground); --person: var(--verified); --lab: var(--foreground); --institution: var(--foreground); --university: var(--foreground);
  --canvas-edge: var(--verified); --canvas-weak: var(--foreground);
- --glass: color-mix(in oklch,var(--background) 70%,transparent); --glass-shadow: 0 1px 0 color-mix(in oklch,var(--foreground) 4%,transparent);
- --topo-line: oklch(.56 .055 150 / 19%); --topo-fill: oklch(.70 .055 150 / 2.5%); --topo-label: var(--muted-foreground);
- --font-sans: 'Geist', sans-serif; --font-display: 'Newsreader', serif; --font-data: 'Geist Mono', monospace;
+ --glass: color-mix(in oklch,var(--background) 88%,transparent); --glass-shadow: 0 12px 40px color-mix(in oklch,var(--foreground) 7%,transparent);
+ --topo-line: color-mix(in oklch,var(--verified) 18%,transparent); --topo-fill: color-mix(in oklch,var(--verified) 2.5%,transparent); --topo-label: var(--muted-foreground);
+ --font-sans: 'Geist', sans-serif; --font-display: 'Space Mono', monospace; --font-data: 'Space Mono', monospace;
  --chart-1:var(--verified); --chart-2:var(--foreground); --chart-3:var(--foreground); --chart-4:var(--target); --chart-5:var(--trail);
  --sidebar:var(--background); --sidebar-foreground:var(--foreground); --sidebar-primary:var(--primary); --sidebar-primary-foreground:var(--background); --sidebar-accent:var(--accent); --sidebar-accent-foreground:var(--foreground); --sidebar-border:var(--border); --sidebar-ring:var(--ring);
 }
-@theme inline {--color-target:var(--target);--color-person:var(--person);--color-lab:var(--lab);--color-institution:var(--institution);--color-university:var(--university);--font-sans:'Geist',sans-serif;--font-display:'Newsreader',serif;--font-mono:'Geist Mono',monospace;}
+@theme inline {--color-target:var(--target);--color-person:var(--person);--color-lab:var(--lab);--color-institution:var(--institution);--color-university:var(--university);--font-sans:'Geist',sans-serif;--font-display:'Space Mono',monospace;--font-mono:'Space Mono',monospace;}
 @layer base {*{border-color:var(--border)}body{background:var(--background);color:var(--foreground);font-family:var(--font-sans);letter-spacing:0}button,select,input{font-family:var(--font-sans)}button{border-radius:6px}svg.lucide{stroke-width:1.5}}
 .network-app{--record-width:360px;--guide-width:288px;height:100dvh;min-height:480px;overflow:hidden;position:relative;background:var(--background);font-size:13px}
 .glass{background:var(--glass);backdrop-filter:blur(14px) saturate(140%);border:1px solid var(--border);box-shadow:var(--glass-shadow);border-radius:10px}
@@ -92,3 +92,19 @@
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 @media(max-width:640px){.trail-guide[data-open=false]{height:32px}.trail-guide[data-open=false] .trail-guide-header{padding:0}.trail-guide[data-open=false] .trail-guide-header>button:first-child{height:30px;padding:0 12px}.network-app[data-inspector=true] .trail-guide{top:104px}}
+
+/* Guided Signal Lab product layer */
+.glass{background:var(--glass);backdrop-filter:blur(18px) saturate(120%);border-radius:6px}
+.hud-header{height:60px;box-shadow:none}.wordmark h1{font:700 14px var(--font-display);text-transform:uppercase}.private-label{font:11px var(--font-data)}
+.atlas-mark{width:28px;height:28px;stroke-width:1.25}
+.atlas-summary{left:20px;top:72px;gap:12px}.atlas-summary>button{height:30px;padding:0;font:11px var(--font-data);color:var(--muted-foreground)}.core-toggle{font-size:11px}
+.branch-guide{top:76px;left:50%;right:auto;transform:translateX(-50%);padding:4px;box-shadow:none;border-radius:6px}.branch-guide.glass{border:1px solid var(--border);border-radius:6px}.branch-guide-title{display:flex;align-items:center;gap:8px;padding:0 10px;font:11px var(--font-data)}.branch-guide-title small{display:inline;color:var(--muted-foreground)}.branch-guide-options button,.branch-guide-options button:first-child{border-radius:4px}
+.map-key{left:20px;top:108px;bottom:auto;width:292px;padding:18px}.map-key h2{font:700 13px var(--font-display);text-transform:uppercase;margin-bottom:10px}.view-explainer{font-size:12px;line-height:1.55;color:var(--muted-foreground);padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--border)}
+.inspector{top:76px;bottom:16px;border-left:2px solid color-mix(in oklch,var(--verified) 55%,transparent)}.inspector h2{font:700 22px/1.3 var(--font-display)}
+.trail-guide{left:20px;top:112px;width:300px;max-height:calc(100dvh - 136px);border-left:2px solid var(--trail)}
+.mission-quality{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0;border-bottom:1px solid var(--border)}.mission-quality span{display:flex;align-items:center;gap:5px;font:11px var(--font-data);color:var(--muted-foreground)}
+.itinerary-title{display:flex;flex-direction:column;gap:4px;font:700 12px var(--font-display);text-transform:uppercase}.itinerary-title small{font:11px var(--font-sans);text-transform:none;color:var(--muted-foreground)}
+.alternate-routes{border-top:1px solid var(--border);padding-top:12px}.alternate-routes>span{font:11px var(--font-data);color:var(--muted-foreground)}.alternate-routes button{width:100%;justify-content:flex-start;height:40px;padding:0}.alternate-routes button span{font-size:12px}.alternate-routes button small{margin-left:auto;color:var(--muted-foreground);font:11px var(--font-data)}
+.mission-prompt{position:absolute;z-index:7;left:50%;top:50%;transform:translate(-50%,-46%);width:min(520px,calc(100% - 40px));text-align:center}.mission-index{font:11px var(--font-data);color:var(--trail)}.mission-prompt h2{margin:14px 0 10px;font:700 clamp(24px,4vw,36px)/1.25 var(--font-display)}.mission-prompt>p{max-width:440px;margin:0 auto;color:var(--muted-foreground);font-size:14px;line-height:1.6}.mission-destinations{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:24px 0 16px}.mission-destinations button{height:70px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;text-align:left}.mission-destinations button span{font:700 12px var(--font-display)}.mission-destinations button small{grid-column:1;color:var(--muted-foreground)}.mission-destinations button svg{grid-column:2;grid-row:1/3}.mission-note{font:11px var(--font-data);color:var(--muted-foreground)}
+.inspector-disclosure{border-top:1px solid var(--border)}.inspector-disclosure>button{width:100%;height:52px;justify-content:space-between;padding:0}.inspector-disclosure>button>span{display:flex;align-items:center;gap:8px;font-size:12px}.inspector-disclosure>button small{color:var(--muted-foreground);font:11px var(--font-data)}.inspector-disclosure>button svg{transition:transform .18s ease}.disclosure-content{padding:0 0 16px}
+@media(max-width:640px){.private-label{display:none}.mission-prompt{top:48%;width:calc(100% - 28px)}.mission-prompt h2{font-size:22px}.mission-prompt>p{font-size:13px}.mission-destinations{grid-template-columns:1fr;margin-top:18px}.mission-destinations button{height:60px}.branch-guide{top:104px;left:12px;right:12px;transform:none}.branch-guide-title{display:none}.trail-guide{left:auto;right:12px;width:210px;max-height:calc(100dvh - 192px)}.network-app[data-inspector=true] .inspector{top:auto}.network-app[data-inspector=true] .trail-guide{height:32px;width:auto;max-width:200px;border-left-width:1px}.network-app[data-inspector=true] .trail-guide .trail-guide-header{padding:0}.network-app[data-inspector=true] .trail-guide .trail-guide-header>button:first-child{height:30px;padding:0 12px}.network-app:not([data-inspector=true]) .trail-guide[data-open=true]~.canvas-tools{display:none}.map-key{top:auto;bottom:60px;left:12px}}

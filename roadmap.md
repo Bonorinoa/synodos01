@@ -40,3 +40,6 @@
 - [x] Verify readable Path/Lineage at desktop, 390px and 500px; keep pass two blocked.
 - [x] Pass 1c: separate selected Path trail/destinations and expanded Lineage rows; keep locks clear of names.
 - [x] Verify 390px, 500px and desktop selection/expansion, preserved waypoint order and unchanged graph; pass two blocked.
+- [x] Reframe the product around guided missions, one active route or branch, and evidence on demand.
+- [x] Apply the Signal Lab visual system and Space Mono typography without changing graph data.
+- [x] Verify the redesigned Path and Lineage journeys at desktop, 500px, and 390px.

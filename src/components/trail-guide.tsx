@@ -1,17 +1,15 @@
-import { ChevronDown, ChevronRight, MapPin, X, ArrowUpRight } from 'lucide-react';
+import { ChevronDown, ChevronRight, MapPin, X, ArrowUpRight, ShieldCheck, ShieldQuestion } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { edges, nodeById, weakBases, type RankedPath } from '@/lib/network';
 
 export function TrailGuide({paths,open,active,onToggle,onClear,onActive,onSelect}:{paths:RankedPath[];open:boolean;active:number|null;onToggle:()=>void;onClear:()=>void;onActive:(index:number)=>void;onSelect:(id:string)=>void}) {
+ const selectedIndex=active??0;
+ const selectedPath=paths[selectedIndex];
+ const selectedEvidence=selectedPath?.edges.flatMap(id=>{const edge=edges.find(item=>item.id===id);return edge?[edge]:[];})??[];
+ const publicCount=selectedEvidence.filter(edge=>edge.evidence.urls.length>0).length;
+ const caveatCount=selectedEvidence.filter(edge=>weakBases.has(edge.evidence.basis)||!edge.evidence.urls.length).length;
  return <section className="trail-guide glass" data-open={open} aria-label="Ranked paths">
-  <div className="trail-guide-header"><Button variant="ghost" aria-label={open?'Collapse ranked routes':'Expand ranked routes'} aria-expanded={open} onClick={onToggle}><MapPin size={15}/><span>Trail guide · {paths.length} routes</span>{open?<ChevronDown size={14}/>:<ChevronRight size={14}/>}</Button><Button variant="ghost" size="icon" aria-label="Clear paths" onClick={onClear}><X size={14}/></Button></div>
-  {open&&<div className="itinerary-scroll"><p className="guide-honesty">Recorded connections, not confirmed introductions.</p>{paths.map((path,i)=>{
-    const evidence=path.edges.flatMap(id=>{const e=edges.find(e=>e.id===id);return e?[e]:[];});
-    return <article className="itinerary" key={i} data-active={active===i}>
-      <Button className="itinerary-title" variant={active===i?'secondary':'ghost'} aria-pressed={active===i} onClick={()=>onActive(i)}>Route {i+1}<small>{path.edges.length} hops</small></Button>
-      <ol>{path.nodes.map((id,j)=><li key={id} data-stage={j===0?'ego':j===1?'direct':j===path.nodes.length-1?'destination':'bridge'}><span className="step-number">{j+1}</span><Button className="itinerary-step" variant="ghost" onClick={()=>onSelect(id)}><small>{j===0?'You':j===1?'Direct contact':j===path.nodes.length-1?'Destination':'Bridge'}</small><span>{id==='augusto'?'Augusto':nodeById.get(id)?.label}</span></Button>{j>0&&<Button className="itinerary-evidence" size="icon" variant="ghost" aria-label={`Inspect path ${i+1} relationship ${j}`} onClick={()=>onSelect(path.edges[j-1]??id)}><ArrowUpRight size={13}/></Button>}</li>)}</ol>
-      <p className="guide-honesty">{evidence.filter(e=>weakBases.has(e.evidence.basis)).length} weak overlaps · {evidence.filter(e=>!e.evidence.urls.length).length} private / unverified</p>
-    </article>;
-  })}{!paths.length&&<p className="guide-honesty">No eligible route within five recorded hops.</p>}</div>}
+  <div className="trail-guide-header"><Button variant="ghost" aria-label={open?'Collapse ways in':'Expand ways in'} aria-expanded={open} onClick={onToggle}><MapPin size={15}/><span>{selectedPath?`${selectedPath.edges.length} steps to ${nodeById.get(selectedPath.nodes.at(-1)??'')?.label}`:'No recorded way in'}</span>{open?<ChevronDown size={14}/>:<ChevronRight size={14}/>}</Button><Button variant="ghost" size="icon" aria-label="Clear destination" onClick={onClear}><X size={14}/></Button></div>
+  {open&&<div className="itinerary-scroll">{selectedPath?<><div className="mission-quality"><span>{publicCount===selectedEvidence.length?<ShieldCheck size={13}/>:<ShieldQuestion size={13}/>} {publicCount}/{selectedEvidence.length} steps have public sources</span>{caveatCount>0&&<span>{caveatCount} {caveatCount===1?'step needs':'steps need'} context</span>}</div><article className="itinerary" data-active="true"><div className="itinerary-title"><span>Through {nodeById.get(selectedPath.nodes[1]??'')?.label}</span><small>Recorded path, not an introduction</small></div><ol>{selectedPath.nodes.map((id,j)=><li key={id} data-stage={j===0?'ego':j===1?'direct':j===selectedPath.nodes.length-1?'destination':'bridge'}><span className="step-number">{j+1}</span><Button className="itinerary-step" variant="ghost" onClick={()=>onSelect(id)}><small>{j===0?'You':j===1?'Direct connection':j===selectedPath.nodes.length-1?'Destination':'Bridge'}</small><span>{id==='augusto'?'Augusto':nodeById.get(id)?.label}</span></Button>{j>0&&<Button className="itinerary-evidence" size="icon" variant="ghost" aria-label={`Review evidence for step ${j}`} onClick={()=>onSelect(selectedPath.edges[j-1]??id)}><ArrowUpRight size={13}/></Button>}</li>)}</ol></article>{paths.length>1&&<div className="alternate-routes"><span>Other ways in</span>{paths.map((path,index)=>index===selectedIndex?null:<Button key={path.nodes.join('|')} variant="ghost" onClick={()=>onActive(index)}><span>Through {nodeById.get(path.nodes[1]??'')?.label}</span><small>{path.edges.length} steps</small><ChevronRight size={13}/></Button>)}</div>}</>:<p className="guide-honesty">No eligible route within five recorded steps.</p>}</div>}
  </section>;
 }
