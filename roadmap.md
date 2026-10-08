@@ -38,3 +38,5 @@
 - [x] Verify desktop Path, Lineage, keyboard search, and export.
 - [x] Fix craft-pass-one selection/expansion framing and sequential offset waypoints.
 - [x] Verify readable Path/Lineage at desktop, 390px and 500px; keep pass two blocked.
+- [x] Pass 1c: separate selected Path trail/destinations and expanded Lineage rows; keep locks clear of names.
+- [x] Verify 390px, 500px and desktop selection/expansion, preserved waypoint order and unchanged graph; pass two blocked.
