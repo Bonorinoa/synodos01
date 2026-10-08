@@ -79,7 +79,7 @@ export function NetworkCanvas(props:Props) {
     const p=current.current,cy=cyRef.current,width=cy?.width()??window.innerWidth;
     if(p.mode==='lineage'){
       const layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded),positions=new Map([...layout.positions,...layout.contextPositions]);
-      if(narrow()){let y=0;for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);y=readablePositions(positions,ids,depth===0?1:depth===1?2:3,(width-40)/(depth===1?2:3),y,50)+12;}}
+      if(narrow()){let y=0;for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);y=readablePositions(positions,ids,depth===0?1:depth===1?2:3,(width-40)/(depth===1?2:3),y,46)+8;}}
       return positions;
     }
     const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
@@ -145,7 +145,7 @@ export function NetworkCanvas(props:Props) {
        const direct=current.current.mode==='lineage'&&node.hasClass('direct-contact');
        const stagger=direct&&!compact?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
        const point=node.renderedPosition(),width=ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130;
-       const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+12+stagger,w:width,h:30};
+       const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+(compact?6:12)+stagger,w:width,h:compact?18:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
        const clipped=box.x<0||box.x+box.w>cy.width()||box.y<0||box.y+box.h>cy.height();
         const guide=document.querySelector('.trail-guide')?.getBoundingClientRect();const underGuide=guide&&box.x<guide.right&&box.x+box.w>guide.left&&box.y<guide.bottom&&box.y+box.h>guide.top;
