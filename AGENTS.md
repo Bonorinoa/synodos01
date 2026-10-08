@@ -40,4 +40,3 @@
 
 - Encode node kind through shapes with destination-only diamonds and zoom-clamped size hierarchy; this prevents decorative color from implying evidence quality.
 - Render one depth-sorted hop label per band without relationship-type assumptions; this preserves honest distance labels.
-- Use cmdk for keyboard search navigation while keeping graph data entirely client-side; this provides predictable arrow-key selection.
