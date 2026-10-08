@@ -72,13 +72,31 @@ export function NetworkCanvas(props:Props) {
   const cyRef = useRef<Core|null>(null);
   const current = useRef(props); current.current=props;
   const narrow=()=>window.matchMedia('(max-width: 640px)').matches;
+  const readablePositions=(positions:Map<string,{x:number;y:number}>,ids:string[],columns:number,width:number,startY:number,step=64)=>{
+    const rows=Math.ceil(ids.length/columns);ids.forEach((id,i)=>{const row=Math.floor(i/columns),count=Math.min(columns,ids.length-row*columns);positions.set(id,{x:(i%columns-(count-1)/2)*width,y:startY+row*step});});return startY+rows*step;
+  };
   const displayPositions=()=>{
-    const p=current.current;
-    if(p.mode==='lineage'){const layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded);return new Map([...layout.positions,...layout.contextPositions]);}
-    if(narrow())return verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions);
-    const positions=new Map(p.trajectory.positions),cy=cyRef.current;
-    if(cy&&!p.routeNodes.length){const step=(cy.width()-240)/cy.zoom();positions.set('google-deepmind',{x:step,y:-120});positions.set('santa-fe-institute',{x:step,y:160});}
-    if(cy&&p.routeNodes.length){const step=Math.max(140,(cy.width()-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2? -70:70)/cy.zoom()}));for(const id of ['google-deepmind','santa-fe-institute'])if(!p.routeNodes.includes(id))positions.set(id,{x:(p.routeNodes.length-1)*step,y:180/cy.zoom()});}
+    const p=current.current,cy=cyRef.current,width=cy?.width()??window.innerWidth;
+    if(p.mode==='lineage'){
+      const layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded),positions=new Map([...layout.positions,...layout.contextPositions]);
+      if(narrow()){let y=0;for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);y=readablePositions(positions,ids,depth===0?1:depth===1?2:3,(width-40)/(depth===1?2:3),y,46)+8;}}
+      return positions;
+    }
+    const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
+    if(p.selected){
+      const ids=[...positions.keys()].filter(id=>!p.trajectory.ghostNodes.has(id));const leading=[...new Set(['augusto',p.selected])].filter(id=>ids.includes(id));
+      if(narrow()&&p.routeNodes.length){
+        const route=p.routeNodes.filter(id=>ids.includes(id)),spacing=(width-40)/2;
+        route.forEach((id,i)=>{const row=Math.floor(i/2),column=row%2?1-i%2:i%2;positions.set(id,{x:(column-.5)*spacing,y:row*50});});
+        const remainder=ids.filter(id=>!route.includes(id));
+        readablePositions(positions,remainder,4,(width-40)/4,Math.ceil(route.length/2)*50+12,45);return positions;
+      }
+      const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?50:140);
+      readablePositions(positions,ids.filter(id=>!leading.includes(id)),4,narrow()?(width-40)/4:180,end+12,narrow()?50:100);return positions;
+    }
+    if(narrow())return positions;
+    if(cy&&!p.routeNodes.length){const step=(width-240)/cy.zoom();positions.set('google-deepmind',{x:step,y:-120});positions.set('santa-fe-institute',{x:step,y:160});}
+    if(cy&&p.routeNodes.length){const step=Math.max(140,(width-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2?-70:70)/cy.zoom()}));for(const id of ['google-deepmind','santa-fe-institute'])if(!p.routeNodes.includes(id))positions.set(id,{x:(p.routeNodes.length-1)*step,y:180/cy.zoom()});}
     return positions;
   };
   const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;const zoom=cy.zoom(),pan=cy.pan();topoTransform.current?.setAttribute('transform',`translate(${pan.x} ${pan.y}) scale(${zoom})`);const labels:{x:number;y:number;w:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{
@@ -125,22 +143,23 @@ export function NetworkCanvas(props:Props) {
       const ghost=node.hasClass('ghost')||node.hasClass('lineage-context');
       const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected||(current.current.mode==='lineage'&&node.hasClass('direct-contact'));
        const direct=current.current.mode==='lineage'&&node.hasClass('direct-contact');
-       const stagger=direct?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
-       const point=node.renderedPosition(),width=ghost?80:compact?92:130;
-       const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+12+stagger,w:width,h:30};
+       const stagger=direct&&!compact?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
+       const point=node.renderedPosition(),width=ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130;
+       const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+(compact?6:12)+stagger,w:width,h:compact?18:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
        const clipped=box.x<0||box.x+box.w>cy.width()||box.y<0||box.y+box.h>cy.height();
-        const hide=(clipped&&!landmark)||(!landmark&&((ghost&&(zoom<1.8||compact))||collision));
+        const guide=document.querySelector('.trail-guide')?.getBoundingClientRect();const underGuide=guide&&box.x<guide.right&&box.x+box.w>guide.left&&box.y<guide.bottom&&box.y+box.h>guide.top;
+       const hide=(clipped&&!landmark)||(!landmark&&!!underGuide)||(!landmark&&((ghost&&(zoom<1.8||compact))||collision));
        node.style('opacity',ghost?(compact?0:.035):node.hasClass('dim')?.14:1);
-      const base=node.id()==='augusto'?48:node.data('target')?38:ghost?9:26;
+      const base=node.id()==='augusto'?48:node.data('target')?38:ghost?9:compact?22:26;
        const size=Math.max(base*.72,Math.min(base*1.3,base*zoom));
        node.style('width',`${size/zoom}px`);node.style('height',`${size/zoom}px`);
       if(!hide)occupied.push(box);
        node.style('label',hide?'\u00a0':'data(displayLabel)');
        node.style('text-opacity',hide?0:ghost?.25:1);
       node.style('font-size',`${(ghost?11:12)/zoom}px`);
-      node.style('text-max-width',`${width/zoom}px`);
-      node.style('text-margin-y',`${(12+stagger)/zoom}px`);
+      node.style('text-max-width',`${width/zoom}px`);node.style('text-wrap',compact?'ellipsis':'wrap');
+      node.style('text-margin-y',`${((compact?6:12)+stagger)/zoom}px`);
     });
   };
   const updateHitTargets = () => {
@@ -148,15 +167,15 @@ export function NetworkCanvas(props:Props) {
     setHitNodes(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')).toArray().flatMap(n=>n.isNode()?[{id:n.id(),label:n.data('label'),...n.renderedPosition()}]:[]).filter(n=>n.x>0&&n.x<cy.width()&&n.y>0&&n.y<cy.height()));
     if(current.current.mode==='lineage'){
       const layout=lineageLayout(current.current.root,current.current.coreOnly,current.current.collapsed,current.current.lineageExpanded);
-      const levels=new Map<number,number>();for(const [id,point] of layout.positions){const depth=layout.depth.get(id)??0;levels.set(depth,Math.min(levels.get(depth)??Infinity,point.y));}
-      setBands([...levels].sort(([a],[b])=>a-b).map(([depth,y])=>({depth,y:y*cy.zoom()+cy.pan().y-60})));
+      const levels=new Map<number,number>();cy.nodes().filter(n=>!n.hasClass('lineage-context')).forEach(n=>{const depth=layout.depth.get(n.id())??0;levels.set(depth,Math.min(levels.get(depth)??Infinity,n.position().y));});
+      setBands([...levels].sort(([a],[b])=>a-b).map(([depth,y])=>({depth,y:y*cy.zoom()+cy.pan().y-(narrow()?24:60)})));
     }else setBands([]);
   };
   const fitView = () => {
     const cy=cyRef.current;if(!cy)return;
     const display=displayPositions();cy.nodes().forEach(node=>{const point=display.get(node.id());if(point)node.position(point);});
     if(current.current.mode==='path'&&narrow()){
-      cy.zoom(.85);cy.pan({x:cy.width()/2,y:42});updatePathLabels();updateTopo();return;
+      cy.zoom(.85);cy.pan({x:cy.width()/2,y:178});updatePathLabels();updateTopo();return;
     }
     if(current.current.mode==='lineage'){
       const layout=lineageLayout(current.current.root,current.current.coreOnly,current.current.collapsed,current.current.lineageExpanded);
@@ -220,10 +239,10 @@ export function NetworkCanvas(props:Props) {
     const wanted=new Set(elements.map(element=>element.data.id));
     cy.batch(()=>{cy.elements().filter(element=>!wanted.has(element.id())).remove();for(const element of elements){const previousElement=cy.getElementById(element.data.id??'');if(previousElement.length)previousElement.data(element.data).classes(element.classes??'');else cy.add(element);}});
     
-      cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&!narrow()&&!current.current.routeNodes.includes(node.id())&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;const position=oldPosition??positions.get(node.id());if(!position)return;node.stop();node.position(position);});
+      cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&!narrow()&&!current.current.routeNodes.includes(node.id())&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;const position=(current.current.selected?undefined:oldPosition)??positions.get(node.id());if(!position)return;node.stop();node.position(position);});
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
-    if(mode==='lineage'&&(changed||lastRoot.current!==root)){fitView();}
+    if(mode==='lineage'&&(changed||lastRoot.current!==root)){if(narrow()){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}
     if(mode==='path'&&(changed||lastViewportKey.current!==current.current.viewportKey)){lastViewportKey.current=current.current.viewportKey;fitView();}
     const routeKey=current.current.routeNodes.join('|');
     if(mode==='path'&&routeKey&&routeKey!==lastRoute.current&&!narrow()){const end=positions.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}
@@ -264,24 +283,25 @@ export function NetworkCanvas(props:Props) {
        cy.on('dragfree','node',event=>{if(current.current.mode==='path')current.current.trajectory.positions.set(event.target.id(),event.target.position());renderGraph.current();});
        const frameNodes=(id:string,expansion:boolean)=>{
           const node=cy.getElementById(id);if(!node.length||!node.isNode())return;
-          const p=current.current,layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded);
-          const nodes=p.mode==='lineage'&&expansion?cy.nodes().filter(n=>n.id()===p.root||layout.depth.get(n.id())===1||n.id()===id||layout.parent.get(n.id())===id):node.closedNeighborhood().nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context'));
-          const points=nodes.toArray().flatMap(n=>n.isNode()?[n.position()]:[]);if(!points.length)return;
-          const stage=container.current?.getBoundingClientRect(),sheet=document.querySelector('.inspector')?.getBoundingClientRect();
-          const left=!narrow()&&document.querySelector('.trail-guide[data-open=true]')?330:64;
-          const right=!narrow()&&p.selected?400:64;
-          const width=cy.width()-left-right,height=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-140:cy.height()-220;
-          const x1=Math.min(...points.map(point=>point.x)),x2=Math.max(...points.map(point=>point.x));
-          const y1=Math.min(...points.map(point=>point.y)),y2=Math.max(...points.map(point=>point.y));
-          const zoom=Math.max(.15,Math.min(expansion?1.15:cy.zoom(),Math.max(100,width-100)/Math.max(1,x2-x1),Math.max(100,height-100)/Math.max(1,y2-y1)));
-          const pan={x:left+width/2-(x1+x2)/2*zoom,y:140+Math.max(100,height)/2-(y1+y2)/2*zoom};
-          cy.stop();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){cy.zoom(zoom);cy.pan(pan);}else cy.animate({zoom,pan},{duration:300});
+          const p=current.current;
+           const positions=displayPositions();cy.batch(()=>cy.nodes().forEach(n=>{const point=positions.get(n.id());if(point)n.position(point);}));
+           const nodes=cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context'));
+           const points=nodes.toArray().flatMap(n=>n.isNode()?[n.position()]:[]);if(!points.length)return;
+           const stage=container.current?.getBoundingClientRect(),sheet=document.querySelector('.inspector')?.getBoundingClientRect();
+           const left=!narrow()&&document.querySelector('.trail-guide[data-open=true]')?330:48,right=!narrow()&&p.selected?400:48;
+           const top=narrow()?180:160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-44:cy.height()-64;
+           const width=cy.width()-left-right,height=Math.max(240,bottom-top);
+           const x1=Math.min(...points.map(point=>point.x)),x2=Math.max(...points.map(point=>point.x)),y1=Math.min(...points.map(point=>point.y)),y2=Math.max(...points.map(point=>point.y));
+            const zoom=narrow()?Math.max(.65,Math.min(1,(bottom-top-26)/Math.max(1,y2-y1))):Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
+           const pan={x:narrow()?cy.width()/2:left+width/2-(x1+x2)/2*zoom,y:narrow()?top:top+height/2-(y1+y2)/2*zoom};
+           rebuildContours();
+           cy.stop();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){cy.zoom(zoom);cy.pan(pan);}else cy.animate({zoom,pan},{duration:300});
         };
         const revealBranch=(id:string)=>frameNodes(id,true);
         const focusNode=(id:string)=>frameNodes(id,false);
         current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:focusNode,reveal:revealBranch,home:()=>focusNode(current.current.mode==='lineage'?current.current.root:'augusto')};
-      let previousSize={width:cy.width(),height:cy.height()};
-        observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,'google-deepmind','santa-fe-institute']){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(narrow()&&current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
+      let previousSize={width:cy.width(),height:cy.height()},previousNarrow=narrow();
+        observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;const breakpointChanged=previousNarrow!==narrow();previousNarrow=narrow();if(breakpointChanged){renderGraph.current();if(current.current.selected)focusNode(current.current.selected);else if(narrow()&&current.current.mode==='lineage'){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}else if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,'google-deepmind','santa-fe-institute']){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(narrow()&&current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
     });
     return()=>{cancelled=true;removeWheel?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
   },[]);
@@ -297,5 +317,5 @@ export function NetworkCanvas(props:Props) {
     updateHalo();
    },[props.highlighted,props.selected,props.mode,props.coreOnly,props.root,props.collapsed,props.trajectory]);
    useEffect(()=>{updateTopo();},[contours]);
-   return <div className="canvas-stage"><svg className="hop-topography" aria-hidden="true"><g ref={topoTransform}>{contours.map(c=><g key={c.depth} data-hop={c.depth}><path d={c.path}/>{props.mode==='path'&&<text data-anchor-x={c.label.x} data-anchor-y={c.label.y} x={c.label.x} y={c.label.y}>Hop {c.depth}</text>}</g>)}</g></svg><div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Augusto-to-target trail' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? props.trajectory.positions.size : lineageLayout(props.root,props.coreOnly,props.collapsed,props.lineageExpanded).positions.size} nodes.`}/>{bands.map(b=><div className="depth-band" key={b.depth} style={{top:b.y}}><span>Hop {b.depth}</span></div>)}{hitNodes.map(n=><Button key={n.id} className="node-hit" variant="ghost" size="icon" aria-label={`Select ${n.label}`} title={n.label} style={{left:n.x,top:n.y}} onClick={()=>{props.onSelect(n.id);props.apiRef.current?.focus(n.id);}}/>)}{props.mode==='path'&&props.routeNodes.length>0&&hitNodes.filter(n=>props.routeNodes.includes(n.id)).map(n=><span className="waypoint-number" key={`waypoint-${n.id}`} style={{left:n.x-17,top:n.y-17}}>{props.routeNodes.indexOf(n.id)+1}</span>)}{props.mode==='lineage'&&hitNodes.filter(n=>graph.nodes.find(node=>node.id===n.id)?.nobel_prize).map(n=><span className="nobel-badge" key={`nobel-${n.id}`} style={{left:n.x+12,top:n.y-22}} aria-label="Nobel laureate">★</span>)}<div ref={halo} className="selection-halo" aria-hidden="true" hidden/>{locks.map(lock=><span key={lock.id} className="canvas-lock" aria-hidden="true" style={{left:lock.x,top:lock.y}}><LockKeyhole size={11}/></span>)}</div>;
+   return <div className="canvas-stage"><svg className="hop-topography" aria-hidden="true"><g ref={topoTransform}>{contours.map(c=><g key={c.depth} data-hop={c.depth}><path d={c.path}/>{props.mode==='path'&&<text data-anchor-x={c.label.x} data-anchor-y={c.label.y} x={c.label.x} y={c.label.y}>Hop {c.depth}</text>}</g>)}</g></svg><div ref={container} className="network-canvas" role="img" aria-label={`${props.mode === 'path' ? 'Augusto-to-target trail' : 'Vertical lineage'} canvas. ${props.mode === 'path' ? props.trajectory.positions.size : lineageLayout(props.root,props.coreOnly,props.collapsed,props.lineageExpanded).positions.size} nodes.`}/>{bands.map(b=><div className="depth-band" key={b.depth} style={{top:b.y}}><span>Hop {b.depth}</span></div>)}{hitNodes.map(n=><Button key={n.id} className="node-hit" variant="ghost" size="icon" aria-label={`Select ${n.label}`} title={n.label} style={{left:n.x,top:n.y}} onClick={()=>{props.onSelect(n.id);props.apiRef.current?.focus(n.id);}}/>)}{props.mode==='path'&&props.routeNodes.length>0&&props.routeNodes.flatMap((id,index)=>{const n=hitNodes.find(n=>n.id===id);return n?[{...n,index}]:[];}).map(n=><span className="waypoint-number" key={`waypoint-${n.id}`} style={{left:n.x-38,top:n.y-34}}>{n.index+1}</span>)}{props.mode==='lineage'&&hitNodes.filter(n=>graph.nodes.find(node=>node.id===n.id)?.nobel_prize).map(n=><span className="nobel-badge" key={`nobel-${n.id}`} style={{left:n.x+12,top:n.y-22}} aria-label="Nobel laureate">★</span>)}<div ref={halo} className="selection-halo" aria-hidden="true" hidden/>{locks.map(lock=><span key={lock.id} className="canvas-lock" aria-hidden="true" style={{left:lock.x,top:lock.y}}><LockKeyhole size={11}/></span>)}</div>;
 }

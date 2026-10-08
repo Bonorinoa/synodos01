@@ -36,3 +36,5 @@
 - [x] Apply craft pass one: full-bleed chrome, semantic palette, type and shape hierarchy.
 - [x] Correct hop-label honesty and inspector neighbor framing; preserve graph data.
 - [x] Verify desktop Path, Lineage, keyboard search, and export.
+- [x] Fix craft-pass-one selection/expansion framing and sequential offset waypoints.
+- [x] Verify readable Path/Lineage at desktop, 390px and 500px; keep pass two blocked.
