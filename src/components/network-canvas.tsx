@@ -259,7 +259,7 @@ export function NetworkCanvas(props:Props) {
           const node=cy.getElementById(id);if(!node.length||!node.isNode())return;
           const p=current.current,layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded);
           const nodes=p.mode==='lineage'&&expansion?cy.nodes().filter(n=>n.id()===p.root||layout.depth.get(n.id())===1||n.id()===id||layout.parent.get(n.id())===id):node.closedNeighborhood().nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context'));
-          const points=nodes.map(n=>n.position());if(!points.length)return;
+          const points=nodes.toArray().flatMap(n=>n.isNode()?[n.position()]:[]);if(!points.length)return;
           const stage=container.current?.getBoundingClientRect(),sheet=document.querySelector('.inspector')?.getBoundingClientRect();
           const left=!narrow()&&document.querySelector('.trail-guide[data-open=true]')?330:64;
           const right=!narrow()&&p.selected?400:64;
