@@ -79,14 +79,14 @@ export function NetworkCanvas(props:Props) {
     const p=current.current,cy=cyRef.current,width=cy?.width()??window.innerWidth;
     if(p.mode==='lineage'){
       const layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded),positions=new Map([...layout.positions,...layout.contextPositions]);
-      if(narrow()){let y=0;for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);y=readablePositions(positions,ids,depth===0?1:depth===1?2:3,(width-40)/(depth===1?2:3),y,58)+16;}}
+      if(narrow()){let y=0;for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);y=readablePositions(positions,ids,depth===0?1:depth===1?2:3,(width-40)/(depth===1?2:3),y,50)+12;}}
       return positions;
     }
     const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
     if(p.selected){
       const ids=[...positions.keys()].filter(id=>!p.trajectory.ghostNodes.has(id));const leading=[...new Set(['augusto',p.selected])].filter(id=>ids.includes(id));
-      const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?64:140);
-      readablePositions(positions,ids.filter(id=>!leading.includes(id)),narrow()?3:4,narrow()?(width-40)/3:180,end+12,narrow()?58:100);return positions;
+      const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?50:140);
+      readablePositions(positions,ids.filter(id=>!leading.includes(id)),4,narrow()?(width-40)/4:180,end+12,narrow()?50:100);return positions;
     }
     if(narrow())return positions;
     if(cy&&!p.routeNodes.length){const step=(width-240)/cy.zoom();positions.set('google-deepmind',{x:step,y:-120});positions.set('santa-fe-institute',{x:step,y:160});}
@@ -138,14 +138,14 @@ export function NetworkCanvas(props:Props) {
       const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected||(current.current.mode==='lineage'&&node.hasClass('direct-contact'));
        const direct=current.current.mode==='lineage'&&node.hasClass('direct-contact');
        const stagger=direct&&!compact?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
-       const point=node.renderedPosition(),width=ghost?80:compact?Math.min(108,(cy.width()-40)/3-8):130;
+       const point=node.renderedPosition(),width=ghost?80:compact?Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8):130;
        const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+12+stagger,w:width,h:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
        const clipped=box.x<0||box.x+box.w>cy.width()||box.y<0||box.y+box.h>cy.height();
         const guide=document.querySelector('.trail-guide')?.getBoundingClientRect();const underGuide=guide&&box.x<guide.right&&box.x+box.w>guide.left&&box.y<guide.bottom&&box.y+box.h>guide.top;
        const hide=(clipped&&!landmark)||(!landmark&&!!underGuide)||(!landmark&&((ghost&&(zoom<1.8||compact))||collision));
        node.style('opacity',ghost?(compact?0:.035):node.hasClass('dim')?.14:1);
-      const base=node.id()==='augusto'?48:node.data('target')?38:ghost?9:26;
+      const base=node.id()==='augusto'?48:node.data('target')?38:ghost?9:compact?22:26;
        const size=Math.max(base*.72,Math.min(base*1.3,base*zoom));
        node.style('width',`${size/zoom}px`);node.style('height',`${size/zoom}px`);
       if(!hide)occupied.push(box);
@@ -153,7 +153,7 @@ export function NetworkCanvas(props:Props) {
        node.style('text-opacity',hide?0:ghost?.25:1);
       node.style('font-size',`${(ghost?11:12)/zoom}px`);
       node.style('text-max-width',`${width/zoom}px`);node.style('text-wrap',compact?'ellipsis':'wrap');
-      node.style('text-margin-y',`${(12+stagger)/zoom}px`);
+      node.style('text-margin-y',`${((compact?6:12)+stagger)/zoom}px`);
     });
   };
   const updateHitTargets = () => {
@@ -283,7 +283,7 @@ export function NetworkCanvas(props:Props) {
            const points=nodes.toArray().flatMap(n=>n.isNode()?[n.position()]:[]);if(!points.length)return;
            const stage=container.current?.getBoundingClientRect(),sheet=document.querySelector('.inspector')?.getBoundingClientRect();
            const left=!narrow()&&document.querySelector('.trail-guide[data-open=true]')?330:48,right=!narrow()&&p.selected?400:48;
-           const top=160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-44:cy.height()-64;
+           const top=narrow()?180:160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-44:cy.height()-64;
            const width=cy.width()-left-right,height=Math.max(240,bottom-top);
            const x1=Math.min(...points.map(point=>point.x)),x2=Math.max(...points.map(point=>point.x)),y1=Math.min(...points.map(point=>point.y)),y2=Math.max(...points.map(point=>point.y));
            const zoom=narrow()?1:Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
