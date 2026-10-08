@@ -25,9 +25,9 @@
 - Express the interface through the tokenized Trail cartography system with map details confined to presentation; this keeps graph meaning and evidence semantics independent from visual styling.
 - Store major distinctions as optional sourced node metadata and render them only in the relevant view; this preserves evidence provenance without changing graph traversal semantics.
 
-- Preserve Path viewport scale and existing node positions on selections, target picks and expansions, fitting active routes only explicitly or on mode changes; this prevents evidence exploration from sacrificing readability.
+- Preserve Path scale on target picks; selections may frame recorded neighbors and expansions auto-fit them, excluding ghosts, to keep evidence exploration clear of floating records.
 - Clear expansion state on mode changes and keep ranked routes collapsible; this prevents stale branches and protects canvas space.
-- Dock the itinerary and evidence record outside a dedicated canvas region, with rendered-coordinate accessible hit targets; this protects graph space and reliable selection.
+- Float atlas controls and evidence records over a full-bleed canvas, with camera framing in the unobscured region and rendered-coordinate accessible hit targets; this maximizes map space without sacrificing selection.
 - Bound cross-branch discovery to recorded legal links into tagged packets, excluding ego and the Capra gateway; this avoids presenting a shared origin as an advisor connection.
 - Derive closed cartographic superlevel contours from visible non-ghost hop geometry behind Cytoscape; this gives elevation a recorded relationship meaning without modifying traversal or evidence.
 - Anchor contour labels to their own hop entry and bound their rendered text to the visible canvas; this prevents hull extrema and zoom from detaching or clipping labels.
@@ -37,3 +37,7 @@
 - Wrap inspector actions and temporarily collapse the narrow itinerary while a record is open; this avoids horizontal overflow and competing panels while retaining itinerary state.
 - Anchor narrow private-attestation markers to visible relationship endpoints with fixed rendered offsets; this keeps visual-only provenance attached during pan and zoom.
 - Render narrow Path waypoints in vertical itinerary order and use a bounded draggable record sheet; this protects readable labels and selected-node visibility without fitting the whole graph on selection.
+
+- Encode node kind through shapes with destination-only diamonds and zoom-clamped size hierarchy; this prevents decorative color from implying evidence quality.
+- Render one depth-sorted hop label per band without relationship-type assumptions; this preserves honest distance labels.
+- Use cmdk for keyboard search navigation while keeping graph data entirely client-side; this provides predictable arrow-key selection.
