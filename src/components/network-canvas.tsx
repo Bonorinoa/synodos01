@@ -144,7 +144,7 @@ export function NetworkCanvas(props:Props) {
       const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected||(current.current.mode==='lineage'&&node.hasClass('direct-contact'));
        const direct=current.current.mode==='lineage'&&node.hasClass('direct-contact');
        const stagger=direct&&!compact?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
-       const point=node.renderedPosition(),width=ghost?80:compact?Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8):130;
+       const point=node.renderedPosition(),width=ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130;
        const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+12+stagger,w:width,h:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
        const clipped=box.x<0||box.x+box.w>cy.width()||box.y<0||box.y+box.h>cy.height();
@@ -292,7 +292,7 @@ export function NetworkCanvas(props:Props) {
            const top=narrow()?180:160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-44:cy.height()-64;
            const width=cy.width()-left-right,height=Math.max(240,bottom-top);
            const x1=Math.min(...points.map(point=>point.x)),x2=Math.max(...points.map(point=>point.x)),y1=Math.min(...points.map(point=>point.y)),y2=Math.max(...points.map(point=>point.y));
-           const zoom=narrow()?1:Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
+            const zoom=narrow()?Math.max(.65,Math.min(1,(bottom-top-26)/Math.max(1,y2-y1))):Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
            const pan={x:narrow()?cy.width()/2:left+width/2-(x1+x2)/2*zoom,y:narrow()?top:top+height/2-(y1+y2)/2*zoom};
            rebuildContours();
            cy.stop();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){cy.zoom(zoom);cy.pan(pan);}else cy.animate({zoom,pan},{duration:300});
