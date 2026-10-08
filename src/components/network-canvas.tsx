@@ -85,6 +85,12 @@ export function NetworkCanvas(props:Props) {
     const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
     if(p.selected){
       const ids=[...positions.keys()].filter(id=>!p.trajectory.ghostNodes.has(id));const leading=[...new Set(['augusto',p.selected])].filter(id=>ids.includes(id));
+      if(narrow()&&p.routeNodes.length){
+        const route=p.routeNodes.filter(id=>ids.includes(id)),spacing=(width-40)/2;
+        route.forEach((id,i)=>{const row=Math.floor(i/2),column=row%2?1-i%2:i%2;positions.set(id,{x:(column-.5)*spacing,y:row*50});});
+        const remainder=ids.filter(id=>!route.includes(id));
+        readablePositions(positions,remainder,4,(width-40)/4,Math.ceil(route.length/2)*50+12,45);return positions;
+      }
       const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?50:140);
       readablePositions(positions,ids.filter(id=>!leading.includes(id)),4,narrow()?(width-40)/4:180,end+12,narrow()?50:100);return positions;
     }
