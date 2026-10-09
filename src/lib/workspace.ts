@@ -36,12 +36,13 @@ export function saveArtifact(artifact: Artifact, activate = true) {
   const index = readIndex();
   const artifacts = [...index.artifacts.filter(m => m.id !== artifact.meta.id), artifact.meta];
   writeIndex({ active: activate ? artifact.meta.id : index.active, artifacts });
-  if (typeof window !== 'undefined') window.dispatchEvent(new Event('an:artifact-saved'));
+  if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('an:artifact-saved', { detail: artifact.meta.id }));
 }
 export function setActiveArtifact(id: string) { writeIndex({ ...readIndex(), active: id }); }
 export function deleteArtifact(id: string) {
   const index = readIndex(); if (index.active === id) throw new Error('Switch to another network before deleting this one.');
   storage()?.removeItem(ARTIFACT + id);
+  if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('an:artifact-deleted', { detail: id }));
   writeIndex({ ...index, artifacts: index.artifacts.filter(m => m.id !== id) });
 }
 

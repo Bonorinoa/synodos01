@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BookOpen, Compass, Database, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { AccountCard } from '@/components/account-card';
 
 type Option = { id: string; label: string; active: boolean };
 type Props = {
@@ -38,6 +39,7 @@ export function CommandPanel(p: Props) {
         <button onClick={go(p.onTour)}><Compass size={16} /><strong>Take the tour</strong><small>A two-minute walkthrough</small></button>
         <button onClick={go(p.onDocs)}><BookOpen size={16} /><strong>How it works</strong><small>Methods, sources, hop rules</small></button>
       </div>
+      <AccountCard />
       <footer><Sparkles size={12} />Press ⌘K anywhere to search.</footer>
     </section>
   </div>;
