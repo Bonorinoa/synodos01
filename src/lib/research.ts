@@ -23,7 +23,7 @@ export function groundFindings(raw:unknown,sources:ResearchSource[],contacts:str
   for(const item of extracted.findings){
     if(!contacts.some(name=>normalizeLabel(name)===normalizeLabel(item.from))||normalizeLabel(item.from)===normalizeLabel(item.to)){dropped++;continue;}
     const grounded=item.sources.flatMap(ref=>{
-       const source=sources[ref.index];if(!source||!source.markdown||(source.status!==null&&(source.status<200||source.status>=400)))return [];
+       const source=sources[ref.index];if(!source||!source.markdown||(source.status===null||source.status<200||source.status>=400))return [];
       const normalized=normalizeLabel(source.markdown),quote=normalizeLabel(ref.excerpt);
       if(!normalized.includes(quote)||!mentions(ref.excerpt,item.from)||!mentions(ref.excerpt,item.to))return [];
       return [{url:source.url,title:source.title,retrieved_at:source.retrieved_at,excerpt:ref.excerpt,checked_at:date,status:source.status,accessible:true}];

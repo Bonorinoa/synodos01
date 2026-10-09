@@ -114,7 +114,7 @@ export function NetworkCanvas(props:Props) {
         const sideX=(width-48)*.28;
         let sideRow=0;for(const id of primary)if(!route.includes(id)&&ids.includes(id))positions.set(id,{x:sideX,y:sideRow++*90});
         const remainder=ids.filter(id=>!primary.has(id));
-        remainder.forEach((id,i)=>positions.set(id,{x:sideX,y:i<3?68+i*68:600+(i-3)*72}));
+        remainder.forEach((id,i)=>positions.set(id,{x:sideX,y:sideRow*90+i*90}));
         return positions;
       }
       const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?50:140);
@@ -157,7 +157,7 @@ export function NetworkCanvas(props:Props) {
          if(point.x<24||point.x>cy.width()-24||point.y<24||point.y>cy.height()-24)return [];
          return [{id:edge.id(),x:point.x+22,y:point.y-22}];
        }
-        return [{id:edge.id(),x:(a.x+b.x)/2,y:(a.y+b.y)/2}];
+        return [{id:edge.id(),x:a.x*.65+b.x*.35,y:a.y*.65+b.y*.35-18}];
     }));
   };
   const updatePathLabels = () => {

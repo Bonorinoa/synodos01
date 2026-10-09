@@ -23,9 +23,9 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
   const [cleanupDone, setCleanupDone] = useState<string | null>(null);
   // Stale temporary uploads (over a day old) are always cleared when the panel opens.
   useEffect(() => { collectTemporaryFiles({ olderThanMs: 86_400_000 }); }, []);
-  const pending = useMemo(() => activeArtifact.edges.map((edge, i) => ({ edge, i })).filter(({ edge }) => edge.evidence.review_status === 'pending'), []);
+  const pending = useMemo(() => activeArtifact.edges.map((edge, i) => ({ edge, i })).filter(({ edge }) => edge.evidence.review_status === 'pending'), [activeArtifact.edges]);
   const label = (id: string) => activeArtifact.nodes.find(n => n.id === id)?.label ?? id;
-  const cleanupPreview = useMemo(() => ({ ...collectGarbage(activeArtifact).report, temp: collectTemporaryFiles({ dryRun: true, keep: staged?.upload.id }) }), [staged]);
+  const cleanupPreview = useMemo(() => ({ ...collectGarbage(activeArtifact).report, temp: collectTemporaryFiles({ dryRun: true, keep: staged?.upload.id }) }), [staged,activeArtifact]);
   const guard = (fn: () => void | Promise<void>) => async () => { try { setError(null); await fn(); } catch (e) { setError(e instanceof Error ? e.message : 'Something went wrong.'); } };
 
   const stageText = (name: string, text: string) => {
@@ -44,15 +44,15 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
     finally { setResearching(false); }
   });
   const onNetwork = (file: File) => guard(async () => { saveArtifact(artifactFromUpload(await readFile(file), file.name)); reload(); })();
-  const commit = guard(() => { if (!staged) return; saveArtifact(staged.preview.artifact); discardStaged(staged.upload.id); reload(); });
-  const review = (i: number, decision: 'reviewed' | 'rejected') => guard(() => { saveArtifact(reviewEdge(activeArtifact, i, decision)); reload(); })();
+  const commit = guard(() => { if (!staged) return; saveArtifact(staged.preview.artifact); discardStaged(staged.upload.id); setStaged(null); });
+  const review = (i: number, decision: 'reviewed' | 'rejected') => guard(() => { saveArtifact(reviewEdge(activeArtifact, i, decision)); })();
   const runCleanup = guard(() => {
     const { artifact, report } = collectGarbage(activeArtifact);
     const temp = collectTemporaryFiles({ keep: staged?.upload.id });
     const changed = report.orphanNodes.length + report.mergedEdges + report.duplicateSources;
     if (changed) saveArtifact(artifact);
     setCleanupDone(`Removed ${report.orphanNodes.length} unlinked records, merged ${report.mergedEdges} duplicate links, dropped ${report.duplicateSources} repeated sources and ${temp.staged + temp.detachedNetworks} temporary files.`);
-    if (changed) setTimeout(reload, 1200);
+
   });
 
   return <aside className="workspace-panel glass" aria-label="Your data">

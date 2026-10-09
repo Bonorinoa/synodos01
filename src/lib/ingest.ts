@@ -105,7 +105,7 @@ export function ingestFindings(artifact: Artifact, parsed: ParsedFindings, fileN
       if (seenInFile.has(claimKey)) report.duplicateInFile++; else report.merged++;
       existing.evidence.provenance = dedupeProvenance([...(existing.evidence.provenance ?? []), ...provenance]);
       existing.evidence.urls = dedupeUrls([...existing.evidence.urls, ...provenance.map(p => p.url)]);
-      if(checks.length)existing.evidence.source_checks=[...(existing.evidence.source_checks??[]),...checks];
+      if(checks.length)existing.evidence.source_checks=dedupeChecks([...(existing.evidence.source_checks??[]),...checks]);
       seenInFile.add(claimKey); continue;
     }
     seenInFile.add(claimKey);
@@ -116,6 +116,7 @@ export function ingestFindings(artifact: Artifact, parsed: ParsedFindings, fileN
   return { artifact: { ...artifact, meta: { ...artifact.meta, updated_at: date }, nodes, edges }, report };
 }
 export const dedupeUrls = (urls: string[]) => { const seen = new Set<string>(); return urls.filter(u => { const k = normalizeUrl(u); if (seen.has(k)) return false; seen.add(k); return true; }); };
+const dedupeChecks=(list:NonNullable<EdgeRecord['evidence']['source_checks']>)=>{const seen=new Set<string>();return list.filter(check=>{const key=`${normalizeUrl(check.url)}@${check.checked_at??''}:${check.status}:${check.accessible}`;if(seen.has(key))return false;seen.add(key);return true;});};
 export const dedupeProvenance = (list: Provenance[]) => { const seen = new Set<string>(); return list.filter(p => { const k = provKey(p); if (seen.has(k)) return false; seen.add(k); return true; }); };
 
 // ---------- Review (network owner only) ----------
@@ -140,13 +141,14 @@ export function collectGarbage(artifact: Artifact): { artifact: Artifact; report
     const copy: EdgeRecord = { ...edge, evidence: { ...edge.evidence } };
     const urls = dedupeUrls(copy.evidence.urls); const prov = copy.evidence.provenance ? dedupeProvenance(copy.evidence.provenance) : undefined;
     report.duplicateSources += copy.evidence.urls.length - urls.length + (copy.evidence.provenance?.length ?? 0) - (prov?.length ?? 0);
-    if (urls.length !== copy.evidence.urls.length) { copy.evidence.urls = urls; if (copy.evidence.source_checks) copy.evidence.source_checks = copy.evidence.source_checks.filter(c => urls.includes(c.url)).filter((c, i, all) => all.findIndex(o => o.url === c.url) === i); }
+    copy.evidence.urls=urls;if(copy.evidence.source_checks)copy.evidence.source_checks=dedupeChecks(copy.evidence.source_checks);
     if (prov) copy.evidence.provenance = prov;
     const prior = index.get(key);
     if (!prior) { index.set(key, copy); merged.push(copy); continue; }
     report.mergedEdges++;
     prior.evidence.urls = dedupeUrls([...prior.evidence.urls, ...copy.evidence.urls]);
     if (prior.evidence.provenance || copy.evidence.provenance) prior.evidence.provenance = dedupeProvenance([...(prior.evidence.provenance ?? []), ...(copy.evidence.provenance ?? [])]);
+    if(prior.evidence.source_checks||copy.evidence.source_checks)prior.evidence.source_checks=dedupeChecks([...(prior.evidence.source_checks??[]),...(copy.evidence.source_checks??[])]);
     if (copy.evidence.review_status === 'reviewed' || copy.evidence.review_status === undefined) prior.evidence.review_status = prior.evidence.review_status === 'pending' ? copy.evidence.review_status : prior.evidence.review_status;
   }
   const linked = new Set(merged.flatMap(e => [e.source, e.target]));
