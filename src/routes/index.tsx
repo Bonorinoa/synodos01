@@ -3,13 +3,14 @@ import { NetworkExplorer } from '@/components/network-explorer';
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: 'Synodos — Paths & Academic Lineage' },
-    { name: 'description', content: 'A private, evidence-gated canvas for your academic relationships, discovered connections, target paths, and intellectual lineage.' },
-    { property: 'og:title', content: 'Synodos — Paths & Academic Lineage' },
-    { property: 'og:description', content: 'Explore verifiable relationships, inspect their sources, and trace honest paths through your own network.' },
+    { title: 'Synodos — Academic Family Tree & Network Paths' },
+    { name: 'description', content: 'Map your academic family tree: sourced advisor, committee and co-author links, honest paths to people you want to reach, and evidence you can check.' },
+    { property: 'og:title', content: 'Synodos — Academic Family Tree & Network Paths' },
+    { property: 'og:description', content: 'Map your academic family tree with sourced links and trace honest paths through your own network.' },
     { property: 'og:type', content: 'website' },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'robots', content: 'noindex, nofollow' },
+    { property: 'og:url', content: 'https://synodos01.lovable.app/' },
+  ], links: [{ rel: 'canonical', href: 'https://synodos01.lovable.app/' }] }),
   ] }),
   component: Index,
 });
