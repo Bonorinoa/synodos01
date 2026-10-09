@@ -11,7 +11,6 @@ export const Route = createFileRoute("/")({
     { name: 'twitter:card', content: 'summary_large_image' },
     { property: 'og:url', content: 'https://synodos01.lovable.app/' },
   ], links: [{ rel: 'canonical', href: 'https://synodos01.lovable.app/' }] }),
-  ] }),
   component: Index,
 });
 
