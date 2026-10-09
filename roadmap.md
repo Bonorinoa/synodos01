@@ -43,3 +43,5 @@
 - [x] Reframe the product around guided missions, one active route or branch, and evidence on demand.
 - [x] Apply the Signal Lab visual system and Space Mono typography without changing graph data.
 - [x] Verify the redesigned Path and Lineage journeys at desktop, 500px, and 390px.
+- [x] Generalize networks to user-uploaded or created artifacts stored in the browser.
+- [x] Add provenance-aware findings import, owner review, deduplication, and cleanup.
