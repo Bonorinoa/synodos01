@@ -5,7 +5,7 @@ export const nodeKinds = ['person', 'lab', 'institution', 'university'] as const
 export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}(T.*)?$/, 'Use an ISO date such as 2026-10-08');
 
 /** One retrieval of one source. The same URL retrieved on two dates is two provenance records. */
-export const provenanceSchema = z.object({ url: z.string().url(), retrieved_at: isoDate, source_tool: z.string().optional(), title: z.string().optional(), artifact: z.string().optional() });
+export const provenanceSchema = z.object({ url: z.string().url(), retrieved_at: isoDate, source_tool: z.string().optional(), title: z.string().optional(), artifact: z.string().optional(), excerpt:z.string().optional() });
 export type Provenance = z.infer<typeof provenanceSchema>;
 
 export const nodeSchema = z.object({ id: z.string(), label: z.string(), kind: z.enum(nodeKinds), blurb: z.string(), tags: z.array(z.string()), candidate: z.boolean().optional(), target: z.boolean().optional(), profiles: z.record(z.string()).optional(), nobel_prize: z.object({ category: z.string(), year: z.number().int(), motivation: z.string(), url: z.string().url() }).optional(), evidence_packet: z.object({ urls: z.array(z.string().url()), notes: z.string() }) });
