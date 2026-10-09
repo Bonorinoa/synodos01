@@ -18,7 +18,12 @@ async function get<T>(path: string): Promise<T> {
 export async function resolveAuthor(name: string, hint: string): Promise<Author | null> {
   const { results } = await get<{ results: Author[] }>(`/authors?search=${encodeURIComponent(name)}&per-page=10`);
   // Fragmentary records (a handful of works) are usually split namesake profiles, not the person.
-  const exact = results.filter(a => normalizeLabel(a.display_name).replace(/ /g, '') === normalizeLabel(name).replace(/ /g, '') && a.works_count >= 5);
+  const compact = (v: string) => normalizeLabel(v).replace(/ /g, '');
+  const tokens = (v: string) => normalizeLabel(v).split(' ').filter(Boolean);
+  const exactOnly = results.filter(a => compact(a.display_name) === compact(name) && a.works_count >= 5);
+  // A catalog variant with extra initials ("C. Mónica Capra") counts only when the affiliation hint confirms it.
+  const variants = hint ? results.filter(a => a.works_count >= 5 && tokens(name).every(t => tokens(a.display_name).includes(t))) : [];
+  const exact = exactOnly.length ? exactOnly : variants;
   const insts = (a: Author) => normalizeLabel([...(a.last_known_institutions ?? []).map(i => i.display_name), ...(a.affiliations ?? []).map(x => x.institution.display_name)].join(' '));
   const hintWords = normalizeLabel(hint).split(' ').filter(w => w.length > 3);
   const hinted = hintWords.length ? exact.filter(a => hintWords.some(w => insts(a).includes(w))) : exact;

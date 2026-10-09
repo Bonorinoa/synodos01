@@ -11,8 +11,9 @@ export function passesAutomaticChecks(finding: Finding): boolean {
   // Co-authorship read from an OpenAlex author list is a catalog fact; owner chose to auto-accept it as co-author only.
   if (finding.basis === 'coauthorship') return finding.sources.some(source => {
     try { if (new URL(source.url).hostname !== 'api.openalex.org' || !source.excerpt || !source.accessible) return false; } catch { return false; }
-    const authors = normalizeLabel(source.excerpt.split(' — authors: ')[1] ?? '');
-    const has = (name: string) => new RegExp(`(?:^| )${normalizeLabel(name)}(?: |$)`).test(authors);
+    // Each listed author must contain every token of the named person (catalog names may add initials).
+    const authors = (source.excerpt.split(' — authors: ')[1] ?? '').split(', ').map(a => normalizeLabel(a).split(' '));
+    const has = (name: string) => { const want = normalizeLabel(name).split(' ').filter(Boolean); return want.length > 1 && authors.some(a => want.every(t => a.includes(t))); };
     return has(finding.from.label) && has(finding.to.label);
   });
   if (!['phd_advisor', 'committee'].includes(finding.basis)) return false;
