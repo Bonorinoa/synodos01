@@ -15,7 +15,7 @@ export const nodeById = new Map(graph.nodes.map(node => [node.id, node]));
 for (const edge of edges) if (!nodeById.has(edge.source) || !nodeById.has(edge.target)) throw new Error('Graph contains an unknown endpoint');
 export const lineageBases = new Set(['phd_advisor', 'committee', 'research_group', 'coauthorship', 'joint_project']);
 export const weakBases = new Set(['shared_field', 'shared_venue', 'shared_institution']);
-export const egoGatewayIds: string[] = [...new Set(edges.filter(e=>e.evidence.ego_gateway===true&&[e.source,e.target].includes(egoId)).map(e=>e.source===egoId?e.target:e.source))];
+export const egoGatewayIds: string[] = [...new Set(edges.filter(e=>e.evidence.ego_gateway===true&&[e.source,e.target].includes(egoId)).map(e=>e.source===egoId?e.target:e.source))].sort((a,b)=>edges.findIndex(e=>[e.source,e.target].includes(a))-edges.findIndex(e=>[e.source,e.target].includes(b)));
 export const isPending=(edge:NetworkEdge)=>edge.evidence.review_status==='pending';
 export const egoGatewayEdges = () => edges.filter(edge=>edge.evidence.ego_gateway===true && (edge.source===egoId||edge.target===egoId));
 export const basisLabel = (basis: string) => basis.replaceAll('_', ' ');

@@ -53,7 +53,7 @@ export function stageUpload(name: string, content: string): StagedUpload {
 }
 export function discardStaged(id: string) { storage()?.removeItem(STAGING + id); }
 /** Removes staged uploads (except `keep`) and stored copies of networks no longer in the workspace. */
-export function collectTemporaryFiles(options: { keep?: string; olderThanMs?: number; dryRun?: boolean } = {}) {
+export function collectTemporaryFiles(options: { keep?: string | undefined; olderThanMs?: number; dryRun?: boolean } = {}) {
   const s = storage(); if (!s) return { staged: 0, detachedNetworks: 0 };
   const known = new Set(readIndex().artifacts.map(m => m.id)); const now = Date.now();
   const removable: string[] = []; let staged = 0, detachedNetworks = 0;
