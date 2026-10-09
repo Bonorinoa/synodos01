@@ -60,3 +60,4 @@
 - [ ] Run Fernando Lozano two-hop research, then three hops; preserve owner review and deliver real sourced findings.
 - [ ] Verify phone and desktop Path/Lineage, command panel and settings; refine spacing.
 - [ ] Update app identity to a tutorial-inspired paper/pixel name and mountain mark.
+- [ ] Use a one-word Greek, French or Latin name evoking connections and shared journeys.
