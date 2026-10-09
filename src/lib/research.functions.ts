@@ -60,7 +60,7 @@ export const runResearch = createServerFn({ method: 'POST' })
         frontier = [...next.values()].slice(0, RESEARCH.contacts);
       }
       if (!file) return { ok: false as const, error: 'No source-grounded findings were returned.', trace };
-      const merged = { ...file, source_tool: 'Firecrawl search + scrape / direct Grok extraction', findings };
+      const merged = { ...file, source_tool: 'OpenAlex catalog + Firecrawl search / direct Grok extraction', findings };
       const cited = [...new Set(findings.flatMap(f => f.sources.map(s => s.url)))];
       const checked = findings.filter(passesAutomaticChecks);
       trace.push(`${checked.length} links passed conservative automatic checks; other grounded claims await review.`);
