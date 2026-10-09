@@ -8,6 +8,7 @@ import { GuidedTour, TOUR_KEY } from '@/components/guided-tour';
 import { MethodDocs } from '@/components/method-docs';
 import { saveArtifact } from '@/lib/workspace';
 import { normalizeLabel, slugify } from '@/lib/ingest';
+import { applyFernandoApproval } from '@/lib/approved-fernando';
 import { Command } from 'cmdk';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -21,6 +22,7 @@ import { activeArtifact, egoId, edges, egoGatewayEdges, egoGatewayIds, graph, le
 export function NetworkExplorer() {
   const [revision,setRevision]=useState(0);
   useEffect(()=>{const refresh=()=>{refreshActiveNetwork();setRevision(v=>v+1);};window.addEventListener('an:artifact-saved',refresh);return()=>window.removeEventListener('an:artifact-saved',refresh);},[]);
+  useEffect(() => { const approved = applyFernandoApproval(activeArtifact); if (approved !== activeArtifact) saveArtifact(approved); }, []);
   const [mode,setMode]=useState<Mode>('path');
   const [coreOnly,setCoreOnly]=useState(false);
   const [selected,setSelected]=useState<string|null>(null);

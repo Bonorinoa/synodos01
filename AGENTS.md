@@ -11,7 +11,7 @@
 
 ## Application architecture
 - Store each uploaded or created network as a validated browser-local artifact with an owner id; the bundled seed is only the default, and traversal reads the active artifact.
-- Ingest findings as pending, low-confidence, provenance-dated links; only owner review promotes them, rejections are remembered, and cleanup never merges differing claims.
+- Uploads stay pending; deterministic research checks may accept sourced claims, recording automated vs owner review without raising confidence. Keep rejections and differing claims separate.
 - Use Cytoscape for the freeform canvas, desktop Path as concentric hop terraces rotated toward the active destination, and legal-edge BFS levels for Lineage; mode-specific graph logic stays independent of presentation and left-to-right progress does not establish relationship direction.
 - Treat all graph links as undirected traversal unless a claim explicitly establishes direction; root-relative lineage levels are relationship hops, not generations or advisor claims.
 - Keep canvas colors and glass in global semantic tokens read by Cytoscape; HTML and canvas stay consistent.
@@ -37,7 +37,7 @@
 - Frame selection and expansion against record bounds; observe sheet resizes and exclude peripheral Path context.
 - Present exploration as mission → story → evidence, with one prominent contextual surface; this reduces overload without changing graph meaning.
 - Methodology docs render route-cost and traversal values from shared constants; docs cannot drift from logic.
-- Research uses bounded server-side Firecrawl web search and retrieved text, with literal source excerpts and dated accessibility checks; AI never approves links or executes discovered tools.
+- Bounded Firecrawl research retains quotes and dated checks; deterministic rules, never AI decisions, govern acceptance. Never execute discovered tools.
 - Refresh active browser-network indexes on artifact saves without remounting the canvas; destination edits must preserve exploration state.
 - Coordinate graph positions and camera with one interruptible critically damped transition and coalesce overlay updates per animation frame; reduced motion applies instantly.
 - Keep the header to mark, mode toggle and one command-panel button; secondary features live in that pane so the map stays uncluttered.

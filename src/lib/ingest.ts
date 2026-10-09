@@ -126,8 +126,22 @@ export function reviewEdge(artifact: Artifact, index: number, decision: 'reviewe
   const nodes = new Map(artifact.nodes.map(n => [n.id, n]));
   if (decision === 'rejected') return { ...artifact, meta: { ...artifact.meta, updated_at: date }, edges: artifact.edges.filter((_, i) => i !== index), rejected: [...(artifact.rejected ?? []), { key: labelKey(nodes, edge), from_label: nodes.get(edge.source)?.label ?? edge.source, to_label: nodes.get(edge.target)?.label ?? edge.target, basis: edge.evidence.basis, rejected_at: date }] };
   const touchesEgo = [edge.source, edge.target].includes(artifact.meta.ego);
-  const reviewed: EdgeRecord = { ...edge, evidence: { ...edge.evidence, review_status: 'reviewed', reviewed_at: date, confidence: edge.evidence.urls.length ? 'medium' : 'low', ...(touchesEgo ? { ego_gateway: true } : {}) } };
+  const reviewed: EdgeRecord = { ...edge, evidence: { ...edge.evidence, review_status: 'reviewed', review_method: 'owner', reviewed_at: date, confidence: edge.evidence.urls.length ? 'medium' : 'low', ...(touchesEgo ? { ego_gateway: true } : {}) } };
   return { ...artifact, meta: { ...artifact.meta, updated_at: date }, edges: artifact.edges.map((e, i) => i === index ? reviewed : e) };
+}
+
+/** Only call with fresh server-grounded research; uploaded check flags never grant acceptance. */
+export function acceptCheckedResearch(artifact: Artifact, checked: Finding[], date = today()): { artifact: Artifact; accepted: number } {
+  let accepted = 0;
+  const nodes = new Map(artifact.nodes.map(n => [n.id, n]));
+  const edges = artifact.edges.map(edge => {
+    if (edge.evidence.review_status !== 'pending' || [edge.source, edge.target].includes(artifact.meta.ego)) return edge;
+    const match = checked.find(f => pairKey(normalizeLabel(f.from.label), normalizeLabel(f.to.label), f.basis) === labelKey(nodes, edge) && normalizeLabel(f.claim ?? '') === normalizeLabel(edge.evidence.claim));
+    if (!match) return edge;
+    accepted++;
+    return { ...edge, evidence: { ...edge.evidence, review_status: 'reviewed' as const, review_method: 'source_checks' as const, reviewed_at: date, verification_notes: 'Automatically accepted: retrieved explicit relationship excerpt and identity checks passed. Not reviewed by owner; confidence is unchanged.' } };
+  });
+  return { artifact: { ...artifact, edges }, accepted };
 }
 
 // ---------- Garbage collection ----------
