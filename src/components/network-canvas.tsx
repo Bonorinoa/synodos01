@@ -276,7 +276,7 @@ export function NetworkCanvas(props:Props) {
     const wanted=new Set(elements.map(element=>element.data.id));
     cy.batch(()=>{cy.elements().filter(element=>!wanted.has(element.id())).remove();for(const element of elements){const previousElement=cy.getElementById(element.data.id??'');if(previousElement.length)previousElement.data(element.data).classes(element.classes??'');else cy.add(element);}});
     
-      const destinations=new Map(positions);cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&narrow()&&!current.current.routeNodes.includes(node.id())&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;if(!current.current.selected&&oldPosition)destinations.set(node.id(),oldPosition);node.stop();});moveGeometry(destinations,undefined,changed||existing.size===0);
+      const destinations=new Map(positions);cy.nodes().forEach(node=>{node.stop();});moveGeometry(destinations,undefined,changed||existing.size===0);
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
     if(mode==='lineage'&&(changed||lastRoot.current!==root)){if(narrow()){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}
