@@ -2,7 +2,7 @@ import { RESEARCH, type ResearchSource } from '@/lib/research';
 import { normalizeUrl } from '@/lib/ingest';
 
 type Document = { url?:string; title?:string; markdown?:string; metadata?:{ sourceURL?:string; title?:string; statusCode?:number } };
-export async function searchAcademicSources(contacts:string[],bio:string,key:string,date:string) {
+export async function searchAcademicSources(contacts:{name:string;hint:string}[],bio:string,key:string,date:string,trace:string[]=[]) {
   const sources:ResearchSource[]=[];const seen=new Set<string>();
   const call=async(path:string,body:object)=>{
     const response=await fetch(`https://api.firecrawl.dev/v2/${path}`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${key}`},body:JSON.stringify(body)});
@@ -16,17 +16,21 @@ export async function searchAcademicSources(contacts:string[],bio:string,key:str
     sources.push({url,title:doc.title??doc.metadata?.title??url,markdown:(doc.markdown??'').slice(0,RESEARCH.textPerPage),status:doc.metadata?.statusCode??null,retrieved_at:date});
   };
   // Sequential bounded calls avoid a fan-out crawl and keep names tied to a research scope.
-  for(const name of contacts.slice(0,RESEARCH.contacts)){
+  for(const {name,hint} of contacts.slice(0,RESEARCH.contacts)){
     for(const topic of ['coauthors publications DOI DBLP OpenAlex','PhD dissertation advisor committee university CV']){
-      const data=await call('search',{query:`"${name}" ${topic} ${bio.slice(0,120)} -site:academictree.org`,limit:RESEARCH.resultsPerQuery,sources:['web'],scrapeOptions:{formats:['markdown'],onlyMainContent:true}});
+      const data=await call('search',{query:`"${name}" ${hint} ${topic} ${hint?'':bio.slice(0,120)} -site:academictree.org`.replace(/\s+/g,' '),limit:RESEARCH.resultsPerQuery,sources:['web'],scrapeOptions:{formats:['markdown'],onlyMainContent:true}});
       const docs=Array.isArray(data)?data:(data as {web?:Document[]}).web??[];
-      for(const doc of docs)add(doc as Document);
+      const before=sources.length;for(const doc of docs)add(doc as Document);trace.push(`Searched “${name}${hint?` (${hint})`:''}” · ${topic.split(' ')[0]} → ${sources.length-before} new pages`);
     }
   }
-  for(const source of sources.filter(source=>!source.markdown).slice(0,4)){
+  // Search results often omit HTTP status; re-read those pages so accessibility is a real dated check, never assumed.
+  for(const source of sources.filter(source=>!source.markdown||source.status===null).slice(0,8)){
+    try{
     const data=await call('scrape',{url:source.url,formats:['markdown'],onlyMainContent:true}) as Document;
-    source.markdown=(data.markdown??'').slice(0,RESEARCH.textPerPage);source.status=data.metadata?.statusCode??null;
+    source.markdown=(data.markdown??source.markdown).slice(0,RESEARCH.textPerPage);source.status=data.metadata?.statusCode??null;
+    }catch{trace.push(`Could not re-read ${source.url}`);}
   }
+  trace.push(`Read ${sources.filter(s=>s.markdown&&s.status!==null&&s.status<400).length} of ${sources.length} pages with a confirmed status`);
   return sources;
 }
 

@@ -2,7 +2,9 @@ import { z } from 'zod';
 import { discoveryBases, normalizeLabel, normalizeUrl, type Finding } from '@/lib/ingest';
 
 export const RESEARCH = { contacts: 4, queriesPerContact: 2, resultsPerQuery: 3, pages: 12, textPerPage: 10000, findings: 24 } as const;
-export const researchBriefSchema = z.object({ owner:z.string().max(200), bio:z.string().max(6000), people:z.string().min(1).max(2000), destinations:z.string().max(1000), depth:z.union([z.literal(1),z.literal(2)]).default(1) });
+export const researchBriefSchema = z.object({ owner:z.string().max(200), bio:z.string().max(6000), people:z.string().min(1).max(2000), destinations:z.string().max(1000), depth:z.union([z.literal(1),z.literal(2),z.literal(3)]).default(1) });
+/** "Name (Institution, field)" → name plus a disambiguation hint used only in search queries. */
+export function parseContact(raw:string){const m=raw.trim().match(/^([^()]+?)\s*\(([^)]*)\)\s*$/);return m?{name:m[1]!.trim(),hint:m[2]!.trim()}:{name:raw.trim(),hint:''};}
 export type ResearchSource = { url:string; title:string; markdown:string; status:number|null; retrieved_at:string };
 export const extractionSchema = {
   type:'object', additionalProperties:false, required:['findings'], properties:{findings:{type:'array',items:{
