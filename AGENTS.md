@@ -10,7 +10,8 @@
 <!-- LOVABLE:END -->
 
 ## Application architecture
-- Keep the supplied graph in validated client-side JSON with stable edge IDs derived from original order; this preserves claims and parallel relationships without introducing a backend.
+- Store each uploaded or created network as a validated browser-local artifact with an owner id; the bundled seed is only the default, and traversal reads the active artifact.
+- Ingest findings as pending, low-confidence, provenance-dated links; only owner review promotes them, rejections are remembered, and cleanup never merges differing claims.
 - Use Cytoscape for the freeform canvas, cumulative Path expansion with hop-ranked kind clusters and a non-recursive ghost ring, and legal-edge BFS levels for Lineage; mode-specific graph logic stays independent of presentation and left-to-right progress does not establish relationship direction.
 - Treat all graph links as undirected traversal unless a claim explicitly establishes direction; root-relative lineage levels are relationship hops, not generations or advisor claims.
 - Keep canvas colors and glass in global semantic tokens read by Cytoscape; HTML and canvas stay consistent.
