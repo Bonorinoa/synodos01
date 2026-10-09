@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowDownToLine, Check, FileUp, Plus, ShieldQuestion, Trash2, X } from 'lucide-react';
+import { ArrowDownToLine, Check, Copy, FileUp, Plus, ShieldQuestion, Sparkle, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { activeArtifact } from '@/lib/network';
 import { artifactFromUpload, collectGarbage, createArtifact, csvColumns, findingsTemplate, ingestFindings, parseFindings, reviewEdge, type IngestReport } from '@/lib/ingest';
 import { collectTemporaryFiles, deleteArtifact, discardStaged, readIndex, saveArtifact, setActiveArtifact, stageUpload, type StagedUpload } from '@/lib/workspace';
+import { buildResearchPrompt } from '@/lib/research-prompt';
+import { runResearch } from '@/lib/research.functions';
 import type { Artifact } from '@/lib/schema';
 
 const reload = () => window.location.reload();
+const nodeLabel = (id: string) => activeArtifact.nodes.find(n => n.id === id)?.label ?? '';
 const download = (name: string, text: string, type = 'application/json') => { const url = URL.createObjectURL(new Blob([text], { type })); const a = document.createElement('a'); a.href = url; a.download = name; a.click(); URL.revokeObjectURL(url); };
 const readFile = (file: File) => file.text();
 export const exportArtifact = (artifact: Artifact = activeArtifact) => download(`${artifact.meta.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.network.json`, JSON.stringify(artifact, null, 2));
@@ -25,12 +28,20 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
   const cleanupPreview = useMemo(() => ({ ...collectGarbage(activeArtifact).report, temp: collectTemporaryFiles({ dryRun: true, keep: staged?.upload.id }) }), [staged]);
   const guard = (fn: () => void | Promise<void>) => async () => { try { setError(null); await fn(); } catch (e) { setError(e instanceof Error ? e.message : 'Something went wrong.'); } };
 
-  const onFindings = (file: File) => guard(async () => {
-    const text = await readFile(file);
-    const preview = ingestFindings(activeArtifact, parseFindings(text, file.name), file.name);
+  const stageText = (name: string, text: string) => {
+    const preview = ingestFindings(activeArtifact, parseFindings(text, name), name);
     if (staged) discardStaged(staged.upload.id);
-    setStaged({ upload: stageUpload(file.name, text), preview });
-  })();
+    setStaged({ upload: stageUpload(name, text), preview });
+  };
+  const onFindings = (file: File) => guard(async () => stageText(file.name, await readFile(file)))();
+  const [brief, setBrief] = useState({ owner: nodeLabel(activeArtifact.meta.ego), bio: '', people: activeArtifact.nodes.filter(n => activeArtifact.edges.some(e => e.evidence.ego_gateway && [e.source, e.target].includes(n.id) && n.id !== activeArtifact.meta.ego)).map(n => n.label).join(', '), destinations: activeArtifact.nodes.filter(n => n.target).map(n => n.label).join(', ') });
+  const [researching, setResearching] = useState(false); const [copied, setCopied] = useState(false); const [pasted, setPasted] = useState('');
+  const prompt = buildResearchPrompt(brief);
+  const research = guard(async () => {
+    setResearching(true);
+    try { const result = await runResearch({ data: { prompt } }); if (!result.ok) throw new Error(result.error); stageText('research-assistant.json', result.text); }
+    finally { setResearching(false); }
+  });
   const onNetwork = (file: File) => guard(async () => { saveArtifact(artifactFromUpload(await readFile(file), file.name)); reload(); })();
   const commit = guard(() => { if (!staged) return; saveArtifact(staged.preview.artifact); discardStaged(staged.upload.id); reload(); });
   const review = (i: number, decision: 'reviewed' | 'rejected') => guard(() => { saveArtifact(reviewEdge(activeArtifact, i, decision)); reload(); })();
@@ -63,13 +74,29 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
       </div>}
     </section>
 
-    <section><h3>Add discovered connections</h3>
+    <section data-tour="bio"><h3>Start from a bio</h3>
+      <p className="blurb">Describe yourself and name people you know. A research assistant looks for their coauthors and committees, with a source for every link. Everything arrives <strong>unreviewed</strong>.</p>
+      <div className="workspace-form">
+        <input aria-label="Your name" placeholder="Your name" value={brief.owner} onChange={e => setBrief({ ...brief, owner: e.target.value })} />
+        <textarea aria-label="Short bio" rows={4} placeholder="A paragraph about your research, where you studied, what you work on…" value={brief.bio} onChange={e => setBrief({ ...brief, bio: e.target.value })} />
+        <input aria-label="People you know" placeholder="People you know (advisor, coauthors…), comma-separated" value={brief.people} onChange={e => setBrief({ ...brief, people: e.target.value })} />
+        <input aria-label="Dream destinations" placeholder="Dream destinations, comma-separated" value={brief.destinations} onChange={e => setBrief({ ...brief, destinations: e.target.value })} />
+      </div>
+      <div className="workspace-actions">
+        <Button size="sm" onClick={research} disabled={researching || !brief.people.trim()}><Sparkle size={13} />{researching ? 'Researching… (about a minute)' : 'Research it for me'}</Button>
+        <Button variant="ghost" size="sm" onClick={() => { void navigator.clipboard.writeText(prompt); setCopied(true); setTimeout(() => setCopied(false), 1800); }}>{copied ? <Check size={13} /> : <Copy size={13} />}{copied ? 'Copied' : 'Copy prompt for your own agent'}</Button>
+      </div>
+      <p className="blurb">Uses Lovable AI credits. Links without a source are dropped. Using your own agent? Paste its reply here:</p>
+      <div className="workspace-form"><textarea aria-label="Paste agent reply" rows={2} placeholder='Paste the JSON your agent returned…' value={pasted} onChange={e => setPasted(e.target.value)} /><div><Button size="sm" variant="outline" disabled={!pasted.trim()} onClick={guard(() => { stageText('pasted-agent-reply.json', pasted.slice(pasted.indexOf('{'), pasted.lastIndexOf('}') + 1)); setPasted(''); })}>Preview findings</Button></div></div>
+    </section>
+
+    <section><details><summary><h3>Advanced: upload a findings file</h3></summary>
       <p className="blurb">Upload coauthor or committee findings from a research tool. Every source keeps its address and retrieval date. New links stay <strong>unreviewed</strong> until you approve them.</p>
       <div className="workspace-actions">
         <label className="file-button"><FileUp size={13} />Upload findings (JSON or CSV)<input type="file" accept=".json,.csv,application/json,text/csv" onChange={e => { const f = e.target.files?.[0]; if (f) onFindings(f); e.target.value = ''; }} /></label>
         <Button variant="ghost" size="sm" onClick={() => download('findings-template.json', JSON.stringify(findingsTemplate, null, 2))}>JSON template</Button>
         <Button variant="ghost" size="sm" onClick={() => download('findings-template.csv', `${csvColumns.join(',')}\nDirect contact name,Coauthor name,person,coauthorship,"Coauthored “Paper title” (2024).",https://doi.org/10.0000/example,2026-10-08,grok,5\n`, 'text/csv')}>CSV template</Button>
-      </div>
+      </div></details>
       {staged && <div className="import-preview">
         <strong>{staged.upload.name}</strong>
         <ul>
