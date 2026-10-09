@@ -22,10 +22,19 @@ export const basisLabel = (basis: string) => basis.replaceAll('_', ' ');
 export const legalEdges = (mode: Mode, coreOnly = false) => edges.filter(e => (mode === 'path' || lineageBases.has(e.evidence.basis)) && (!coreOnly || (!nodeById.get(e.source)?.candidate && !nodeById.get(e.target)?.candidate)));
 const isAugustoEdge=(edge:NetworkEdge)=>edge.source===egoId||edge.target===egoId;
 const pathTraversalEdges=(coreOnly=false)=>legalEdges('path',coreOnly).filter(edge=>!isAugustoEdge(edge)||edge.evidence.ego_gateway===true);
+/** Route cost terms; the methodology docs read these same values. */
+export const COST = { base: 1, weakBasis: 3, sharedAppointment: 1, noSource: 6, unreviewed: 6, lowConfidence: 3, mediumConfidence: 1, institutionalHop: 1, provisional: 0.75, maxHops: 5, routes: 3 } as const;
 export function edgeCost(edge: NetworkEdge) {
   const basis = edge.evidence.basis;
-  return 1 + (10 - edge.strength) / 10 + (weakBases.has(basis) ? 3 : basis === 'shared_appointment' ? 1 : 0) + (edge.evidence.urls.length ? 0 : 6) + (isPending(edge) ? 6 : 0) + (edge.evidence.confidence==='low'?3:edge.evidence.confidence==='medium'?1:0) + (edge.evidence.institutional_hop ? 1 : 0) + (nodeById.get(edge.source)?.candidate || nodeById.get(edge.target)?.candidate ? 0.75 : 0);
+  return COST.base + (10 - edge.strength) / 10 + (weakBases.has(basis) ? COST.weakBasis : basis === 'shared_appointment' ? COST.sharedAppointment : 0) + (edge.evidence.urls.length ? 0 : COST.noSource) + (isPending(edge) ? COST.unreviewed : 0) + (edge.evidence.confidence==='low'?COST.lowConfidence:edge.evidence.confidence==='medium'?COST.mediumConfidence:0) + (edge.evidence.institutional_hop ? COST.institutionalHop : 0) + (nodeById.get(edge.source)?.candidate || nodeById.get(edge.target)?.candidate ? COST.provisional : 0);
 }
+/** Recorded-link hops from the owner over lineage-legal bases only; null when unreachable. */
+export function lineageHops(id: string) {
+  const legal = legalEdges('lineage'); const depth = new Map([[egoId, 0]]); const queue = [egoId];
+  for (let i = 0; i < queue.length; i++) { const cur = queue[i]!; for (const e of legal) { const next = e.source === cur ? e.target : e.target === cur ? e.source : null; if (next && !depth.has(next)) { depth.set(next, depth.get(cur)! + 1); queue.push(next); } } }
+  return depth.get(id) ?? null;
+}
+export const nobelIds = graph.nodes.filter(n => n.nobel_prize).map(n => n.id);
 export type RankedPath = { nodes: string[]; edges: string[]; cost: number };
 export function rankedPaths(target: string, coreOnly = false): RankedPath[] {
   const adjacency = new Map<string, { next: string; edge: NetworkEdge }[]>();
