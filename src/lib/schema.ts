@@ -17,6 +17,6 @@ export type EdgeRecord = z.infer<typeof edgeSchema>;
 export type GraphRecord = z.infer<typeof graphSchema>;
 
 export const artifactMetaSchema = z.object({ id: z.string(), title: z.string(), ego: z.string(), created_at: isoDate, updated_at: isoDate, origin: z.enum(['seed', 'uploaded', 'created']) });
-export const artifactSchema = z.object({ format: z.literal('network-artifact'), version: z.literal(1), meta: artifactMetaSchema, nodes: z.array(nodeSchema), edges: z.array(edgeSchema) });
+export const artifactSchema = z.object({ format: z.literal('network-artifact'), version: z.literal(1), meta: artifactMetaSchema, nodes: z.array(nodeSchema), edges: z.array(edgeSchema), rejected: z.array(z.object({ key: z.string(), from_label: z.string(), to_label: z.string(), basis: z.string(), rejected_at: isoDate })).optional() });
 export type ArtifactMeta = z.infer<typeof artifactMetaSchema>;
 export type Artifact = z.infer<typeof artifactSchema>;
