@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BookOpen, Compass, Database, ListTree, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AccountCard } from '@/components/account-card';
+import { ShareCard } from '@/components/share-card';
 
 type Option = { id: string; label: string; active: boolean };
 type Props = {
@@ -41,6 +42,7 @@ export function CommandPanel(p: Props) {
         <a href="/people"><ListTree size={16} /><strong>People summary</strong><small>Everyone, their hop and co-authors</small></a>
       </div>
       <AccountCard />
+      <ShareCard />
       <footer><Sparkles size={12} />Press ⌘K anywhere to search.</footer>
     </section>
   </div>;
