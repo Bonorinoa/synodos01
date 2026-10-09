@@ -50,6 +50,8 @@ show a branch's deeper rows only when you open it`}</pre>
       <p>For a person, we check for recorded academic links into another branch’s researched packet, never routing through you or that branch’s own contact. If there are none, we say so.</p>
       <h3>Nobel laureates</h3>
       <p>People with a sourced Nobel distinction glow on the map. Their record shows how many academic hops away they are.</p>
+      <h3>Counting hops</h3>
+      <p>Hops are always counted from you: you are hop 0, your direct contacts hop 1, their advisors, committee members and coauthors hop 2, and those people’s recorded academic links hop 3. A branch can only be opened deeper when such links are actually recorded; otherwise its record says “End of recorded branch”.</p>
     </>}
     {tab === 'Evidence & review' && <ul>
       <li><b>Sourced</b>: the link has at least one public URL. Links without a URL always show as unverified.</li>
