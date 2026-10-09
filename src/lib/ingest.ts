@@ -197,3 +197,20 @@ export function validateArtifact(value: unknown): Artifact {
   return a;
 }
 export const findingsTemplate = { format: 'network-findings', version: 1, source_tool: 'grok', retrieved_at: '2026-10-08', findings: [{ from: { label: 'Direct contact name' }, to: { label: 'Coauthor name', kind: 'person' }, basis: 'coauthorship', claim: 'Coauthored “Paper title” (2024).', sources: [{ url: 'https://doi.org/10.0000/example', retrieved_at: '2026-10-08', title: 'Paper title' }] }] };
+
+export type StartContact = { name: string; relation: 'advisor' | 'committee' | 'coauthor' | 'colleague'; url?: string };
+const relationBasis = { advisor: ['phd_advisor', 9, 'advised'], committee: ['committee', 7, 'served on the committee of'], coauthor: ['coauthorship', 6, 'coauthored with'], colleague: ['shared_institution', 3, 'works alongside'] } as const;
+/** A self-centred network: gateways come only from contacts the owner states; nothing is implied. */
+export function createOwnNetwork(owner: string, opts: { catalogId?: string; contacts: StartContact[]; destinations: string[] }, date = today()): Artifact {
+  const base = createArtifact('', owner, date); const ego = base.meta.ego; const ids = new Set([ego]);
+  const uniq = (label: string) => { let id = slugify(label), n = 2; const b = id; while (ids.has(id)) id = `${b}-${n++}`; ids.add(id); return id; };
+  const cat = opts.catalogId?.match(/A\d+/i)?.[0]?.toUpperCase();
+  base.nodes[0] = { ...base.nodes[0]!, ...(cat ? { catalog_id: `openalex:${cat}` } : {}) };
+  for (const c of opts.contacts.filter(c => c.name.trim()).slice(0, 6)) {
+    const id = uniq(c.name); const [basis, strength, verb] = relationBasis[c.relation]; const url = c.url?.trim(); const valid = !!url && /^https?:\/\/\S+$/.test(url);
+    base.nodes.push({ id, label: c.name.trim(), kind: 'person', blurb: 'First contact named by the network owner.', tags: ['first-contact'], evidence_packet: { urls: valid ? [url!] : [], notes: '' } });
+    base.edges.push({ source: ego, target: id, strength, evidence: { claim: `${owner.trim()} states: ${c.relation === 'advisor' ? `${c.name.trim()} advised me` : `I ${verb} ${c.name.trim()}`}.`, basis, urls: valid ? [url!] : [], ego_gateway: true, attestation: 'user', confidence: valid ? 'medium' : 'low', discovery: 'manual', review_status: 'reviewed', review_method: 'owner', reviewed_at: date } });
+  }
+  for (const d of opts.destinations.map(s => s.trim()).filter(Boolean).slice(0, 6)) base.nodes.push({ id: uniq(d), label: d, kind: 'institution', blurb: 'Added by you as a destination. No recorded links yet.', tags: ['destination'], target: true, evidence_packet: { urls: [], notes: '' } });
+  return base;
+}
