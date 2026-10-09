@@ -121,7 +121,11 @@ export function NetworkCanvas(props:Props) {
       readablePositions(positions,ids.filter(id=>!leading.includes(id)),narrow()?2:4,narrow()?(width-40)/2:180,end+28,narrow()?90:110);return positions;
     }
     if(narrow())return positions;
-    return terracePositions(egoId,p.trajectory.depths,[...positions.keys()],pathTargetIds,p.trajectory.edges,p.trajectory.ghostNodes);
+    const terraces=terracePositions(egoId,p.trajectory.depths,[...positions.keys()],pathTargetIds,p.trajectory.edges,p.trajectory.ghostNodes);
+    // Rotate the basin so the active trail climbs straight toward its destination; radii (hops) are unchanged.
+    const first=terraces.get(p.routeNodes[1]??''),goal=terraces.get(p.routeNodes.at(-1)??'');
+    if(first&&goal&&p.routeNodes.length>2){const turn=Math.atan2(goal.y,goal.x)-Math.atan2(first.y,first.x),c=Math.cos(turn),s=Math.sin(turn);for(const [id,q] of terraces)if(!pathTargetIds.includes(id))terraces.set(id,{x:q.x*c-q.y*s,y:q.x*s+q.y*c});}
+    return terraces;
     return positions;
   };
   const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;const zoom=cy.zoom(),pan=cy.pan();topoTransform.current?.setAttribute('transform',`translate(${pan.x} ${pan.y}) scale(${zoom})`);const labels:{x:number;y:number;w:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{
