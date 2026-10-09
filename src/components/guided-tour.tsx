@@ -6,7 +6,7 @@ import { PrivacyChoices } from '@/components/privacy-choices';
 
 export const TOUR_KEY = 'an:tour-done';
 type Step = { target: string; title: string; body: string; mode?: Mode };
-const steps: Step[] = [
+const steps: [Step, ...Step[]] = [
   { target: '', title: 'Welcome to Synodos', body: 'A private map of the people and places around your work. Find hidden ways into the places you dream of reaching, and trace your academic family — every link with its source.', mode: 'path' },
   { target: '.wordmark', title: 'Why “Synodos”', body: 'Greek σύνοδος: syn (“with”) + hodos (“a way, a road”) — journeying together. The same word once meant a gathering or assembly. This map is both: a road travelled with others, and the company kept along it.', mode: 'path' },
   { target: '.network-canvas', title: 'This is your map', body: 'You sit at the centre. Each line is a recorded relationship. Solid teal lines have a public source; thin dashed ones are weak or still unverified.', mode: 'path' },

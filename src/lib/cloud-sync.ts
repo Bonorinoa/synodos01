@@ -41,9 +41,8 @@ export async function deleteRemoteNetwork(id: string) {
 }
 
 async function onSession(session: Session | null) {
-  set({ syncedAt: null, error: null });
+  set({ session, access: session ? 'checking' : 'signed_out', syncedAt: null, error: null });
   setPrivacyScope(session?.user.id);
-  set({ session, access: session ? 'checking' : 'signed_out' });
   if (!session) return;
   const { data, error } = await supabase.rpc('claim_access');
   if (error) { set({ access: 'none', error: error.message }); return; }
