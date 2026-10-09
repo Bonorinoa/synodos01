@@ -12,7 +12,7 @@ const steps: Step[] = [
   { target: '[data-tour="mission"]', title: 'Pick a destination', body: 'Type a place you’d love to work or collaborate with. We rank up to three recorded routes through people you already know.', mode: 'path' },
   { target: '[data-tour="branches"]', title: 'Open an academic branch', body: 'Each branch is one of your direct contacts. Opening it reveals their recorded academic family, one hop at a time.', mode: 'lineage' },
   { target: '.network-canvas', title: 'Click anyone for evidence', body: 'Every record shows where each link came from and when it was found. Nothing is presented as confirmed without a source.', mode: 'lineage' },
-  { target: '[data-tour="data"]', title: 'Grow your network', body: 'Describe yourself and name people you know. A research assistant finds sourced links, and you approve each one.', mode: 'path' },
+  { target: '[data-tour="data"]', title: 'Grow your network', body: 'This one button opens everything else: search, destinations, your data, settings and help. Research finds sourced links; you approve each one.', mode: 'path' },
 ];
 
 export function GuidedTour({ onDone, onMode }: { onDone: () => void; onMode: (mode: Mode) => void }) {
