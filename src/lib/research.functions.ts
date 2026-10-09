@@ -7,8 +7,9 @@ import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 /** Authenticated, bounded source research; automatic acceptance is a deterministic check, not an AI verdict. */
 export const runResearch = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
-  .validator((data: unknown) => researchBriefSchema.parse(data))
+  .validator((data: unknown) => ({ ...researchBriefSchema.parse(data), researchConsent: typeof data === 'object' && data !== null && 'researchConsent' in data && data.researchConsent === true }))
   .handler(async ({ data, context }) => {
+    if (!data.researchConsent) return { ok: false as const, error: 'Choose Allow external research before sending a research brief.' };
     // Research spends the owner's paid credits: owner and invited testers only.
     const { data: allowed } = await context.supabase.rpc('has_access', { _user_id: context.userId });
     if (!allowed) return { ok: false as const, error: 'Research is available to invited testers only. Ask the owner for an invite.' };

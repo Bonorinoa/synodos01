@@ -3,6 +3,7 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { artifactSchema, type Artifact } from '@/lib/schema';
 import { loadArtifact, readIndex, saveArtifact } from '@/lib/workspace';
+import { readPrivacy, setPrivacyScope } from '@/lib/privacy';
 
 export type Access = 'signed_out' | 'checking' | 'owner' | 'tester' | 'none';
 type State = { session: Session | null; access: Access; syncedAt: string | null; error: string | null };
@@ -15,6 +16,7 @@ const stamp = (a: Artifact) => Date.parse(a.meta.updated_at) || 0;
 
 /** Accounts mirror browser networks: newest copy wins on sign-in, every later save is pushed. */
 async function pullAndMerge(userId: string) {
+  if (!readPrivacy().cloudSync) return;
   pulling = true;
   try {
     const { data, error } = await supabase.from('networks').select('id,data,updated_at');
@@ -22,13 +24,14 @@ async function pullAndMerge(userId: string) {
     const remote = new Map<string, Artifact>();
     for (const row of data ?? []) { const p = artifactSchema.safeParse(row.data); if (p.success) remote.set(row.id, p.data); }
     const active = readIndex().active;
-    for (const [id, art] of remote) { const local = loadArtifact(id); if (!local || stamp(art) > stamp(local) || (id === 'seed' && local.meta.origin === 'seed' && art.edges.length > local.edges.length)) saveArtifact(art, id === active); }
+    for (const [id, art] of remote) { if (!readPrivacy().cloudSync || state.session?.user.id !== userId) return; const local = loadArtifact(id); if (!local || stamp(art) > stamp(local) || (id === 'seed' && local.meta.origin === 'seed' && art.edges.length > local.edges.length)) saveArtifact(art, id === active); }
     for (const meta of readIndex().artifacts) { const local = loadArtifact(meta.id); const r = remote.get(meta.id); if (local && (!r || stamp(local) > stamp(r))) await push(userId, local); }
     set({ syncedAt: new Date().toISOString(), error: null });
   } catch (e) { set({ error: e instanceof Error ? e.message : 'Could not sync your networks.' }); }
   finally { pulling = false; }
 }
 async function push(userId: string, artifact: Artifact) {
+  if (!readPrivacy().cloudSync || state.session?.user.id !== userId) return;
   const { error } = await supabase.from('networks').upsert({ user_id: userId, id: artifact.meta.id, data: artifact as never, updated_at: new Date().toISOString() });
   if (error) set({ error: error.message }); else set({ syncedAt: new Date().toISOString(), error: null });
 }
@@ -38,6 +41,8 @@ export async function deleteRemoteNetwork(id: string) {
 }
 
 async function onSession(session: Session | null) {
+  set({ syncedAt: null, error: null });
+  setPrivacyScope(session?.user.id);
   set({ session, access: session ? 'checking' : 'signed_out' });
   if (!session) return;
   const { data, error } = await supabase.rpc('claim_access');
@@ -52,9 +57,13 @@ export function startCloudSync() {
   if (started || typeof window === 'undefined') return; started = true;
   supabase.auth.onAuthStateChange((event, session) => { if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') setTimeout(() => void onSession(session), 0); });
   window.addEventListener('an:artifact-deleted', e => { void deleteRemoteNetwork((e as CustomEvent<string>).detail); });
+  window.addEventListener('an:privacy-changed', () => {
+    const uid = state.session?.user.id;
+    if (uid && readPrivacy().cloudSync && !pulling && ['owner', 'tester'].includes(state.access)) void pullAndMerge(uid);
+  });
   window.addEventListener('an:artifact-saved', e => {
     const id = (e as CustomEvent<string | undefined>).detail; const uid = state.session?.user.id;
-    if (pulling || !id || !uid || !['owner', 'tester'].includes(state.access)) return;
+    if (pulling || !readPrivacy().cloudSync || !id || !uid || !['owner', 'tester'].includes(state.access)) return;
     const art = loadArtifact(id); if (art) void push(uid, art);
   });
 }
