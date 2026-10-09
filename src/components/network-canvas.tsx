@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { LockKeyhole } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { hopContours, verticalTrailPositions } from '@/lib/cartography';
+import { hopContours, terraceContours, terracePositions, verticalTrailPositions } from '@/lib/cartography';
 import { MOTION_MS, settleProgress } from '@/lib/graph-motion';
 import type { Core, StylesheetCSS, ElementDefinition } from 'cytoscape';
 import { egoId, egoGatewayIds, pathTargetIds, graph, legalEdges, lineageLayout, trajectoryLayout, rankedPaths, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
@@ -121,8 +121,7 @@ export function NetworkCanvas(props:Props) {
       readablePositions(positions,ids.filter(id=>!leading.includes(id)),narrow()?2:4,narrow()?(width-40)/2:180,end+28,narrow()?90:110);return positions;
     }
     if(narrow())return positions;
-    if(cy&&!p.routeNodes.length){const step=(width-240)/cy.zoom();pathTargetIds.forEach((id,i)=>positions.set(id,{x:step,y:(i-(pathTargetIds.length-1)/2)*240}));}
-    if(cy&&p.routeNodes.length){const step=Math.max(140,(width-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2?-70:70)/cy.zoom()}));pathTargetIds.filter(id=>!p.routeNodes.includes(id)).forEach((id,i)=>positions.set(id,{x:(p.routeNodes.length-1)*step,y:(180+i*130)/cy.zoom()}));}
+    return terracePositions(egoId,p.trajectory.depths,[...positions.keys()],pathTargetIds,p.trajectory.edges);
     return positions;
   };
   const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;const zoom=cy.zoom(),pan=cy.pan();topoTransform.current?.setAttribute('transform',`translate(${pan.x} ${pan.y}) scale(${zoom})`);const labels:{x:number;y:number;w:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{
@@ -138,10 +137,11 @@ export function NetworkCanvas(props:Props) {
     const cy=cyRef.current;if(!cy)return;const p=current.current;
     const depths=p.mode==='lineage'?getLineage().depth:p.trajectory.depths;
     const routeDepths=new Map(p.routeNodes.map((id,i)=>[id,i]));
-    setContours(hopContours(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
+    const terraced=p.mode==='path'&&!narrow()&&!p.selected;
+    setContours((terraced?terraceContours:hopContours)(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
       if(!n.isNode())return [];const depth=routeDepths.get(n.id())??depths.get(n.id())??rankedPaths(n.id(),p.coreOnly)[0]?.edges.length;if(depth===undefined)return [];
       return [{id:n.id(),...n.position(),depth}];
-    }),Math.max(76,58/cy.zoom())));
+    }),...(terraced?[]:[Math.max(76,58/cy.zoom())]) as []));
   };
   const [hitNodes,setHitNodes]=useState<{id:string;label:string;x:number;y:number}[]>([]);
   const [bands,setBands]=useState<{depth:number;y:number}[]>([]);
