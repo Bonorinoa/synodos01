@@ -58,7 +58,11 @@
 - [x] Optional upfront two-hop research build (bounded, unreviewed).
 - [ ] Source-document suggestions — deferred; needs a separate scoped request and supplied documents.
 - [x] Run Fernando two-hop and requested three-hop research; preserve the CV-sourced advisor finding in an owner-review preview. Three-hop request stopped at an empty second frontier.
-- [ ] Approve Fernando’s finding and establish any direct gateway — requires owner review and a real attestation; no personal link was inferred.
+- [ ] Apply the owner's approval of Fernando → Peter J. Kuhn to Augusto's browser artifact; do not infer a personal gateway.
+- [ ] Add conservative automatic source-check acceptance, keeping ambiguous claims pending and confidence separate.
+- [ ] Connect direct Grok research using a securely supplied xAI key.
+- [ ] Run Fernando's three-hop research again; report credit/configuration blockers without retry loops.
+- [ ] Assess small-tester release readiness; do not publish or redesign Lineage in this task.
 - [ ] Broaden Fernando’s academic circle — Firecrawl returned 402; connected account needs search credits before another run.
 - [x] Verify phone and desktop Path/Lineage, command panel and settings; refine radial spacing, phone columns and lock positions. Deep phone branches remain scroll/pan exploration rather than shrinking labels.
 - [x] Update tutorial-inspired identity and favicon; app identity remains separate from user artifact titles.
