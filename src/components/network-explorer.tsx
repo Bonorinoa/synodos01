@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import brandMark from '@/assets/kindred-mark.png';
 import { ArrowDownToLine, Check, Focus, LayoutGrid, Maximize, Minus, Plus, Search, X } from 'lucide-react';
 import { SettingsPanel } from '@/components/settings-panel';
 import { CommandPanel } from '@/components/command-panel';
@@ -83,7 +84,7 @@ export function NetworkExplorer() {
   return <div className="network-app" data-mode={mode} data-legend={legendOpen} data-inspector={!!selected} data-guide={mode==='path'&&guideOpen} ref={appRef}>
     <NetworkCanvas routeNodes={routeNodes} viewportKey="stable" lineageExpanded={lineageExpanded} trajectory={trajectory} trajectoryKey={`${target??"overview"}:${activePath??"all"}:${coreOnly}:${[...expanded].join(",")}:${selected??""}`} mode={mode} coreOnly={coreOnly} root={root} collapsed={collapsed} highlighted={highlighted} selected={selected} onSelect={setSelected} onExpand={mode==='lineage'?expandLineage:expandNode} onZoom={setZoom} apiRef={apiRef}/>
      <header className="hud-header glass">
-       <div className="wordmark"><svg className="atlas-mark" viewBox="0 0 36 36" aria-hidden="true"><rect x="5" y="5" width="26" height="26" rx="2"/><path d="M10 18h16M18 10v16"/><circle cx="27" cy="9" r="2"/></svg><h1>{activeArtifact.meta.title}</h1><span className="private-label">Private research space</span></div>
+        <div className="wordmark"><img className="atlas-mark" src={brandMark} alt="" width={36} height={36}/><h1>Kindred Atlas</h1><span className="private-label">Private research space</span></div>
       <div className="mode-pill" data-tour="modes" role="group" aria-label="Canvas mode">{(['path','lineage'] as const).map(value=><Button key={value} variant={mode===value?'secondary':'ghost'} aria-pressed={mode===value} onClick={()=>changeMode(value)}>{value==='path'?'Path':'Lineage'}</Button>)}</div>
        <div className="header-actions"><Button variant="ghost" size="icon" className="panel-trigger" data-tour="data" title="Command panel" aria-label="Open command panel" aria-expanded={panelOpen} onClick={()=>{setPanelOpen(true);setSelected(null);}}><LayoutGrid/>{pendingCount>0&&<span className="pending-count" aria-label={`${pendingCount} waiting for review`}>{pendingCount}</span>}</Button></div>
     </header>

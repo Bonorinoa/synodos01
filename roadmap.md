@@ -56,4 +56,7 @@
 - [x] Verify real research and desktop/390px/500px target and branch interactions.
 - [x] Concentric hop terraces for desktop Path, trail rotated toward its destination.
 - [x] Optional upfront two-hop research build (bounded, unreviewed).
-- [ ] Source-document suggestions ("people you co-authored with but haven't added") — next.
+- [ ] Source-document suggestions ("people you co-authored with but haven't added") — deferred to a separate request.
+- [ ] Run Fernando Lozano two-hop research, then three hops; preserve owner review and deliver real sourced findings.
+- [ ] Verify phone and desktop Path/Lineage, command panel and settings; refine spacing.
+- [ ] Update app identity to a tutorial-inspired paper/pixel name and mountain mark.
