@@ -51,7 +51,8 @@ export const runResearch = createServerFn({ method: 'POST' })
         for (const f of out.result.file.findings) { const k = normalizeLabel(f.to.label); if (!known.has(k)) { known.add(k); next.set(k, { name: f.to.label, hint: '' }); } }
         frontier = [...next.values()].slice(0, RESEARCH.contacts);
       }
-      const merged = { ...file!, findings };
+      if (!file) return { ok: false as const, error: 'No source-grounded findings were returned.', trace };
+      const merged = { ...file, findings };
       const cited = [...new Set(findings.flatMap(f => f.sources.map(s => s.url)))];
       return { ok: true as const, text: JSON.stringify(merged), cited, pages, dropped, second: Math.max(0, hops - 1), hops, trace };
     } catch (error) { return { ok: false as const, error: error instanceof Error ? error.message : 'Source research failed. No links were added.', trace }; }
