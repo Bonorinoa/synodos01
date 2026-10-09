@@ -101,14 +101,14 @@ export function NetworkCanvas(props:Props) {
         let y=0;
         for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){
           const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);
-          const columns=depth===0?1:depth===1?2:3;
-          y=readablePositions(positions,ids,columns,(width-48)/columns,y,depth===0?90:100);
+          const columns=depth===0?1:2;
+          y=readablePositions(positions,ids,columns,(width-48)/columns,y,depth===0?96:112)+24;
         }
       }
       return positions;
     }
     const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:egoGatewayIds,pathTargetIds,p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
-    if(p.selected){
+    if(p.selected&&narrow()){
       const ids=[...positions.keys()].filter(id=>!p.trajectory.ghostNodes.has(id));const leading=[...new Set([egoId,p.selected])].filter(id=>ids.includes(id));
       if(narrow()&&p.routeNodes.length){
         const route=p.routeNodes.filter(id=>ids.includes(id)),lane=-(width-48)*.22;
@@ -120,8 +120,8 @@ export function NetworkCanvas(props:Props) {
         remainder.forEach((id,i)=>positions.set(id,{x:sideX,y:600+i*90}));
         return positions;
       }
-      const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?50:140);
-      readablePositions(positions,ids.filter(id=>!leading.includes(id)),narrow()?2:4,narrow()?(width-40)/2:180,end+28,narrow()?90:110);return positions;
+      const end=readablePositions(positions,leading,2,(width-40)/2,0,64);
+      readablePositions(positions,ids.filter(id=>!leading.includes(id)),2,(width-40)/2,end+28,104);return positions;
     }
     if(narrow())return positions;
     const terraces=terracePositions(egoId,p.trajectory.depths,[...positions.keys()],pathTargetIds,p.trajectory.edges,p.trajectory.ghostNodes);
@@ -129,7 +129,6 @@ export function NetworkCanvas(props:Props) {
     const first=terraces.get(p.routeNodes[1]??''),goal=terraces.get(p.routeNodes.at(-1)??'');
     if(first&&goal&&p.routeNodes.length>2){const turn=Math.atan2(goal.y,goal.x)-Math.atan2(first.y,first.x),c=Math.cos(turn),s=Math.sin(turn);for(const [id,q] of terraces)if(!pathTargetIds.includes(id))terraces.set(id,{x:q.x*c-q.y*s,y:q.x*s+q.y*c});}
     return terraces;
-    return positions;
   };
   const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;const zoom=cy.zoom(),pan=cy.pan();topoTransform.current?.setAttribute('transform',`translate(${pan.x} ${pan.y}) scale(${zoom})`);const labels:{x:number;y:number;w:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{
     text.setAttribute('font-size',`${11/zoom}px`);
@@ -144,7 +143,7 @@ export function NetworkCanvas(props:Props) {
     const cy=cyRef.current;if(!cy)return;const p=current.current;
     const depths=p.mode==='lineage'?getLineage().depth:p.trajectory.depths;
     const routeDepths=new Map(p.routeNodes.map((id,i)=>[id,i]));
-    const terraced=p.mode==='path'&&!narrow()&&!p.selected;
+    const terraced=p.mode==='path'&&!narrow();
     const points=(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
       if(!n.isNode())return [];const depth=routeDepths.get(n.id())??depths.get(n.id())??rankedPaths(n.id(),p.coreOnly)[0]?.edges.length;if(depth===undefined)return [];
       return [{id:n.id(),...n.position(),depth}];
@@ -163,7 +162,7 @@ export function NetworkCanvas(props:Props) {
          const node=edge.source().id()===current.current.root?edge.target():edge.source();
          const point=node.renderedPosition();
          if(point.x<24||point.x>cy.width()-24||point.y<24||point.y>cy.height()-24)return [];
-         return [{id:edge.id(),x:point.x+22,y:point.y-18}];
+         return [{id:edge.id(),x:point.x+20,y:point.y-28}];
        }
         return [{id:edge.id(),x:a.x*.65+b.x*.35,y:a.y*.65+b.y*.35-18}];
     }));
@@ -181,7 +180,7 @@ export function NetworkCanvas(props:Props) {
        const lineageNode=compact&&current.current.mode==='lineage'&&!ghost;
        const destination=compact&&node.data('target');
        const stagger=direct&&!compact?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
-         const point=node.renderedPosition(),width=Math.max(44,compact&&lineageNode&&!direct&&node.id()!==egoId?(cy.width()-48)/3-12:compact&&(direct||routeNode||destination||lineageNode)?(cy.width()-48)/2-12:ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130);
+         const point=node.renderedPosition(),width=Math.max(44,compact&&(direct||routeNode||destination||lineageNode)?(cy.width()-48)/2-12:ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130);
         const labelWidth=Math.max(44,width/Math.max(zoom,.01));
        const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+(compact?6:12)+stagger,w:width,h:compact&&(direct||routeNode||lineageNode||destination)?36:compact?18:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
@@ -334,7 +333,7 @@ export function NetworkCanvas(props:Props) {
            const top=narrow()?174:160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-64:cy.height()-64;
            const width=cy.width()-left-right,height=Math.max(240,bottom-top);
            const x1=Math.min(...points.map(point=>point.x)),x2=Math.max(...points.map(point=>point.x)),y1=Math.min(...points.map(point=>point.y)),y2=Math.max(...points.map(point=>point.y));
-            const zoom=narrow()?Math.max(.3,Math.min(1,(bottom-top)/Math.max(1,y2-y1),(cy.width()-64)/Math.max(1,x2-x1))):Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
+            const zoom=narrow()?Math.max(p.mode==='lineage'?.62:.3,Math.min(1,(bottom-top)/Math.max(1,y2-y1),(cy.width()-64)/Math.max(1,x2-x1))):Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
            if(narrow()){for(const [key,point] of positions)positions.set(key,{x:point.x/zoom,y:point.y});}
             const pan={x:narrow()?cy.width()/2-(x1+x2)/2:left+width/2-(x1+x2)/2*zoom,y:narrow()?top-y1*zoom:top+height/2-(y1+y2)/2*zoom};
            rebuildContours();

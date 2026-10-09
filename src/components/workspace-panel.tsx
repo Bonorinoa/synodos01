@@ -7,6 +7,7 @@ import { collectTemporaryFiles, deleteArtifact, discardStaged, readIndex, saveAr
 import { buildResearchPrompt } from '@/lib/research-prompt';
 import { runResearch } from '@/lib/research.functions';
 import type { Artifact } from '@/lib/schema';
+import fernandoFindings from '@/data/fernando-findings.json';
 
 const reload = () => window.location.reload();
 const nodeLabel = (id: string) => activeArtifact.nodes.find(n => n.id === id)?.label ?? '';
@@ -89,6 +90,8 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
         <Button variant="ghost" size="sm" onClick={() => { void navigator.clipboard.writeText(prompt); setCopied(true); setTimeout(() => setCopied(false), 1800); }}>{copied ? <Check size={13} /> : <Copy size={13} />}{copied ? 'Copied' : 'Copy prompt for your own agent'}</Button>
       </div>
       <p className="blurb">Uses Firecrawl and Lovable AI credits. Up to 4 contacts per hop. Add an institution or field in brackets to tell apart people with the same name. Each hop only follows people found with a quoted source.</p>
+      <Button variant="outline" size="sm" onClick={guard(() => stageText('fernando-lozano-research.json', JSON.stringify(fernandoFindings)))}><ShieldQuestion size={13}/>Review Fernando’s saved research</Button>
+      <p className="blurb">The saved run found Fernando Lozano’s doctoral advisor in his public CV. A three-hop request stopped after the second pass found no further grounded links. No personal connection to you has been inferred.</p>
       {researchSummary&&<p className="blurb" role="status">{researchSummary}</p>}{trace.length>0&&<div className="research-trace" aria-label="What the research did">{trace.map((t,i)=><span key={i}>{t}</span>)}</div>}
       <p className="blurb">Using your own agent? Paste its reply here:</p>
       <div className="workspace-form"><textarea aria-label="Paste agent reply" rows={2} placeholder='Paste the JSON your agent returned…' value={pasted} onChange={e => setPasted(e.target.value)} /><div><Button size="sm" variant="outline" disabled={!pasted.trim()} onClick={guard(() => { stageText('pasted-agent-reply.json', pasted.slice(pasted.indexOf('{'), pasted.lastIndexOf('}') + 1)); setPasted(''); })}>Preview findings</Button></div></div>

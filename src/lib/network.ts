@@ -81,13 +81,13 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
   const levels = new Map<number,string[]>();
   for (const [id,level] of depth) if (!hidden.has(id)) levels.set(level,[...(levels.get(level) ?? []),id]);
   positions.set(root,{x:0,y:0});
-  let layerY=220;
+  let layerY=240;
   for (const [level,ids] of levels) {
     if(level===0)continue;
     const groups=new Map<string,string[]>();
     for(const id of ids){const ancestor=parent.get(id)??root;groups.set(ancestor,[...(groups.get(ancestor)??[]),id]);}
     const ordered=[...groups].sort(([a],[b])=>(positions.get(a)?.x??0)-(positions.get(b)?.x??0));
-     const widths=ordered.map(([,children])=>Math.max(230,Math.min(4,children.length)*180));
+     const widths=ordered.map(([,children])=>Math.max(250,Math.min(4,children.length)*210));
     const total=widths.reduce((sum,width)=>sum+width,0)+Math.max(0,ordered.length-1)*65;
     let cursor=-total/2;
     let rows=1;
@@ -96,10 +96,10 @@ export function lineageLayout(root: string, coreOnly: boolean, collapsed: Set<st
       const columns=Math.min(4,children.length);
        children.sort((a,b)=>Number(legal.some(e=>e.evidence.basis==='phd_advisor'&&[e.source,e.target].includes(b)&&[e.source,e.target].includes(parent.get(b)??'')&&!e.evidence.claim.startsWith('Dissertation committee')))-Number(legal.some(e=>e.evidence.basis==='phd_advisor'&&[e.source,e.target].includes(a)&&[e.source,e.target].includes(parent.get(a)??'')&&!e.evidence.claim.startsWith('Dissertation committee'))));
        const chair=children.find(id=>legal.some(e=>e.evidence.basis==='phd_advisor'&&[e.source,e.target].includes(id)&&[e.source,e.target].includes(ancestor)&&!e.evidence.claim.startsWith('Dissertation committee')));
-       children.forEach((id,index)=>{const peerIndex=chair?index-1:index;positions.set(id,{x:id===chair?(positions.get(ancestor)?.x??0):cursor+width/2+(Math.max(0,peerIndex)%columns-(columns-1)/2)*180,y:layerY+(id===chair?0:(chair?85:0)+Math.floor(Math.max(0,peerIndex)/columns)*100)});});
+       children.forEach((id,index)=>{const peerIndex=chair?index-1:index;positions.set(id,{x:id===chair?(positions.get(ancestor)?.x??0):cursor+width/2+(Math.max(0,peerIndex)%columns-(columns-1)/2)*210,y:layerY+(id===chair?0:(chair?96:0)+Math.floor(Math.max(0,peerIndex)/columns)*116)});});
       rows=Math.max(rows,Math.ceil(children.length/columns));cursor+=width+65;
     });
-     layerY+=240+(rows-1)*100;
+     layerY+=300+(rows-1)*116;
   }
   // Hidden evidence remains a faint, bounded preview, not an extra traversal hop.
   const contextPositions=new Map<string,{x:number;y:number}>();

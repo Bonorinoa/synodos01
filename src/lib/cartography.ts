@@ -36,7 +36,7 @@ export function verticalTrailPositions(ids:string[], destinations:string[], dept
   return positions;
 }
 /** Concentric terraces: hop depth becomes radius around the root; angle follows the nearest shallower recorded neighbor. Presentation only. */
-export function terracePositions(root:string, depths:Map<string,number>, ids:string[], destinations:string[], edges:{source:string;target:string}[], quiet:Set<string>=new Set(), gap=230) {
+export function terracePositions(root:string, depths:Map<string,number>, ids:string[], destinations:string[], edges:{source:string;target:string}[], quiet:Set<string>=new Set(), gap=250) {
   const positions=new Map<string,MapPoint>([[root,{x:0,y:0}]]);const angle=new Map<string,number>([[root,0]]);
   const near=new Map<string,string[]>();for(const e of edges){near.set(e.source,[...(near.get(e.source)??[]),e.target]);near.set(e.target,[...(near.get(e.target)??[]),e.source]);}
   const rings=new Map<number,string[]>();
@@ -47,7 +47,7 @@ export function terracePositions(root:string, depths:Map<string,number>, ids:str
     // Order by inherited parent angle so branches fan outward instead of crossing the basin.
     const parentAngle=(id:string)=>{const a=(near.get(id)??[]).filter(n=>angle.has(n)&&(depths.get(n)??0)<d).map(n=>angle.get(n)??0);return a.length?Math.atan2(a.reduce((s,v)=>s+Math.sin(v),0),a.reduce((s,v)=>s+Math.cos(v),0)):Math.PI;};
     const order=ring.map(id=>({id,a:parentAngle(id)})).sort((x,y)=>x.a-y.a||x.id.localeCompare(y.id));
-    radius=Math.max(radius+gap,(ring.filter(id=>!quiet.has(id)).length*130+ring.filter(id=>quiet.has(id)).length*24)/(2*Math.PI));outer=radius;
+    radius=Math.max(radius+gap,(ring.filter(id=>!quiet.has(id)).length*160+ring.filter(id=>quiet.has(id)).length*40)/(2*Math.PI));outer=radius;
     const offset=order.length?order.reduce((s,o)=>s+o.a,0)/order.length-Math.PI:0;
     order.forEach(({id},i)=>{const a=offset+(i+.5)*2*Math.PI/order.length-Math.PI+Math.PI;angle.set(id,a);positions.set(id,{x:radius*Math.cos(a),y:radius*Math.sin(a)});});
   }

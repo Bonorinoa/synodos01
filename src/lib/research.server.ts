@@ -6,7 +6,7 @@ export async function searchAcademicSources(contacts:{name:string;hint:string}[]
   const sources:ResearchSource[]=[];const seen=new Set<string>();
   const call=async(path:string,body:object)=>{
     const response=await fetch(`https://api.firecrawl.dev/v2/${path}`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${key}`},body:JSON.stringify(body)});
-    if(!response.ok){throw new Error(`Firecrawl request failed (${response.status}). No findings were added. Try again later or check the connection.`);}
+    if(!response.ok){const detail=await response.text();console.error(`Firecrawl request failed [${response.status}]: ${detail}`);if(response.status===402)throw new Error('Firecrawl has run out of search credits. Top up the connected Firecrawl account before researching again. No findings were added.');throw new Error(`Firecrawl request failed (${response.status}): ${detail}`);}
     const result=await response.json() as {success?:boolean;error?:string;data?:unknown};
     if(result.success===false)throw new Error('Firecrawl could not retrieve sources. No findings were added.');
     return result.data??result;
@@ -17,7 +17,7 @@ export async function searchAcademicSources(contacts:{name:string;hint:string}[]
   };
   // Sequential bounded calls avoid a fan-out crawl and keep names tied to a research scope.
   for(const {name,hint} of contacts.slice(0,RESEARCH.contacts)){
-    for(const topic of ['coauthors publications DOI DBLP OpenAlex','PhD dissertation advisor committee university CV']){
+    for(const topic of ['publications coauthors','PhD advisor committee CV']){
       const data=await call('search',{query:`"${name}" ${hint} ${topic} ${hint?'':bio.slice(0,120)} -site:academictree.org`.replace(/\s+/g,' '),limit:RESEARCH.resultsPerQuery,sources:['web'],scrapeOptions:{formats:['markdown'],onlyMainContent:true}});
       const docs=Array.isArray(data)?data:(data as {web?:Document[]}).web??[];
       const before=sources.length;for(const doc of docs)add(doc as Document);trace.push(`Searched “${name}${hint?` (${hint})`:''}” · ${topic.split(' ')[0]} → ${sources.length-before} new pages`);
