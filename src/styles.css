@@ -225,3 +225,8 @@ button,[data-slot=button]{border-radius:2px}
 .share-viewers{font-size:12px;color:var(--muted-foreground);padding-left:4px}
 .shared-gate{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}
 .shared-gate>div{max-width:420px;display:grid;gap:12px;justify-items:center}
+.own-wizard label{display:grid;gap:.35rem;font-size:.8rem}
+.own-wizard input,.own-wizard select{border:1px solid var(--border);background:var(--background);color:var(--foreground);border-radius:.5rem;padding:.45rem .6rem;font-size:.85rem}
+.own-contact{display:grid;grid-template-columns:1.2fr .8fr 1.2fr;gap:.4rem}
+@media(max-width:640px){.own-contact{grid-template-columns:1fr}}
+.own-actions{display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap}

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BookOpen, Compass, Database, ListTree, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
+import { BookOpen, UserPlus, Compass, Database, ListTree, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AccountCard } from '@/components/account-card';
 import { ShareCard } from '@/components/share-card';
@@ -16,6 +16,7 @@ type Props = {
   onSettings: () => void;
   onTour: () => void;
   onDocs: () => void;
+  onCreate: () => void;
 };
 
 /** The one header entry point: every secondary feature lives in this pane so the top bar stays quiet. */
@@ -39,6 +40,7 @@ export function CommandPanel(p: Props) {
         <button onClick={go(p.onSettings)}><SlidersHorizontal size={16} /><strong>Map settings</strong><small>Links, rings, names, motion</small></button>
         <button onClick={go(p.onTour)}><Compass size={16} /><strong>Take the tour</strong><small>A two-minute walkthrough</small></button>
         <button onClick={go(p.onDocs)}><BookOpen size={16} /><strong>How it works</strong><small>Methods, sources, hop rules</small></button>
+        <button onClick={go(p.onCreate)}><UserPlus size={16} /><strong>Start my own network</strong><small>Centred on you, from your first contacts</small></button>
         <a href="/people"><ListTree size={16} /><strong>People summary</strong><small>Everyone, their hop and co-authors</small></a>
       </div>
       <AccountCard />
