@@ -1,4 +1,5 @@
 // Presentation geometry only. Hop values come from the existing gated layouts.
+import { egoId } from '@/lib/network';
 export type MapPoint = { x:number; y:number };
 export type ElevationPoint = MapPoint & { id:string; depth:number };
 export function hopContours(points:ElevationPoint[], padding=76) {
