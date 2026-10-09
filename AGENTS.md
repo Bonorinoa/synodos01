@@ -41,4 +41,5 @@
 - Refresh active browser-network indexes on artifact saves without remounting the canvas; destination edits must preserve exploration state.
 - Coordinate graph positions and camera with one interruptible critically damped transition and coalesce overlay updates per animation frame; reduced motion applies instantly.
 - Keep the header to mark, mode toggle and one command-panel button; secondary features live in that pane so the map stays uncluttered.
+- Keep product identity independent of artifact titles, with a shared raster mark and matching favicon; renaming the app must not rename user networks.
 - Research runs up to three bounded hops, each following only people grounded with quoted sources at the previous hop; null-status search pages are re-read for a real status check.

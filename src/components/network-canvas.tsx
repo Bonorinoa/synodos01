@@ -101,14 +101,14 @@ export function NetworkCanvas(props:Props) {
         let y=0;
         for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){
           const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);
-          const columns=depth===0?1:depth===1?2:3;
-          y=readablePositions(positions,ids,columns,(width-48)/columns,y,depth===0?90:100);
+          const columns=depth===0?1:2;
+          y=readablePositions(positions,ids,columns,(width-48)/columns,y,depth===0?96:112)+24;
         }
       }
       return positions;
     }
     const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:egoGatewayIds,pathTargetIds,p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
-    if(p.selected){
+    if(p.selected&&narrow()){
       const ids=[...positions.keys()].filter(id=>!p.trajectory.ghostNodes.has(id));const leading=[...new Set([egoId,p.selected])].filter(id=>ids.includes(id));
       if(narrow()&&p.routeNodes.length){
         const route=p.routeNodes.filter(id=>ids.includes(id)),lane=-(width-48)*.22;
@@ -120,8 +120,8 @@ export function NetworkCanvas(props:Props) {
         remainder.forEach((id,i)=>positions.set(id,{x:sideX,y:600+i*90}));
         return positions;
       }
-      const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?50:140);
-      readablePositions(positions,ids.filter(id=>!leading.includes(id)),narrow()?2:4,narrow()?(width-40)/2:180,end+28,narrow()?90:110);return positions;
+      const end=readablePositions(positions,leading,2,(width-40)/2,0,64);
+      readablePositions(positions,ids.filter(id=>!leading.includes(id)),2,(width-40)/2,end+28,104);return positions;
     }
     if(narrow())return positions;
     const terraces=terracePositions(egoId,p.trajectory.depths,[...positions.keys()],pathTargetIds,p.trajectory.edges,p.trajectory.ghostNodes);
@@ -129,7 +129,6 @@ export function NetworkCanvas(props:Props) {
     const first=terraces.get(p.routeNodes[1]??''),goal=terraces.get(p.routeNodes.at(-1)??'');
     if(first&&goal&&p.routeNodes.length>2){const turn=Math.atan2(goal.y,goal.x)-Math.atan2(first.y,first.x),c=Math.cos(turn),s=Math.sin(turn);for(const [id,q] of terraces)if(!pathTargetIds.includes(id))terraces.set(id,{x:q.x*c-q.y*s,y:q.x*s+q.y*c});}
     return terraces;
-    return positions;
   };
   const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;const zoom=cy.zoom(),pan=cy.pan();topoTransform.current?.setAttribute('transform',`translate(${pan.x} ${pan.y}) scale(${zoom})`);const labels:{x:number;y:number;w:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{
     text.setAttribute('font-size',`${11/zoom}px`);
@@ -144,7 +143,7 @@ export function NetworkCanvas(props:Props) {
     const cy=cyRef.current;if(!cy)return;const p=current.current;
     const depths=p.mode==='lineage'?getLineage().depth:p.trajectory.depths;
     const routeDepths=new Map(p.routeNodes.map((id,i)=>[id,i]));
-    const terraced=p.mode==='path'&&!narrow()&&!p.selected;
+    const terraced=p.mode==='path'&&!narrow();
     const points=(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
       if(!n.isNode())return [];const depth=routeDepths.get(n.id())??depths.get(n.id())??rankedPaths(n.id(),p.coreOnly)[0]?.edges.length;if(depth===undefined)return [];
       return [{id:n.id(),...n.position(),depth}];
