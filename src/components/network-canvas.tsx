@@ -121,7 +121,7 @@ export function NetworkCanvas(props:Props) {
       readablePositions(positions,ids.filter(id=>!leading.includes(id)),narrow()?2:4,narrow()?(width-40)/2:180,end+28,narrow()?90:110);return positions;
     }
     if(narrow())return positions;
-    return terracePositions(egoId,p.trajectory.depths,[...positions.keys()],pathTargetIds,p.trajectory.edges);
+    return terracePositions(egoId,p.trajectory.depths,[...positions.keys()],pathTargetIds,p.trajectory.edges,p.trajectory.ghostNodes);
     return positions;
   };
   const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;const zoom=cy.zoom(),pan=cy.pan();topoTransform.current?.setAttribute('transform',`translate(${pan.x} ${pan.y}) scale(${zoom})`);const labels:{x:number;y:number;w:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{
