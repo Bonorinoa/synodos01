@@ -67,6 +67,9 @@ show a branch's deeper rows only when you open it`}</pre>
   keep a finding only if it cites a public URL
 findings → preview → you approve or reject each one`}</pre>
       <p>Allowed link types for findings: {list(discoveryBases)}.</p>
+      <h3>What gets searched, and with what</h3>
+      <p>The in-app assistant uses one tool: a general web search run by an AI model on the server. It typically lands on Google Scholar profiles, university and lab pages, CVs, dissertation front matter, RePEc, DBLP, arXiv and OpenAlex records. It does not log in anywhere, does not scrape Academic Tree, and has no dedicated crawler yet. Every cited address and its retrieval date are kept with the finding.</p>
+      <p>Using your own agent (for example one with Firecrawl search and scraping) works the same way: copy the prompt, paste the reply, and its findings arrive unreviewed with the tool name recorded.</p>
     </>}
   </article></div>;
 }
