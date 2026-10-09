@@ -35,6 +35,14 @@ In Your data, a new "Start from a bio" flow sits as the main option. File upload
   - Requires turning on Lovable Cloud, used here only to run the AI call; your networks stay stored in this browser. It uses Lovable AI credits per run.
   - Honest limits: the AI may only report links it can cite with a URL. Links without a URL are dropped and listed. Every URL is shown so you can check it.
 
+## 6. "Where do you want to go?" card: no overlap, destinations you choose
+- The big centred card currently covers the graph. It becomes a compact glass card pinned top-left under the stats line, and the camera frames the graph in the clear space beside it. On phones it becomes a short card at the bottom with the graph framed above it.
+- Destinations are your own input, not fixed buttons. The card has a field: "Type a place you'd love to work or collaborate with…".
+  - If the place matches a record in your network, it becomes a destination.
+  - If not, it is added as a new destination with no links yet, marked "No recorded path yet". It can also be passed to the research agent (section 5) to look for ways in.
+- Your saved destinations show as small removable chips. The top-bar picker lists the same ones.
+- Destinations are saved in this browser with the network.
+
 ## Technical details
 - New pieces: tour component (spotlight via target selectors and a `data-tour` attribute, localStorage flag `an:tour-done`), docs dialog, Nobel glow layer next to the existing halo overlay, and a `bio-research` panel in the workspace.
 - The research agent is a `createServerFn` on Lovable Cloud using the AI Gateway (default model, streaming, strict JSON schema output matching `findingsFileSchema`). Results are validated with the existing `parseFindings` → `ingestFindings` and pass through staging. 402 and 429 errors are shown in plain language.
