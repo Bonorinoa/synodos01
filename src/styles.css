@@ -155,7 +155,7 @@ button,[data-slot=button]{border-radius:2px}
 .tour-welcome{width:min(720px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow-y:auto;background:var(--paper-hi);padding:0;animation:tour-pop .35s steps(6) both}
 .tour-welcome img{display:block;width:100%;height:auto;image-rendering:pixelated;border-bottom:2px solid var(--foreground)}.tour-welcome>div{padding:20px 24px 16px}.tour-welcome h2{font:700 clamp(20px,3vw,28px)/1.2 var(--font-display);margin:8px 0}.tour-welcome p{font-size:15px;line-height:1.6;color:var(--muted-foreground);max-width:56ch}
 .tour-welcome footer,.tour-card footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px}.tour-welcome footer>div,.tour-card footer>div{display:flex;gap:4px}
-.tour-dots{display:flex;gap:6px;margin-top:16px}.tour-dots button{width:10px;height:10px;border:2px solid var(--foreground);border-radius:0;padding:0;pointer-events:auto}.tour-dots button[data-on=true]{background:var(--trail);border-color:var(--trail)}
+.tour-dots{display:flex;gap:6px;margin-top:16px}.tour-dots span{width:10px;height:10px;border:2px solid var(--foreground);border-radius:0;padding:0;pointer-events:auto}.tour-dots span[data-on=true]{background:var(--trail);border-color:var(--trail)}
 .tour-card{background:var(--paper-hi);border-radius:2px;animation:tour-pop .25s steps(4) both}.tour-spot{border-radius:2px;border:3px dashed var(--trail)}
 @keyframes tour-pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
 /* Your data — paper index cards */
@@ -202,3 +202,13 @@ button,[data-slot=button]{border-radius:2px}
 .people-page h2{margin:28px 0 8px;font-size:18px}
 .people-table{width:100%;border-collapse:collapse}
 .people-table th,.people-table td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+
+.privacy-notes{display:grid;gap:12px;font-size:12px;line-height:1.6;overflow-wrap:anywhere;min-width:0}
+.privacy-notes p{font-size:12px;margin:8px 0;color:var(--muted-foreground)}
+.privacy-notes summary,.account-card summary{cursor:pointer;font-weight:600;font-size:12px}
+.privacy-notes details{border-bottom:1px solid var(--border);padding-bottom:10px}
+.privacy-choice{display:flex;gap:10px;align-items:flex-start;border-top:1px dashed var(--border);padding-top:12px;cursor:pointer}
+.privacy-choice [data-state]{margin-top:3px}.privacy-choice span{min-width:0}.privacy-choice strong,.privacy-choice small{display:block}.privacy-choice small{font-size:12px;color:var(--muted-foreground)}
+.tour-privacy-layer{display:grid;place-items:center;pointer-events:auto;background:var(--glass)}
+.tour-privacy-card{position:relative;inset:auto!important;width:min(600px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow-y:auto}
+.tour-privacy-card footer{position:sticky;bottom:-16px;background:var(--paper-hi);padding:12px 0;margin-bottom:-4px;border-top:1px solid var(--border)}

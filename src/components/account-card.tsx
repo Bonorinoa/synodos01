@@ -5,10 +5,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { useCloudAccount } from '@/lib/cloud-sync';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PrivacyChoices } from '@/components/privacy-choices';
+import { usePrivacy } from '@/lib/privacy';
 
 /** Sign-in and sync status; the owner also manages the tester invite list here. */
 export function AccountCard() {
   const a = useCloudAccount();
+  const { choices } = usePrivacy();
   const [busy, setBusy] = useState(false); const [msg, setMsg] = useState<string | null>(null);
   const signIn = async () => { setBusy(true); setMsg(null); const r = await lovable.auth.signInWithOAuth('google', { redirect_uri: window.location.origin }); if (r.error) setMsg(r.error.message ?? 'Sign-in failed.'); setBusy(false); };
   if (a.access === 'signed_out' || (a.access === 'checking' && !a.session)) return <div className="panel-group account-card">
@@ -16,13 +19,15 @@ export function AccountCard() {
     <p className="account-line">Sign in to keep your networks across browsers. Invited testers only.</p>
     <Button variant="outline" onClick={signIn} disabled={busy}><Cloud size={14} />Sign in with Google</Button>
     {msg && <small role="alert">{msg}</small>}
+    <details><summary>Terms & privacy choices</summary><PrivacyChoices /></details>
   </div>;
   const email = a.session?.user.email ?? '';
   return <div className="panel-group account-card">
     <span className="micro-label">Account · {a.access === 'owner' ? 'Owner' : a.access === 'tester' ? 'Tester' : a.access === 'checking' ? 'Checking…' : 'Not invited'}</span>
     <p className="account-line">{email}</p>
     {a.access === 'none' && <small role="alert">This email isn't on the tester list yet. Your networks stay in this browser only.</small>}
-    {(a.access === 'owner' || a.access === 'tester') && <small>{a.error ? `Sync problem: ${a.error}` : a.syncedAt ? `Networks saved to your account · ${new Date(a.syncedAt).toLocaleTimeString()}` : 'Syncing…'}</small>}
+    {(a.access === 'owner' || a.access === 'tester') && <small>{!choices.cloudSync ? 'Account saving is off · networks stay in this browser.' : a.error ? `Sync problem: ${a.error}` : a.syncedAt ? `Networks saved to your account · ${new Date(a.syncedAt).toLocaleTimeString()}` : 'Syncing…'}</small>}
+    <details><summary>Terms & privacy choices</summary><PrivacyChoices /></details>
     {a.access === 'owner' && <Invites />}
     <Button variant="ghost" size="sm" onClick={() => void supabase.auth.signOut()}><LogOut size={14} />Sign out</Button>
   </div>;

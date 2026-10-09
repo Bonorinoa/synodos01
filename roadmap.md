@@ -1,4 +1,6 @@
 # Augusto Network
+- [x] Add end-of-tour terms, privacy notes, and enforce optional sync/research choices; verify defaults, persistence, blocked research, sync opt-in and withdrawal.
+- [x] Test published Synodos and verify Owner status and successful account saving; privacy additions verified in preview, pending publication.
 - [x] Extract and validate the supplied graph without changing claims.
 - [x] Build glass canvas, evidence inspector, search, and JSON export.
 - [x] Add ranked Path highlights and filtered vertical Lineage with root focus/collapse.

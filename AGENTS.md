@@ -14,7 +14,7 @@
 - Uploads stay pending; deterministic research checks may accept sourced claims, recording automated vs owner review without raising confidence. Keep rejections and differing claims separate.
 - Use Cytoscape for the freeform canvas, desktop Path as concentric hop terraces rotated toward the active destination, and legal-edge BFS levels for Lineage; mode-specific graph logic stays independent of presentation and left-to-right progress does not establish relationship direction.
 - Treat all graph links as undirected traversal unless a claim explicitly establishes direction; root-relative lineage levels are relationship hops, not generations or advisor claims.
-- Keep canvas colors and glass in global semantic tokens read by Cytoscape; HTML and canvas stay consistent.
+- Share global semantic color/glass tokens between HTML and Cytoscape.
 
 - Store committee as a distinct lineage-legal basis and PhD institution as a Path-only factual basis; this preserves chair/committee distinctions without counting universities as lineage hops.
 - Append imported edges without reordering the seed, preserve prior evidence on in-place upgrades, and retain URL accessibility checks separately from reported confidence; this keeps edge IDs stable and accessibility distinct from claim verification.
@@ -36,11 +36,11 @@
 
 - Frame selection and expansion against record bounds; observe sheet resizes and exclude peripheral Path context.
 - Present exploration as mission → story → evidence, with one prominent contextual surface; this reduces overload without changing graph meaning.
-- Methodology docs render route-cost and traversal values from shared constants; docs cannot drift from logic.
+- Methodology docs use shared route-cost and traversal constants.
 - Bounded Firecrawl research retains quotes and dated checks; deterministic rules, never AI decisions, govern acceptance. Never execute discovered tools.
 - Refresh active browser-network indexes on artifact saves without remounting the canvas; destination edits must preserve exploration state.
 - Coordinate graph positions and camera with one interruptible critically damped transition and coalesce overlay updates per animation frame; reduced motion applies instantly.
 - Keep the header to mark, mode toggle and one command-panel button; secondary features live in that pane so the map stays uncluttered.
 - Separate product identity from artifact titles; share the mark and favicon to preserve user network names.
 - Research is authenticated direct Grok over Firecrawl text, ≤3 bounded passes. Deterministic acceptance preserves confidence; snapshots stay pending except explicit owner approval. Never infer ego links.
-- Accounts mirror local networks per user (newest wins, saves push); DB invite checks gate storage and paid research.
+- Account sync and external research require separate default-off, versioned browser opt-ins per user; research verifies explicit request consent before providers. Invite checks gate both.

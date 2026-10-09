@@ -11,6 +11,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useServerFn } from '@tanstack/react-start';
 import type { Artifact } from '@/lib/schema';
 import fernandoFindings from '@/data/fernando-findings.json';
+import { PrivacyChoices } from '@/components/privacy-choices';
+import { readPrivacy, usePrivacy } from '@/lib/privacy';
 
 const reload = () => window.location.reload();
 const nodeLabel = (id: string) => activeArtifact.nodes.find(n => n.id === id)?.label ?? '';
@@ -20,6 +22,7 @@ export const exportArtifact = (artifact: Artifact = activeArtifact) => download(
 
 export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onSelect: (id: string) => void }) {
   const callResearch = useServerFn(runResearch);
+  const { choices } = usePrivacy();
   const index = readIndex();
   const [error, setError] = useState<string | null>(null);
   const [staged, setStaged] = useState<{ upload: StagedUpload; preview: { artifact: Artifact; report: IngestReport } } | null>(null);
@@ -44,12 +47,13 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
   const [researchSummary,setResearchSummary]=useState('');const [trace,setTrace]=useState<string[]>([]);
   const prompt = buildResearchPrompt(brief);
   const research = guard(async () => {
+    if (!readPrivacy().research) throw new Error('External research is off. Choose Allow external research before sending your brief.');
     setResearching(true);
     try {
       setTrace([]); setResearchSummary('');
       const { data: auth } = await supabase.auth.getSession();
-      if (!auth.session) throw new Error('Research requires sign-in to protect shared credits. Sign-in setup is still needed before inviting testers.');
-      const result = await callResearch({ data: brief }); setTrace(result.trace ?? []);
+      if (!auth.session) throw new Error('Sign in from the command panel to use research. Invited accounts only.');
+      const result = await callResearch({ data: { ...brief, researchConsent: readPrivacy().research } }); setTrace(result.trace ?? []);
       if (!result.ok) throw new Error(result.error);
       const preview = ingestFindings(activeArtifact, parseFindings(result.text, 'research-assistant.json'), 'research-assistant.json');
       const accepted = acceptCheckedResearch(preview.artifact, result.checked);
@@ -103,6 +107,7 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
         <Button size="sm" onClick={research} disabled={researching || !brief.people.trim()}><Sparkle size={13} />{researching ? (brief.depth > 1 ? `Building ${brief.depth} hops… (a few minutes, once)` : 'Researching… (about a minute)') : 'Research it for me'}</Button>
         <Button variant="ghost" size="sm" onClick={() => { void navigator.clipboard.writeText(prompt); setCopied(true); setTimeout(() => setCopied(false), 1800); }}>{copied ? <Check size={13} /> : <Copy size={13} />}{copied ? 'Copied' : 'Copy prompt for your own agent'}</Button>
       </div>
+      <details><summary>Terms & privacy choices{!choices.research ? ' · research is off' : ''}</summary><PrivacyChoices /></details>
       <p className="blurb">Uses Firecrawl and xAI credits. Your research brief is sent to these providers. Up to 4 contacts per pass. Add an institution or field in brackets to distinguish namesakes. Each pass follows sourced people, not invented links. Research needs a signed-in account.</p>
       <Button variant="outline" size="sm" onClick={guard(() => stageText('fernando-lozano-research.json', JSON.stringify(fernandoFindings)))}><ShieldQuestion size={13}/>Review Fernando’s saved research</Button>
       <p className="blurb">The saved run found Fernando Lozano’s doctoral advisor in his public CV. A three-hop request stopped after the second pass found no further grounded links. No personal connection to you has been inferred.</p>
