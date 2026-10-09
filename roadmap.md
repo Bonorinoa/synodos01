@@ -1,4 +1,6 @@
 # Augusto Network
+- [ ] Add end-of-tour terms, privacy notes, and enforce optional sync/research choices.
+- [ ] Test the published Synodos site and the signed-in owner experience; report observed limitations.
 - [x] Extract and validate the supplied graph without changing claims.
 - [x] Build glass canvas, evidence inspector, search, and JSON export.
 - [x] Add ranked Path highlights and filtered vertical Lineage with root focus/collapse.
