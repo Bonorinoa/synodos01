@@ -12,9 +12,11 @@ import { LineageGuide } from '@/components/lineage-guide';
 import { TrailGuide } from '@/components/trail-guide';
 import { NetworkInspector } from '@/components/network-inspector';
 import { WorkspacePanel, exportArtifact } from '@/components/workspace-panel';
-import { activeArtifact, egoId, edges, egoGatewayEdges, egoGatewayIds, graph, legalEdges, lineageLayout, nodeById, rankedPaths, trajectoryLayout, weakBases, pathTargetIds, nobelIds, type Mode, type RankedPath } from '@/lib/network';
+import { activeArtifact, egoId, edges, egoGatewayEdges, egoGatewayIds, graph, legalEdges, lineageLayout, nodeById, rankedPaths, trajectoryLayout, weakBases, pathTargetIds, nobelIds, refreshActiveNetwork, type Mode, type RankedPath } from '@/lib/network';
 
 export function NetworkExplorer() {
+  const [revision,setRevision]=useState(0);
+  useEffect(()=>{const refresh=()=>{refreshActiveNetwork();setRevision(v=>v+1);};window.addEventListener('an:artifact-saved',refresh);return()=>window.removeEventListener('an:artifact-saved',refresh);},[]);
   const [mode,setMode]=useState<Mode>('path');
   const [coreOnly,setCoreOnly]=useState(false);
   const [selected,setSelected]=useState<string|null>(null);
@@ -36,9 +38,9 @@ export function NetworkExplorer() {
   const [destination,setDestination]=useState('');
   // The tour opens once ever: mark it seen as soon as it auto-opens so later saves never replay it.
   useEffect(()=>{if(!localStorage.getItem(TOUR_KEY)){localStorage.setItem(TOUR_KEY,'1');setTourOpen(true);}},[]);
-  const addDestination=(label:string)=>{const clean=label.trim();if(!clean)return;const match=activeArtifact.nodes.find(n=>normalizeLabel(n.label)===normalizeLabel(clean));let nodes=activeArtifact.nodes;let id=match?.id;if(match)nodes=nodes.map(n=>n.id===match.id?{...n,target:true}:n);else{id=slugify(clean);while(nodes.some(n=>n.id===id))id+='-d';nodes=[...nodes,{id,label:clean,kind:'institution',blurb:'Added by you as a destination. No recorded links yet.',tags:['destination'],target:true,evidence_packet:{urls:[],notes:''}}];}saveArtifact({...activeArtifact,nodes});localStorage.setItem(TOUR_KEY,'1');if(id)sessionStorage.setItem('an:pick',id);window.location.reload();};
-  const removeDestination=(id:string)=>{const node=nodeById.get(id);const linked=edges.some(e=>[e.source,e.target].includes(id));saveArtifact({...activeArtifact,nodes:node?.tags.includes('destination')&&!linked?activeArtifact.nodes.filter(n=>n.id!==id):activeArtifact.nodes.map(n=>n.id===id?{...n,target:false}:n)});localStorage.setItem(TOUR_KEY,'1');window.location.reload();};
-  const pickTarget=(id:string)=>{setTarget(id);setRoutesOpen(true);setActivePath(0);setSelected(null);};
+   const addDestination=(label:string)=>{const clean=label.trim();if(!clean)return;const match=activeArtifact.nodes.find(n=>normalizeLabel(n.label)===normalizeLabel(clean));let nodes=activeArtifact.nodes;let id=match?.id;if(match)nodes=nodes.map(n=>n.id===match.id?{...n,target:true}:n);else{id=slugify(clean);while(nodes.some(n=>n.id===id))id+='-d';nodes=[...nodes,{id,label:clean,kind:'institution',blurb:'Added by you as a destination. No recorded links yet.',tags:['destination'],target:true,evidence_packet:{urls:[],notes:''}}];}saveArtifact({...activeArtifact,nodes});setDestination('');if(id)pickTarget(id);};
+   const removeDestination=(id:string)=>{const node=nodeById.get(id);const linked=edges.some(e=>[e.source,e.target].includes(id));saveArtifact({...activeArtifact,nodes:node?.tags.includes('destination')&&!linked?activeArtifact.nodes.filter(n=>n.id!==id):activeArtifact.nodes.map(n=>n.id===id?{...n,target:false}:n)});if(target===id){setTarget(null);setActivePath(null);setRoutesOpen(false);}if(selected===id)setSelected(null);};
+   const pickTarget=(id:string)=>{setTarget(id);setRoutesOpen(!window.matchMedia('(max-width:640px)').matches);setActivePath(0);setSelected(null);};
   useEffect(()=>{const id=sessionStorage.getItem('an:pick');if(id&&pathTargetIds.includes(id)){sessionStorage.removeItem('an:pick');pickTarget(id);}},[]);
 
   const [legendOpen,setLegendOpen]=useState(false);
@@ -50,16 +52,16 @@ export function NetworkExplorer() {
 
   const appRef=useRef<HTMLDivElement>(null);
   const inspectorRef=useRef<HTMLDivElement>(null);
-  const paths=useMemo(()=>target&&mode==='path'?rankedPaths(target,coreOnly):[],[target,mode,coreOnly]);
-  const overviewPaths=useMemo<RankedPath[]>(()=>egoGatewayEdges().filter(edge=>!coreOnly||!nodeById.get(edge.source===egoId?edge.target:edge.source)?.candidate).map(edge=>({nodes:[egoId,edge.source===egoId?edge.target:edge.source],edges:[edge.id],cost:0})),[coreOnly]);
+  const paths=useMemo(()=>target&&mode==='path'?rankedPaths(target,coreOnly):[],[target,mode,coreOnly,revision]);
+  const overviewPaths=useMemo<RankedPath[]>(()=>egoGatewayEdges().filter(edge=>!coreOnly||!nodeById.get(edge.source===egoId?edge.target:edge.source)?.candidate).map(edge=>({nodes:[egoId,edge.source===egoId?edge.target:edge.source],edges:[edge.id],cost:0})),[coreOnly,revision]);
   const visiblePaths=useMemo(()=>target?(activePath===null?paths:paths.slice(activePath,activePath+1)):overviewPaths,[target,activePath,paths,overviewPaths]);
-  const trajectory=useMemo(()=>trajectoryLayout(visiblePaths,[...pathTargetIds],coreOnly,selected,expanded),[visiblePaths,coreOnly,selected,expanded]);
+  const trajectory=useMemo(()=>trajectoryLayout(visiblePaths,[...pathTargetIds],coreOnly,selected,expanded),[visiblePaths,coreOnly,selected,expanded,revision]);
   const expandNode=(id:string)=>{setExpanded(previous=>new Set([...previous,id]));setSelected(id);setTimeout(()=>apiRef.current?.reveal(id),120);};
   const collapseNode=(id:string)=>{setExpanded(previous=>{const next=new Set(previous);next.delete(id);return next;});setSelected(null);};
   const highlighted=useMemo(()=>paths[activePath??0]?.edges??[],[paths,activePath]);
   const routeNodes=paths[activePath??0]?.nodes??[];
-  const lineage=useMemo(()=>lineageLayout(root,coreOnly,collapsed,lineageExpanded),[root,coreOnly,collapsed,lineageExpanded]);
-  const matches=useMemo(()=>graph.nodes.filter(n=>`${n.label} ${n.tags.join(' ')}`.toLowerCase().includes(query.toLowerCase())).slice(0,15),[query]);
+  const lineage=useMemo(()=>lineageLayout(root,coreOnly,collapsed,lineageExpanded),[root,coreOnly,collapsed,lineageExpanded,revision]);
+  const matches=useMemo(()=>{const q=normalizeLabel(query);return graph.nodes.filter(n=>normalizeLabel(`${n.label} ${n.tags.join(' ')}`).includes(q)).sort((a,b)=>Number(normalizeLabel(b.label).startsWith(q))-Number(normalizeLabel(a.label).startsWith(q))).slice(0,15);},[query,revision]);
   const changeMode=(next:Mode)=>{setMode(next);setExpanded(new Set());setRoutesOpen(false);setSelected(null);setTarget(null);setActivePath(null);setCommandOpen(false);setRoot(egoId);setBreadcrumbs([egoId]);setCollapsed(new Set());setLineageExpanded(new Set());};
   const focusRoot=(id:string)=>{setRoot(id);setCollapsed(new Set());setBreadcrumbs(previous=>previous.includes(id)?previous.slice(0,previous.indexOf(id)+1):[...previous,id]);setSelected(null);};
   const expandLineage=(id:string)=>{const chain=new Set([id]);let ancestor=lineage.parent.get(id);while(ancestor&&ancestor!==root){chain.add(ancestor);ancestor=lineage.parent.get(ancestor);}setLineageExpanded(previous=>new Set([...previous,...chain]));setCollapsed(previous=>new Set([...previous].filter(item=>!chain.has(item))));setSelected(id);setTimeout(()=>apiRef.current?.reveal(id),380);};
@@ -85,7 +87,7 @@ export function NetworkExplorer() {
     {helpOpen&&<div className="help-menu glass" role="menu"><Button variant="ghost" size="sm" role="menuitem" onClick={()=>{setHelpOpen(false);setSelected(null);setTourOpen(true);}}>Take the tour</Button><Button variant="ghost" size="sm" role="menuitem" onClick={()=>{setHelpOpen(false);setDocsOpen(true);}}>How it works</Button></div>}
     {tourOpen&&<GuidedTour onDone={()=>setTourOpen(false)} onMode={next=>{if(next!==mode)changeMode(next);}}/>}
     {docsOpen&&<MethodDocs onClose={()=>setDocsOpen(false)}/>}
-    {nobelIds.length>0&&!selected&&!(mode==='path'&&!target)&&<button className="nobel-chip" onClick={()=>{const id=nobelIds[0]!;if(mode==='lineage'&&!lineage.depth.has(id))setSelected(id);else selectNode(id);}}><b>★</b>{nobelIds.length} Nobel laureate{nobelIds.length>1?'s':''} in this network</button>}
+    {nobelIds.length>0&&!selected&&!(mode==='path'&&!target)&&<Button variant="ghost" className="nobel-chip" onClick={()=>{const id=nobelIds[0];if(!id)return;if(mode==='lineage'&&!lineage.depth.has(id))setSelected(id);else selectNode(id);}}><b>★</b>{nobelIds.length} Nobel laureate{nobelIds.length>1?'s':''} in this network</Button>}
     {dataOpen&&<WorkspacePanel onClose={()=>setDataOpen(false)} onSelect={id=>{setDataOpen(false);selectNode(id);}}/>}
     {mode==='path'&&target&&<TrailGuide paths={paths} open={guideOpen} active={activePath??0} onToggle={()=>{if(narrowViewport&&selected){setSelected(null);setRoutesOpen(true);}else setRoutesOpen(v=>!v);}} onClear={()=>{setTarget(null);setActivePath(null);}} onActive={i=>setActivePath(activePath===i?null:i)} onSelect={selectNode}/>}
     {mode==='lineage'&&<LineageGuide expanded={lineageExpanded} onExpand={expandLineage} onCollapse={collapseLineage}/>}

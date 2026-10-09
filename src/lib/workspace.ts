@@ -36,6 +36,7 @@ export function saveArtifact(artifact: Artifact, activate = true) {
   const index = readIndex();
   const artifacts = [...index.artifacts.filter(m => m.id !== artifact.meta.id), artifact.meta];
   writeIndex({ active: activate ? artifact.meta.id : index.active, artifacts });
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event('an:artifact-saved'));
 }
 export function setActiveArtifact(id: string) { writeIndex({ ...readIndex(), active: id }); }
 export function deleteArtifact(id: string) {

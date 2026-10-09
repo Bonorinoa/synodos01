@@ -7,7 +7,7 @@ import { artifactSchema, graphSchema, isoDate, nodeKinds, type Artifact, type Ed
  */
 export const discoveryBases = ['coauthorship', 'committee', 'phd_advisor', 'joint_project', 'research_group'] as const;
 const nodeRef = z.object({ id: z.string().optional(), label: z.string().min(1), kind: z.enum(nodeKinds).optional() });
-const sourceSchema = z.object({ url: z.string().url(), retrieved_at: isoDate.optional(), title: z.string().optional() });
+const sourceSchema = z.object({ url: z.string().url().refine(url=>['https:','http:'].includes(new URL(url).protocol),'Use a public HTTP source'), retrieved_at: isoDate.optional(), title: z.string().optional(), excerpt:z.string().optional(), checked_at:isoDate.optional(), status:z.number().nullable().optional(), accessible:z.boolean().optional() });
 export const findingSchema = z.object({ from: nodeRef, to: nodeRef, basis: z.enum(discoveryBases), claim: z.string().optional(), strength: z.number().int().min(1).max(10).optional(), sources: z.array(sourceSchema).min(1, 'Each finding needs at least one source') });
 export const findingsFileSchema = z.object({ format: z.literal('network-findings'), version: z.literal(1), source_tool: z.string().min(1), retrieved_at: isoDate.optional(), findings: z.array(z.unknown()) });
 export type Finding = z.infer<typeof findingSchema>;
@@ -63,7 +63,7 @@ function validateFinding(raw: unknown, row: number, fileDate?: string) {
   if (!parsed.success) { const issue = parsed.error.issues[0]; return { row, error: `${issue?.path.join('.') || 'row'}: ${issue?.message}` }; }
   const missingDate = parsed.data.sources.some(s => !s.retrieved_at && !fileDate);
   if (missingDate) return { row, error: 'Each source needs a retrieval date (retrieved_at).' };
-  return { row, finding: { ...parsed.data, sources: parsed.data.sources.map(s => ({ ...s, retrieved_at: s.retrieved_at ?? fileDate! })) } };
+  return { row, finding: { ...parsed.data, sources: parsed.data.sources.map(s => ({ ...s, retrieved_at: s.retrieved_at ?? fileDate ?? '' })) } };
 }
 
 // ---------- Ingestion ----------
@@ -92,26 +92,31 @@ export function ingestFindings(artifact: Artifact, parsed: ParsedFindings, fileN
     if (!finding) { report.invalid.push({ row, reason: error ?? 'Invalid row' }); continue; }
     const a = resolve(finding.from), b = resolve(finding.to);
     if (a.id === b.id) { report.invalid.push({ row, reason: 'A finding cannot link a record to itself.' }); continue; }
-    const provenance: Provenance[] = finding.sources.map(s => ({ url: s.url, retrieved_at: s.retrieved_at!, source_tool: parsed.source_tool, title: s.title, artifact: fileName }));
+    const provenance: Provenance[] = finding.sources.map(s => ({ url: s.url, retrieved_at: s.retrieved_at??date, source_tool: parsed.source_tool, title: s.title, artifact: fileName, ...(s.excerpt?{excerpt:s.excerpt}:{}) }));
+    const checks=finding.sources.filter(s=>s.accessible!==undefined).map(s=>({url:s.url,status:s.status??null,accessible:s.accessible??false,checked_at:s.checked_at??date}));
     const key = pairKey(a.id, b.id, finding.basis);
     const tomb = pairKey(normalizeLabel(a.label), normalizeLabel(b.label), finding.basis);
     if (rejected.has(tomb)) { report.skippedRejected++; continue; }
-    const existing = edges.find(e => pairKey(e.source, e.target, e.evidence.basis) === key);
+    const claim=finding.claim??`${finding.basis.replaceAll('_', ' ')} reported by ${parsed.source_tool}`;
+    const claimKey=`${key}|${normalizeLabel(claim)}`;
+    const existing = edges.find(e => pairKey(e.source, e.target, e.evidence.basis) === key && (e.evidence.discovery!=='algorithmic'||normalizeLabel(e.evidence.claim)===normalizeLabel(claim)));
     if (existing && existing.evidence.discovery !== 'algorithmic') { report.alreadyRecorded++; continue; }
     if (existing) {
-      if (seenInFile.has(key)) report.duplicateInFile++; else report.merged++;
+      if (seenInFile.has(claimKey)) report.duplicateInFile++; else report.merged++;
       existing.evidence.provenance = dedupeProvenance([...(existing.evidence.provenance ?? []), ...provenance]);
       existing.evidence.urls = dedupeUrls([...existing.evidence.urls, ...provenance.map(p => p.url)]);
-      seenInFile.add(key); continue;
+      if(checks.length)existing.evidence.source_checks=dedupeChecks([...(existing.evidence.source_checks??[]),...checks]);
+      seenInFile.add(claimKey); continue;
     }
-    seenInFile.add(key);
+    seenInFile.add(claimKey);
     const root = gateways.has(a.id) ? a.id : gateways.has(b.id) ? b.id : undefined;
-    edges.push({ source: a.id, target: b.id, strength: finding.strength ?? defaultStrength[finding.basis] ?? 4, evidence: { claim: finding.claim ?? `${finding.basis.replaceAll('_', ' ')} reported by ${parsed.source_tool}`, basis: finding.basis, urls: dedupeUrls(provenance.map(p => p.url)), confidence: 'low', discovery: 'algorithmic', review_status: 'pending', provenance: dedupeProvenance(provenance), ...(root ? { expansion_root: root } : {}) } });
+    edges.push({ source: a.id, target: b.id, strength: finding.strength ?? defaultStrength[finding.basis] ?? 4, evidence: { claim, basis: finding.basis, urls: dedupeUrls(provenance.map(p => p.url)), confidence: 'low', discovery: 'algorithmic', review_status: 'pending', provenance: dedupeProvenance(provenance), ...(checks.length?{source_checks:checks,verification_notes:'Source retrieved; quoted names checked. Relationship and identity still require owner review.'}:{}), ...(root ? { expansion_root: root } : {}) } });
     report.added++;
   }
   return { artifact: { ...artifact, meta: { ...artifact.meta, updated_at: date }, nodes, edges }, report };
 }
 export const dedupeUrls = (urls: string[]) => { const seen = new Set<string>(); return urls.filter(u => { const k = normalizeUrl(u); if (seen.has(k)) return false; seen.add(k); return true; }); };
+const dedupeChecks=(list:NonNullable<EdgeRecord['evidence']['source_checks']>)=>{const seen=new Set<string>();return list.filter(check=>{const key=`${normalizeUrl(check.url)}@${check.checked_at??''}:${check.status}:${check.accessible}`;if(seen.has(key))return false;seen.add(key);return true;});};
 export const dedupeProvenance = (list: Provenance[]) => { const seen = new Set<string>(); return list.filter(p => { const k = provKey(p); if (seen.has(k)) return false; seen.add(k); return true; }); };
 
 // ---------- Review (network owner only) ----------
@@ -136,13 +141,14 @@ export function collectGarbage(artifact: Artifact): { artifact: Artifact; report
     const copy: EdgeRecord = { ...edge, evidence: { ...edge.evidence } };
     const urls = dedupeUrls(copy.evidence.urls); const prov = copy.evidence.provenance ? dedupeProvenance(copy.evidence.provenance) : undefined;
     report.duplicateSources += copy.evidence.urls.length - urls.length + (copy.evidence.provenance?.length ?? 0) - (prov?.length ?? 0);
-    if (urls.length !== copy.evidence.urls.length) { copy.evidence.urls = urls; if (copy.evidence.source_checks) copy.evidence.source_checks = copy.evidence.source_checks.filter(c => urls.includes(c.url)).filter((c, i, all) => all.findIndex(o => o.url === c.url) === i); }
+    copy.evidence.urls=urls;if(copy.evidence.source_checks)copy.evidence.source_checks=dedupeChecks(copy.evidence.source_checks);
     if (prov) copy.evidence.provenance = prov;
     const prior = index.get(key);
     if (!prior) { index.set(key, copy); merged.push(copy); continue; }
     report.mergedEdges++;
     prior.evidence.urls = dedupeUrls([...prior.evidence.urls, ...copy.evidence.urls]);
     if (prior.evidence.provenance || copy.evidence.provenance) prior.evidence.provenance = dedupeProvenance([...(prior.evidence.provenance ?? []), ...(copy.evidence.provenance ?? [])]);
+    if(prior.evidence.source_checks||copy.evidence.source_checks)prior.evidence.source_checks=dedupeChecks([...(prior.evidence.source_checks??[]),...(copy.evidence.source_checks??[])]);
     if (copy.evidence.review_status === 'reviewed' || copy.evidence.review_status === undefined) prior.evidence.review_status = prior.evidence.review_status === 'pending' ? copy.evidence.review_status : prior.evidence.review_status;
   }
   const linked = new Set(merged.flatMap(e => [e.source, e.target]));

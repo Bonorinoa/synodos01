@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { LockKeyhole } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { hopContours, verticalTrailPositions } from '@/lib/cartography';
+import { MOTION_MS, settleProgress } from '@/lib/graph-motion';
 import type { Core, StylesheetCSS, ElementDefinition } from 'cytoscape';
-import { egoId, graph, legalEdges, lineageLayout, trajectoryLayout, rankedPaths, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
+import { egoId, egoGatewayIds, pathTargetIds, graph, legalEdges, lineageLayout, trajectoryLayout, rankedPaths, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
 
 export type CanvasAPI = { fit: () => void; zoom: (delta:number) => void; focus: (id:string) => void; reveal: (id:string) => void; home: () => void };
 type Props = { routeNodes:string[]; viewportKey:string; lineageExpanded:Set<string>; trajectory:ReturnType<typeof trajectoryLayout>; trajectoryKey:string; mode:Mode; coreOnly:boolean; root:string; collapsed:Set<string>; highlighted:string[]; selected:string|null; onSelect:(id:string|null)=>void; onExpand:(id:string)=>void; onZoom:(zoom:number)=>void; apiRef:React.RefObject<CanvasAPI|null> };
@@ -71,6 +72,20 @@ export function NetworkCanvas(props:Props) {
   const [contours,setContours]=useState<ReturnType<typeof hopContours>>([]);
   const cyRef = useRef<Core|null>(null);
   const current = useRef(props); current.current=props;
+  const motionFrame=useRef<number|null>(null);
+  const overlayFrame=useRef<number|null>(null);
+  const lineageCache=useRef<{root:string;core:boolean;collapsed:Set<string>;expanded:Set<string>;edges:typeof graph.edges;layout:ReturnType<typeof lineageLayout>}|null>(null);
+  const getLineage=()=>{const p=current.current,c=lineageCache.current;if(c&&c.root===p.root&&c.core===p.coreOnly&&c.collapsed===p.collapsed&&c.expanded===p.lineageExpanded&&c.edges===graph.edges)return c.layout;const layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded);lineageCache.current={root:p.root,core:p.coreOnly,collapsed:p.collapsed,expanded:p.lineageExpanded,edges:graph.edges,layout};return layout;};
+  const moveGeometry=(positions:Map<string,{x:number;y:number}>,camera?:{zoom:number;pan:{x:number;y:number}},instant=false)=>{
+    const cy=cyRef.current;if(!cy)return;
+    if(motionFrame.current!==null)cancelAnimationFrame(motionFrame.current);
+    const starts=new Map(cy.nodes().map(n=>[n.id(),{...n.position()}] as const));
+    const zoom=cy.zoom(),pan={...cy.pan()},start=performance.now();
+    const apply=(t:number)=>{cy.batch(()=>{cy.nodes().forEach(n=>{const end=positions.get(n.id()),from=starts.get(n.id());if(end&&from)n.position({x:from.x+(end.x-from.x)*t,y:from.y+(end.y-from.y)*t});});if(camera){cy.zoom(zoom+(camera.zoom-zoom)*t);cy.pan({x:pan.x+(camera.pan.x-pan.x)*t,y:pan.y+(camera.pan.y-pan.y)*t});}});};
+    if(instant||window.matchMedia('(prefers-reduced-motion: reduce)').matches){apply(1);motionFrame.current=null;rebuildContours();return;}
+    const tick=(now:number)=>{const progress=Math.min(1,(now-start)/MOTION_MS);apply(settleProgress(progress));if(progress<1)motionFrame.current=requestAnimationFrame(tick);else{motionFrame.current=null;rebuildContours();}};
+    motionFrame.current=requestAnimationFrame(tick);
+  };
   const narrow=()=>window.matchMedia('(max-width: 640px)').matches;
   const readablePositions=(positions:Map<string,{x:number;y:number}>,ids:string[],columns:number,width:number,startY:number,step=64)=>{
     const rows=Math.ceil(ids.length/columns);ids.forEach((id,i)=>{const row=Math.floor(i/columns),count=Math.min(columns,ids.length-row*columns);positions.set(id,{x:(i%columns-(count-1)/2)*width,y:startY+row*step});});return startY+rows*step;
@@ -78,36 +93,36 @@ export function NetworkCanvas(props:Props) {
   const displayPositions=()=>{
     const p=current.current,cy=cyRef.current,width=cy?.width()??window.innerWidth;
     if(p.mode==='lineage'){
-      const layout=lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded),positions=new Map([...layout.positions,...layout.contextPositions]);
+      const layout=getLineage(),positions=new Map([...layout.positions,...layout.contextPositions]);
       if(narrow()){
         let y=0;
         for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){
           const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);
-          const columns=depth===0?1:depth===1?4:3;
-          y=readablePositions(positions,ids,columns,(width-32)/columns,y,depth===0?64:depth===1?72:48);
+          const columns=depth===0?1:depth===1?2:3;
+          y=readablePositions(positions,ids,columns,(width-48)/columns,y,depth===0?90:100);
         }
       }
       return positions;
     }
-    const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
+    const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:egoGatewayIds,pathTargetIds,p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
     if(p.selected){
       const ids=[...positions.keys()].filter(id=>!p.trajectory.ghostNodes.has(id));const leading=[...new Set([egoId,p.selected])].filter(id=>ids.includes(id));
       if(narrow()&&p.routeNodes.length){
         const route=p.routeNodes.filter(id=>ids.includes(id)),lane=-(width-48)*.22;
         route.forEach((id,i)=>positions.set(id,{x:lane,y:i*68}));
-        const primary=new Set([...route,p.selected,...['google-deepmind','santa-fe-institute']]);
+        const primary=new Set([...route,p.selected,...pathTargetIds]);
         const sideX=(width-48)*.28;
-        for(const id of primary)if(!route.includes(id)&&ids.includes(id))positions.set(id,{x:sideX,y:(route.length-1)*68});
+        let sideRow=0;for(const id of primary)if(!route.includes(id)&&ids.includes(id))positions.set(id,{x:sideX,y:sideRow++*90});
         const remainder=ids.filter(id=>!primary.has(id));
-        remainder.forEach((id,i)=>positions.set(id,{x:sideX,y:i<3?68+i*68:600+(i-3)*72}));
+        remainder.forEach((id,i)=>positions.set(id,{x:sideX,y:600+i*90}));
         return positions;
       }
       const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?50:140);
-      readablePositions(positions,ids.filter(id=>!leading.includes(id)),4,narrow()?(width-40)/4:180,end+12,narrow()?50:100);return positions;
+      readablePositions(positions,ids.filter(id=>!leading.includes(id)),narrow()?2:4,narrow()?(width-40)/2:180,end+28,narrow()?90:110);return positions;
     }
     if(narrow())return positions;
-    if(cy&&!p.routeNodes.length){const step=(width-240)/cy.zoom();positions.set('google-deepmind',{x:step,y:-120});positions.set('santa-fe-institute',{x:step,y:160});}
-    if(cy&&p.routeNodes.length){const step=Math.max(140,(width-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2?-70:70)/cy.zoom()}));for(const id of ['google-deepmind','santa-fe-institute'])if(!p.routeNodes.includes(id))positions.set(id,{x:(p.routeNodes.length-1)*step,y:180/cy.zoom()});}
+    if(cy&&!p.routeNodes.length){const step=(width-240)/cy.zoom();pathTargetIds.forEach((id,i)=>positions.set(id,{x:step,y:(i-(pathTargetIds.length-1)/2)*240}));}
+    if(cy&&p.routeNodes.length){const step=Math.max(140,(width-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2?-70:70)/cy.zoom()}));pathTargetIds.filter(id=>!p.routeNodes.includes(id)).forEach((id,i)=>positions.set(id,{x:(p.routeNodes.length-1)*step,y:(180+i*130)/cy.zoom()}));}
     return positions;
   };
   const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;const zoom=cy.zoom(),pan=cy.pan();topoTransform.current?.setAttribute('transform',`translate(${pan.x} ${pan.y}) scale(${zoom})`);const labels:{x:number;y:number;w:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{
@@ -121,7 +136,7 @@ export function NetworkCanvas(props:Props) {
   });};
   const rebuildContours=()=>{
     const cy=cyRef.current;if(!cy)return;const p=current.current;
-    const depths=p.mode==='lineage'?lineageLayout(p.root,p.coreOnly,p.collapsed,p.lineageExpanded).depth:p.trajectory.depths;
+    const depths=p.mode==='lineage'?getLineage().depth:p.trajectory.depths;
     const routeDepths=new Map(p.routeNodes.map((id,i)=>[id,i]));
     setContours(hopContours(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
       if(!n.isNode())return [];const depth=routeDepths.get(n.id())??depths.get(n.id())??rankedPaths(n.id(),p.coreOnly)[0]?.edges.length;if(depth===undefined)return [];
@@ -140,9 +155,9 @@ export function NetworkCanvas(props:Props) {
          const node=edge.source().id()===current.current.root?edge.target():edge.source();
          const point=node.renderedPosition();
          if(point.x<24||point.x>cy.width()-24||point.y<24||point.y>cy.height()-24)return [];
-         return [{id:edge.id(),x:point.x+22,y:point.y-22}];
+         return [{id:edge.id(),x:point.x+22,y:point.y-18}];
        }
-        return [{id:edge.id(),x:(a.x+b.x)/2,y:(a.y+b.y)/2}];
+        return [{id:edge.id(),x:a.x*.65+b.x*.35,y:a.y*.65+b.y*.35-18}];
     }));
   };
   const updatePathLabels = () => {
@@ -158,7 +173,7 @@ export function NetworkCanvas(props:Props) {
        const lineageNode=compact&&current.current.mode==='lineage'&&!ghost;
        const destination=compact&&node.data('target');
        const stagger=direct&&!compact?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
-         const point=node.renderedPosition(),width=Math.max(44,compact&&direct?(cy.width()-32)/4-6:compact&&(routeNode||destination)?(cy.width()-48)/2-12:lineageNode?(cy.width()-32)/3-12:ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130);
+         const point=node.renderedPosition(),width=Math.max(44,compact&&lineageNode&&!direct&&node.id()!==egoId?(cy.width()-48)/3-12:compact&&(direct||routeNode||destination||lineageNode)?(cy.width()-48)/2-12:ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130);
         const labelWidth=Math.max(44,width/Math.max(zoom,.01));
        const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+(compact?6:12)+stagger,w:width,h:compact&&(direct||routeNode||lineageNode||destination)?36:compact?18:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
@@ -183,7 +198,7 @@ export function NetworkCanvas(props:Props) {
     const cy=cyRef.current;if(!cy)return;
     setHitNodes(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')).toArray().flatMap(n=>n.isNode()?[{id:n.id(),label:n.data('label'),...n.renderedPosition()}]:[]).filter(n=>n.x>0&&n.x<cy.width()&&n.y>0&&n.y<cy.height()));
     if(current.current.mode==='lineage'){
-      const layout=lineageLayout(current.current.root,current.current.coreOnly,current.current.collapsed,current.current.lineageExpanded);
+      const layout=getLineage();
       const levels=new Map<number,number>();cy.nodes().filter(n=>!n.hasClass('lineage-context')).forEach(n=>{const depth=layout.depth.get(n.id())??0;levels.set(depth,Math.min(levels.get(depth)??Infinity,n.position().y));});
       setBands([...levels].sort(([a],[b])=>a-b).map(([depth,y])=>({depth,y:y*cy.zoom()+cy.pan().y-(narrow()?24:60)})));
     }else setBands([]);
@@ -195,7 +210,7 @@ export function NetworkCanvas(props:Props) {
       cy.zoom(.85);cy.pan({x:cy.width()/2,y:178});updatePathLabels();updateTopo();return;
     }
     if(current.current.mode==='lineage'){
-      const layout=lineageLayout(current.current.root,current.current.coreOnly,current.current.collapsed,current.current.lineageExpanded);
+      const layout=getLineage();
       const points=[...layout.positions.values()];
       const x1=Math.min(...points.map(point=>point.x))-65,y1=Math.min(...points.map(point=>point.y))-30;
       const box={x1,y1,w:Math.max(...points.map(point=>point.x))+65-x1,h:Math.max(...points.map(point=>point.y))+50-y1};const width=cy.width(),height=cy.height();
@@ -245,7 +260,7 @@ export function NetworkCanvas(props:Props) {
     const { mode,coreOnly,root,collapsed }=current.current;
     if (lastMode.current !== mode) viewports.current[lastMode.current]={zoom:cy.zoom(),pan:cy.pan()};
     const changed=lastMode.current!==mode;
-    const lineage=lineageLayout(root,coreOnly,collapsed,current.current.lineageExpanded);
+    const lineage=getLineage();
     const positions=displayPositions();
     const visibleNodes=graph.nodes.filter(n=>(!coreOnly||!n.candidate||n.id===root)&&positions.has(n.id));
     const ids=new Set(visibleNodes.map(n=>n.id));
@@ -256,13 +271,14 @@ export function NetworkCanvas(props:Props) {
     const wanted=new Set(elements.map(element=>element.data.id));
     cy.batch(()=>{cy.elements().filter(element=>!wanted.has(element.id())).remove();for(const element of elements){const previousElement=cy.getElementById(element.data.id??'');if(previousElement.length)previousElement.data(element.data).classes(element.classes??'');else cy.add(element);}});
     
-      cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&!narrow()&&!current.current.routeNodes.includes(node.id())&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;const position=(current.current.selected?undefined:oldPosition)??positions.get(node.id());if(!position)return;node.stop();node.position(position);});
+      const destinations=new Map(positions);cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&!narrow()&&!current.current.routeNodes.includes(node.id())&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;if(!current.current.selected&&oldPosition)destinations.set(node.id(),oldPosition);node.stop();});moveGeometry(destinations,undefined,changed||existing.size===0);
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
     if(mode==='lineage'&&(changed||lastRoot.current!==root)){if(narrow()){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}
     if(mode==='path'&&(changed||lastViewportKey.current!==current.current.viewportKey)){lastViewportKey.current=current.current.viewportKey;fitView();}
     const routeKey=current.current.routeNodes.join('|');
-    if(mode==='path'&&routeKey&&routeKey!==lastRoute.current&&!narrow()){const end=positions.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}
+    if(mode==='path'&&routeKey&&routeKey!==lastRoute.current&&!narrow()){const end=positions.get(current.current.routeNodes.at(-1)??'');if(end)moveGeometry(destinations,{zoom:cy.zoom(),pan:{x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2}});}
+    if(mode==='lineage'&&!changed&&existing.size)requestAnimationFrame(()=>current.current.apiRef.current?.reveal(current.current.selected??root));
     lastRoute.current=routeKey;
     if(current.current.highlighted.length){cy.elements().addClass('dim');for(const id of current.current.highlighted){const edge=cy.getElementById(id);edge.removeClass('dim').addClass('highlight');edge.connectedNodes().removeClass('dim').addClass('highlight');}}
     if(current.current.selected){const selected=cy.getElementById(current.current.selected);selected.removeClass('dim').addClass('focused');if(selected.isNode()){selected.connectedEdges().removeClass('dim');selected.neighborhood('node').removeClass('dim');}}
@@ -285,7 +301,7 @@ export function NetworkCanvas(props:Props) {
       current.current.onZoom(cy.zoom());
       cy.on('tap','node, edge',event=>{const id=event.target.id();current.current.onSelect(id);if(event.target.isNode())current.current.apiRef.current?.focus(id);});
       cy.on('tap',event=>{if(event.target===cy)current.current.onSelect(null);});
-       cy.on('zoom',()=>{current.current.onZoom(cy.zoom());updatePathLabels();});
+       cy.on('zoom',()=>{current.current.onZoom(cy.zoom());});
       const surface=container.current.parentElement;
       const horizontalWheel=(event:WheelEvent)=>{
         if(!(event.target instanceof Node)||!surface?.contains(event.target))return;
@@ -296,31 +312,32 @@ export function NetworkCanvas(props:Props) {
       };
       surface?.addEventListener('wheel',horizontalWheel,{capture:true,passive:false});
       removeWheel=()=>surface?.removeEventListener('wheel',horizontalWheel,true);
-        cy.on('pan zoom position resize',()=>{updateTopo();updateHalo();updateLocks();updatePathLabels();updateHitTargets();});
+        cy.on('pan zoom position resize',()=>{if(overlayFrame.current!==null)return;overlayFrame.current=requestAnimationFrame(()=>{overlayFrame.current=null;updateTopo();updateHalo();updateLocks();updatePathLabels();updateHitTargets();});});
        cy.on('dragfree','node',event=>{if(current.current.mode==='path')current.current.trajectory.positions.set(event.target.id(),event.target.position());renderGraph.current();});
        const frameNodes=(id:string,expansion:boolean)=>{
           const node=cy.getElementById(id);if(!node.length||!node.isNode())return;
           const p=current.current;
-           const positions=displayPositions();cy.batch(()=>cy.nodes().forEach(n=>{const point=positions.get(n.id());if(point)n.position(point);}));
-           const nodes=cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(!narrow()||p.mode!=='path'||!p.routeNodes.length||n.position().y<600));
-           const points=nodes.toArray().flatMap(n=>n.isNode()?[n.position()]:[]);if(!points.length)return;
+           const positions=displayPositions();
+           const nodes=cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(!narrow()||p.mode!=='path'||!p.routeNodes.length||(positions.get(n.id())?.y??0)<600));
+           const points=nodes.toArray().flatMap(n=>{const point=positions.get(n.id());return point?[point]:[];});if(!points.length)return;
            const stage=container.current?.getBoundingClientRect(),sheet=document.querySelector('.inspector')?.getBoundingClientRect();
            const left=!narrow()&&document.querySelector('.trail-guide[data-open=true]')?330:48,right=!narrow()&&p.selected?400:48;
            const top=narrow()?174:160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-64:cy.height()-64;
            const width=cy.width()-left-right,height=Math.max(240,bottom-top);
            const x1=Math.min(...points.map(point=>point.x)),x2=Math.max(...points.map(point=>point.x)),y1=Math.min(...points.map(point=>point.y)),y2=Math.max(...points.map(point=>point.y));
             const zoom=narrow()?Math.max(.3,Math.min(1,(bottom-top)/Math.max(1,y2-y1),(cy.width()-64)/Math.max(1,x2-x1))):Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
-           const pan={x:narrow()?cy.width()/2:left+width/2-(x1+x2)/2*zoom,y:narrow()?top:top+height/2-(y1+y2)/2*zoom};
+           if(narrow()){for(const [key,point] of positions)positions.set(key,{x:point.x/zoom,y:point.y});}
+            const pan={x:narrow()?cy.width()/2-(x1+x2)/2:left+width/2-(x1+x2)/2*zoom,y:narrow()?top-y1*zoom:top+height/2-(y1+y2)/2*zoom};
            rebuildContours();
-           cy.stop();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){cy.zoom(zoom);cy.pan(pan);}else cy.animate({zoom,pan},{duration:300});
+           cy.stop();moveGeometry(positions,{zoom,pan});
         };
         const revealBranch=(id:string)=>frameNodes(id,true);
         const focusNode=(id:string)=>frameNodes(id,false);
         current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:focusNode,reveal:revealBranch,home:()=>focusNode(current.current.mode==='lineage'?current.current.root:egoId)};
       let previousSize={width:cy.width(),height:cy.height()},previousNarrow=narrow();
-        observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;const breakpointChanged=previousNarrow!==narrow();previousNarrow=narrow();if(breakpointChanged){renderGraph.current();if(current.current.selected)focusNode(current.current.selected);else if(narrow()&&current.current.mode==='lineage'){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}else if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,'google-deepmind','santa-fe-institute']){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
+        observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;const breakpointChanged=previousNarrow!==narrow();previousNarrow=narrow();if(breakpointChanged){renderGraph.current();if(current.current.selected)focusNode(current.current.selected);else if(narrow()&&current.current.mode==='lineage'){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}else if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,...pathTargetIds]){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
     });
-    return()=>{cancelled=true;removeWheel?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
+    return()=>{cancelled=true;if(motionFrame.current!==null)cancelAnimationFrame(motionFrame.current);if(overlayFrame.current!==null)cancelAnimationFrame(overlayFrame.current);removeWheel?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
   },[]);
   useEffect(()=>renderGraph.current(),[props.mode,props.coreOnly,props.root,props.collapsed,props.lineageExpanded,props.trajectory,props.trajectoryKey,props.viewportKey]);
   useEffect(()=>{

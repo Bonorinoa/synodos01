@@ -22,6 +22,9 @@ TASK
 STRICT RULES
 - Only report a link you can cite with a public URL you actually found. Never guess or invent a person, paper, or URL.
 - One finding per relationship. If unsure, leave it out.
+- Use publication author lists for coauthorship and dissertation front matter, university records, or an explicit CV for committee/advisor claims. Never infer a relationship from a citation or shared institution.
+- Disambiguate people by full name and research context; omit uncertain identities. Never scrape Academic Tree or access private pages.
+- Quote an exact source passage naming both people and the relationship. A readable URL is not proof of the claim. All findings remain pending for the network owner.
 - "from" is a direct contact (or ${brief.owner || 'the owner'} for links to the owner); "to" is the other person or place.
 - basis must be one of: ${discoveryBases.join(', ')}.
 - claim is one short factual sentence, e.g. 'Coauthored "Paper title" (2023).'

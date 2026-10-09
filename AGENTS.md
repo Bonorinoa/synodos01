@@ -40,4 +40,6 @@
 - Frame selection and expansion against record bounds; observe sheet resizes and exclude peripheral Path context.
 - Present exploration as mission → story → evidence, with one prominent contextual surface; this reduces overload without changing graph meaning.
 - Methodology docs render route-cost and traversal values from shared constants; docs cannot drift from logic.
-- Research runs server-side only and its output is staged as pending findings; AI never writes approved links.
+- Research uses bounded server-side Firecrawl web search and retrieved text, with literal source excerpts and dated accessibility checks; AI never approves links or executes discovered tools.
+- Refresh active browser-network indexes on artifact saves without remounting the canvas; destination edits must preserve exploration state.
+- Coordinate graph positions and camera with one interruptible critically damped transition and coalesce overlay updates per animation frame; reduced motion applies instantly.
