@@ -186,3 +186,19 @@ button,[data-slot=button]{border-radius:2px}
 .invite-list { display: grid; gap: .35rem; }
 .invite-add { display: flex; gap: .35rem; }
 .invite-row { display: flex; align-items: center; justify-content: space-between; font-size: .78rem; }
+
+.people-page{max-width:960px;margin:0 auto;padding:32px 20px 64px;color:var(--foreground);background:var(--background);min-height:100vh;font-size:14px}
+.people-page h1{font-size:28px;margin:12px 0 4px}
+.people-page header p{color:var(--muted-foreground);max-width:60ch}
+.people-controls{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}
+.people-controls button,.people-controls input{border:1px solid var(--border);background:var(--card);padding:6px 12px;color:var(--foreground)}
+.people-controls button[aria-pressed=true]{background:var(--primary);color:var(--primary-foreground)}
+.people-tree,.people-tree ul{list-style:none;padding-left:18px;border-left:1px dashed var(--border)}
+.people-tree>li{margin-left:-18px}
+.people-tree summary{cursor:pointer;padding:4px 0;font-weight:600}
+.hop-tag{display:inline-block;min-width:48px;font-size:11px;margin-right:8px;padding:1px 6px;border:1px solid var(--border);background:var(--card);font-weight:500}
+.people-detail{padding:0 0 6px 56px;color:var(--muted-foreground)}
+.people-detail p{margin:2px 0}
+.people-page h2{margin:28px 0 8px;font-size:18px}
+.people-table{width:100%;border-collapse:collapse}
+.people-table th,.people-table td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top}

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BookOpen, Compass, Database, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
+import { BookOpen, Compass, Database, ListTree, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AccountCard } from '@/components/account-card';
 
@@ -38,6 +38,7 @@ export function CommandPanel(p: Props) {
         <button onClick={go(p.onSettings)}><SlidersHorizontal size={16} /><strong>Map settings</strong><small>Links, rings, names, motion</small></button>
         <button onClick={go(p.onTour)}><Compass size={16} /><strong>Take the tour</strong><small>A two-minute walkthrough</small></button>
         <button onClick={go(p.onDocs)}><BookOpen size={16} /><strong>How it works</strong><small>Methods, sources, hop rules</small></button>
+        <a href="/people"><ListTree size={16} /><strong>People summary</strong><small>Everyone, their hop and co-authors</small></a>
       </div>
       <AccountCard />
       <footer><Sparkles size={12} />Press ⌘K anywhere to search.</footer>
