@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { COST, lineageBases, weakBases } from '@/lib/network';
 import { discoveryBases } from '@/lib/ingest';
+import { RESEARCH } from '@/lib/research';
 
 const tabs = ['Path', 'Lineage', 'Evidence & review', 'Building a network'] as const;
 const list = (s: Set<string> | readonly string[]) => [...s].map(b => b.replaceAll('_', ' ')).join(', ');
@@ -68,7 +69,9 @@ show a branch's deeper rows only when you open it`}</pre>
 findings → preview → you approve or reject each one`}</pre>
       <p>Allowed link types for findings: {list(discoveryBases)}.</p>
       <h3>What gets searched, and with what</h3>
-      <p>The in-app assistant uses one tool: a general web search run by an AI model on the server. It typically lands on Google Scholar profiles, university and lab pages, CVs, dissertation front matter, RePEc, DBLP, arXiv and OpenAlex records. It does not log in anywhere, does not scrape Academic Tree, and has no dedicated crawler yet. Every cited address and its retrieval date are kept with the finding.</p>
+      <p>Firecrawl searches public web pages and retrieves their text with search + scrape. Queries look for publication author lists (DOI, DBLP, OpenAlex, RePEc and arXiv), university pages, CVs and dissertation committee records. These are search candidates, not a guarantee that every index is queried or accessible. No logins or Academic Tree scraping.</p>
+      <pre>{`up to ${RESEARCH.contacts} named contacts per run\n  ${RESEARCH.queriesPerContact} queries per contact; ${RESEARCH.resultsPerQuery} results per query\n  retrieve at most ${RESEARCH.pages} source pages\nAI extracts claims from retrieved text only\n  require a literal excerpt naming both people\n  attach actual source URL + retrieval date + accessibility check\n  stage as low-confidence, unreviewed findings\nowner checks identity and relationship before approval`}</pre>
+      <p>A fetched page and matching names do not verify a relationship. The quoted passage stays with its dated source, while accessibility is stored separately. Different claims stay separate. Alexandria is Firecrawl’s tool-discovery index, not an academic evidence database; this pipeline uses web search and does not execute Alexandria tools.</p>
       <p>Using your own agent (for example one with Firecrawl search and scraping) works the same way: copy the prompt, paste the reply, and its findings arrive unreviewed with the tool name recorded.</p>
     </>}
   </article></div>;

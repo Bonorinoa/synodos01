@@ -36,10 +36,11 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
   const onFindings = (file: File) => guard(async () => stageText(file.name, await readFile(file)))();
   const [brief, setBrief] = useState({ owner: nodeLabel(activeArtifact.meta.ego), bio: '', people: activeArtifact.nodes.filter(n => activeArtifact.edges.some(e => e.evidence.ego_gateway && [e.source, e.target].includes(n.id) && n.id !== activeArtifact.meta.ego)).map(n => n.label).join(', '), destinations: activeArtifact.nodes.filter(n => n.target).map(n => n.label).join(', ') });
   const [researching, setResearching] = useState(false); const [copied, setCopied] = useState(false); const [pasted, setPasted] = useState('');
+  const [researchSummary,setResearchSummary]=useState('');
   const prompt = buildResearchPrompt(brief);
   const research = guard(async () => {
     setResearching(true);
-    try { const result = await runResearch({ data: { prompt } }); if (!result.ok) throw new Error(result.error); stageText('research-assistant.json', result.text); }
+    try { const result = await runResearch({ data: brief }); if (!result.ok) throw new Error(result.error); stageText('research-assistant.json', result.text);setResearchSummary(`Read ${result.pages} public sources; ${result.dropped} unsupported or ambiguous findings dropped. Remaining links still need your review.`); }
     finally { setResearching(false); }
   });
   const onNetwork = (file: File) => guard(async () => { saveArtifact(artifactFromUpload(await readFile(file), file.name)); reload(); })();
@@ -86,7 +87,9 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
         <Button size="sm" onClick={research} disabled={researching || !brief.people.trim()}><Sparkle size={13} />{researching ? 'Researching… (about a minute)' : 'Research it for me'}</Button>
         <Button variant="ghost" size="sm" onClick={() => { void navigator.clipboard.writeText(prompt); setCopied(true); setTimeout(() => setCopied(false), 1800); }}>{copied ? <Check size={13} /> : <Copy size={13} />}{copied ? 'Copied' : 'Copy prompt for your own agent'}</Button>
       </div>
-      <p className="blurb">Uses Lovable AI credits. Links without a source are dropped. Using your own agent? Paste its reply here:</p>
+      <p className="blurb">Uses Firecrawl and Lovable AI credits. Up to 4 contacts per run; source excerpts are checked before review.</p>
+      {researchSummary&&<p className="blurb" role="status">{researchSummary}</p>}
+      <p className="blurb">Using your own agent? Paste its reply here:</p>
       <div className="workspace-form"><textarea aria-label="Paste agent reply" rows={2} placeholder='Paste the JSON your agent returned…' value={pasted} onChange={e => setPasted(e.target.value)} /><div><Button size="sm" variant="outline" disabled={!pasted.trim()} onClick={guard(() => { stageText('pasted-agent-reply.json', pasted.slice(pasted.indexOf('{'), pasted.lastIndexOf('}') + 1)); setPasted(''); })}>Preview findings</Button></div></div>
     </section>
 
