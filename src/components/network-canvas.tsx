@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { LockKeyhole } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { hopContours, verticalTrailPositions } from '@/lib/cartography';
+import { hopContours, terraceContours, terracePositions, verticalTrailPositions } from '@/lib/cartography';
 import { MOTION_MS, settleProgress } from '@/lib/graph-motion';
 import type { Core, StylesheetCSS, ElementDefinition } from 'cytoscape';
 import { egoId, egoGatewayIds, pathTargetIds, graph, legalEdges, lineageLayout, trajectoryLayout, rankedPaths, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
@@ -121,8 +121,11 @@ export function NetworkCanvas(props:Props) {
       readablePositions(positions,ids.filter(id=>!leading.includes(id)),narrow()?2:4,narrow()?(width-40)/2:180,end+28,narrow()?90:110);return positions;
     }
     if(narrow())return positions;
-    if(cy&&!p.routeNodes.length){const step=(width-240)/cy.zoom();pathTargetIds.forEach((id,i)=>positions.set(id,{x:step,y:(i-(pathTargetIds.length-1)/2)*240}));}
-    if(cy&&p.routeNodes.length){const step=Math.max(140,(width-190)/cy.zoom())/Math.max(1,p.routeNodes.length-1);p.routeNodes.forEach((id,i)=>positions.set(id,{x:i*step,y:i===0||i===p.routeNodes.length-1?0:(i%2?-70:70)/cy.zoom()}));pathTargetIds.filter(id=>!p.routeNodes.includes(id)).forEach((id,i)=>positions.set(id,{x:(p.routeNodes.length-1)*step,y:(180+i*130)/cy.zoom()}));}
+    const terraces=terracePositions(egoId,p.trajectory.depths,[...positions.keys()],pathTargetIds,p.trajectory.edges,p.trajectory.ghostNodes);
+    // Rotate the basin so the active trail climbs straight toward its destination; radii (hops) are unchanged.
+    const first=terraces.get(p.routeNodes[1]??''),goal=terraces.get(p.routeNodes.at(-1)??'');
+    if(first&&goal&&p.routeNodes.length>2){const turn=Math.atan2(goal.y,goal.x)-Math.atan2(first.y,first.x),c=Math.cos(turn),s=Math.sin(turn);for(const [id,q] of terraces)if(!pathTargetIds.includes(id))terraces.set(id,{x:q.x*c-q.y*s,y:q.x*s+q.y*c});}
+    return terraces;
     return positions;
   };
   const updateTopo=()=>{const cy=cyRef.current;if(!cy)return;const zoom=cy.zoom(),pan=cy.pan();topoTransform.current?.setAttribute('transform',`translate(${pan.x} ${pan.y}) scale(${zoom})`);const labels:{x:number;y:number;w:number}[]=[];topoTransform.current?.querySelectorAll('text').forEach(text=>{
@@ -138,10 +141,12 @@ export function NetworkCanvas(props:Props) {
     const cy=cyRef.current;if(!cy)return;const p=current.current;
     const depths=p.mode==='lineage'?getLineage().depth:p.trajectory.depths;
     const routeDepths=new Map(p.routeNodes.map((id,i)=>[id,i]));
-    setContours(hopContours(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
+    const terraced=p.mode==='path'&&!narrow()&&!p.selected;
+    const points=(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
       if(!n.isNode())return [];const depth=routeDepths.get(n.id())??depths.get(n.id())??rankedPaths(n.id(),p.coreOnly)[0]?.edges.length;if(depth===undefined)return [];
       return [{id:n.id(),...n.position(),depth}];
-    }),Math.max(76,58/cy.zoom())));
+    }));
+    setContours(terraced?terraceContours(points):hopContours(points,Math.max(76,58/cy.zoom())));
   };
   const [hitNodes,setHitNodes]=useState<{id:string;label:string;x:number;y:number}[]>([]);
   const [bands,setBands]=useState<{depth:number;y:number}[]>([]);
@@ -271,13 +276,13 @@ export function NetworkCanvas(props:Props) {
     const wanted=new Set(elements.map(element=>element.data.id));
     cy.batch(()=>{cy.elements().filter(element=>!wanted.has(element.id())).remove();for(const element of elements){const previousElement=cy.getElementById(element.data.id??'');if(previousElement.length)previousElement.data(element.data).classes(element.classes??'');else cy.add(element);}});
     
-      const destinations=new Map(positions);cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&!narrow()&&!current.current.routeNodes.includes(node.id())&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;if(!current.current.selected&&oldPosition)destinations.set(node.id(),oldPosition);node.stop();});moveGeometry(destinations,undefined,changed||existing.size===0);
+      const destinations=new Map(positions);cy.nodes().forEach(node=>{node.stop();});moveGeometry(destinations,undefined,changed||existing.size===0);
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
     if(mode==='lineage'&&(changed||lastRoot.current!==root)){if(narrow()){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}
     if(mode==='path'&&(changed||lastViewportKey.current!==current.current.viewportKey)){lastViewportKey.current=current.current.viewportKey;fitView();}
     const routeKey=current.current.routeNodes.join('|');
-    if(mode==='path'&&routeKey&&routeKey!==lastRoute.current&&!narrow()){const end=positions.get(current.current.routeNodes.at(-1)??'');if(end)moveGeometry(destinations,{zoom:cy.zoom(),pan:{x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2}});}
+    if(mode==='path'&&routeKey&&routeKey!==lastRoute.current&&!narrow()){const pts=current.current.routeNodes.map(id=>destinations.get(id)).filter((q):q is {x:number;y:number}=>!!q);if(pts.length){const xs=pts.map(q=>q.x),ys=pts.map(q=>q.y),free=cy.width()-340,zoom=Math.min(cy.zoom(),Math.max(.3,Math.min(free/(Math.max(...xs)-Math.min(...xs)+240),(cy.height()-180)/(Math.max(...ys)-Math.min(...ys)+240)))),cx=(Math.max(...xs)+Math.min(...xs))/2,cyy=(Math.max(...ys)+Math.min(...ys))/2;moveGeometry(destinations,{zoom,pan:{x:340+free/2-cx*zoom,y:(cy.height()+56)/2-cyy*zoom}});}}
     if(mode==='lineage'&&!changed&&existing.size)requestAnimationFrame(()=>current.current.apiRef.current?.reveal(current.current.selected??root));
     lastRoute.current=routeKey;
     if(current.current.highlighted.length){cy.elements().addClass('dim');for(const id of current.current.highlighted){const edge=cy.getElementById(id);edge.removeClass('dim').addClass('highlight');edge.connectedNodes().removeClass('dim').addClass('highlight');}}

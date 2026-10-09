@@ -54,3 +54,6 @@
 - [x] Preserve distinct claims and dated accessibility checks during findings ingestion.
 - [x] Remove destination reloads and ease graph positions/camera together; preserve current visual system.
 - [x] Verify real research and desktop/390px/500px target and branch interactions.
+- [x] Concentric hop terraces for desktop Path, trail rotated toward its destination.
+- [x] Optional upfront two-hop research build (bounded, unreviewed).
+- [ ] Source-document suggestions ("people you co-authored with but haven't added") — next.
