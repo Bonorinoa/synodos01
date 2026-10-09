@@ -12,7 +12,7 @@
 ## Application architecture
 - Store each uploaded or created network as a validated browser-local artifact with an owner id; the bundled seed is only the default, and traversal reads the active artifact.
 - Ingest findings as pending, low-confidence, provenance-dated links; only owner review promotes them, rejections are remembered, and cleanup never merges differing claims.
-- Use Cytoscape for the freeform canvas, cumulative Path expansion with hop-ranked kind clusters and a non-recursive ghost ring, and legal-edge BFS levels for Lineage; mode-specific graph logic stays independent of presentation and left-to-right progress does not establish relationship direction.
+- Use Cytoscape for the freeform canvas, desktop Path as concentric hop terraces rotated toward the active destination, and legal-edge BFS levels for Lineage; mode-specific graph logic stays independent of presentation and left-to-right progress does not establish relationship direction.
 - Treat all graph links as undirected traversal unless a claim explicitly establishes direction; root-relative lineage levels are relationship hops, not generations or advisor claims.
 - Keep canvas colors and glass in global semantic tokens read by Cytoscape; HTML and canvas stay consistent.
 - Anchor the selection halo to Cytoscape rendered node coordinates on pan, zoom, position, and resize events; this keeps presentation-only motion aligned without modifying graph data.
@@ -28,7 +28,7 @@
 - Clear expansion on mode changes and keep ranked routes collapsible; this prevents stale branches and saves canvas space.
 - Float controls and records over the canvas; frame the unobscured region and keep rendered-coordinate hit targets.
 - Bound cross-branch discovery to recorded legal links into tagged packets, excluding ego and the Capra gateway; this avoids presenting a shared origin as an advisor connection.
-- Derive closed cartographic superlevel contours from visible non-ghost hop geometry behind Cytoscape; this gives elevation a recorded relationship meaning without modifying traversal or evidence.
+- Derive closed contours from visible non-ghost hop geometry (terrace circles on desktop Path, superlevel hulls elsewhere); elevation stays a recorded hop meaning.
 - Anchor contour labels to their own hop entry and bound their rendered text to the visible canvas; this prevents hull extrema and zoom from detaching or clipping labels.
 - Keep private-attestation markers non-interactive below node hit targets; this preserves reliable person selection while evidence remains inspectable through relationships.
 - Frame an expanded Lineage parent, immediate recorded children, root, and first-hop gateways within the unobscured canvas, excluding context previews; this reveals new depth without losing the shared origin or fitting ghosts.
