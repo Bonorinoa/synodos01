@@ -27,11 +27,19 @@ export function loadArtifact(id: string): Artifact | null {
   if (raw) { const parsed = artifactSchema.safeParse(JSON.parse(raw)); if (parsed.success) return parsed.data; }
   return id === SEED_ID ? seedArtifact() : null;
 }
+/** A friend's shared network, held in memory only. While set, nothing is ever written to storage. */
+let sharedView: Artifact | null = null;
+export const isReadOnlyView = () => sharedView !== null;
+export function setSharedView(artifact: Artifact | null) { sharedView = artifact; }
+/** The viewer's own active network, ignoring any shared view. */
+export function loadOwnActiveArtifact(): Artifact { return loadArtifact(readIndex().active) ?? seedArtifact(); }
 export function loadActiveArtifact(): Artifact {
+  if (sharedView) return sharedView;
   const index = readIndex();
   return loadArtifact(index.active) ?? seedArtifact();
 }
 export function saveArtifact(artifact: Artifact, activate = true) {
+  if (sharedView) return; // read-only shared view: never overwrite the viewer's networks
   storage()?.setItem(ARTIFACT + artifact.meta.id, JSON.stringify(artifact));
   const index = readIndex();
   const artifacts = [...index.artifacts.filter(m => m.id !== artifact.meta.id), artifact.meta];
