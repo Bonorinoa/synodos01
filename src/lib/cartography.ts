@@ -27,7 +27,7 @@ export function hopContours(points:ElevationPoint[], padding=76) {
 
 export function verticalTrailPositions(ids:string[], destinations:string[], depths:Map<string,number>, original:Map<string,MapPoint>) {
   const positions=new Map<string,MapPoint>();
-  const ordered=[...new Set(['augusto',...ids,...destinations])];
+  const ordered=[...new Set([egoId,...ids,...destinations])];
   ordered.forEach((id,i)=>positions.set(id,{x:0,y:i*104}));
   // Existing expanded records remain inspectable beside their honest hop row.
   const rows=new Map<number,number>();

@@ -3,7 +3,7 @@ import { LockKeyhole } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { hopContours, verticalTrailPositions } from '@/lib/cartography';
 import type { Core, StylesheetCSS, ElementDefinition } from 'cytoscape';
-import { graph, legalEdges, lineageLayout, trajectoryLayout, rankedPaths, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
+import { egoId, graph, legalEdges, lineageLayout, trajectoryLayout, rankedPaths, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
 
 export type CanvasAPI = { fit: () => void; zoom: (delta:number) => void; focus: (id:string) => void; reveal: (id:string) => void; home: () => void };
 type Props = { routeNodes:string[]; viewportKey:string; lineageExpanded:Set<string>; trajectory:ReturnType<typeof trajectoryLayout>; trajectoryKey:string; mode:Mode; coreOnly:boolean; root:string; collapsed:Set<string>; highlighted:string[]; selected:string|null; onSelect:(id:string|null)=>void; onExpand:(id:string)=>void; onZoom:(zoom:number)=>void; apiRef:React.RefObject<CanvasAPI|null> };
@@ -91,7 +91,7 @@ export function NetworkCanvas(props:Props) {
     }
     const positions=narrow()?verticalTrailPositions(p.routeNodes.length?p.routeNodes:['monica-capra','raymond-duch','eitel-lauria','erik-johnston'],['google-deepmind','santa-fe-institute'],p.trajectory.depths,p.trajectory.positions):new Map(p.trajectory.positions);
     if(p.selected){
-      const ids=[...positions.keys()].filter(id=>!p.trajectory.ghostNodes.has(id));const leading=[...new Set(['augusto',p.selected])].filter(id=>ids.includes(id));
+      const ids=[...positions.keys()].filter(id=>!p.trajectory.ghostNodes.has(id));const leading=[...new Set([egoId,p.selected])].filter(id=>ids.includes(id));
       if(narrow()&&p.routeNodes.length){
         const route=p.routeNodes.filter(id=>ids.includes(id)),lane=-(width-48)*.22;
         route.forEach((id,i)=>positions.set(id,{x:lane,y:i*68}));
@@ -149,10 +149,10 @@ export function NetworkCanvas(props:Props) {
     const cy=cyRef.current;if(!cy)return;
     const zoom=cy.zoom(),compact=narrow();
     const occupied:{x:number;y:number;w:number;h:number}[]=[];
-    const nodes=cy.nodes().sort((a,b)=>Number(b.id()===current.current.selected||b.data('target')||b.id()==='augusto')-Number(a.id()===current.current.selected||a.data('target')||a.id()==='augusto')||Number(a.hasClass('ghost'))-Number(b.hasClass('ghost')));
+    const nodes=cy.nodes().sort((a,b)=>Number(b.id()===current.current.selected||b.data('target')||b.id()===egoId)-Number(a.id()===current.current.selected||a.data('target')||a.id()===egoId)||Number(a.hasClass('ghost'))-Number(b.hasClass('ghost')));
     nodes.forEach(node=>{
       const ghost=node.hasClass('ghost')||node.hasClass('lineage-context');
-      const landmark=node.data('target')||node.id()==='augusto'||node.id()===current.current.selected||(current.current.mode==='lineage'&&node.hasClass('direct-contact'));
+      const landmark=node.data('target')||node.id()===egoId||node.id()===current.current.selected||(current.current.mode==='lineage'&&node.hasClass('direct-contact'));
        const direct=current.current.mode==='lineage'&&node.hasClass('direct-contact');
        const routeNode=current.current.mode==='path'&&current.current.routeNodes.includes(node.id());
        const lineageNode=compact&&current.current.mode==='lineage'&&!ghost;
@@ -168,7 +168,7 @@ export function NetworkCanvas(props:Props) {
        const behindSheet=compact&&sheet&&box.y+box.h>sheet.top;
        const hide=!!behindSheet||(clipped&&!landmark)||(!landmark&&!!underGuide)||(!landmark&&((ghost&&(zoom<1.8||compact))||collision));
        node.style('opacity',ghost?(compact?0:.035):node.hasClass('dim')?.14:1);
-      const base=node.id()==='augusto'?48:node.data('target')?38:ghost?9:compact?22:26;
+      const base=node.id()===egoId?48:node.data('target')?38:ghost?9:compact?22:26;
        const size=Math.max(base*.72,Math.min(base*1.3,base*zoom));
        node.style('width',`${size/zoom}px`);node.style('height',`${size/zoom}px`);
       if(!hide)occupied.push(box);
@@ -206,7 +206,7 @@ export function NetworkCanvas(props:Props) {
       cy.zoom(zoom);cy.pan({x:30+(width-right-30)/2-(box.x1+box.w/2)*zoom,y:top+Math.min(availableHeight*.25,170)-box.y1*zoom});
       return;
     }
-     const active=new Set(['augusto',...current.current.highlighted.flatMap(id=>{const e=cy.getElementById(id);return e.isEdge()?[e.source().id(),e.target().id()]:[]})]);
+     const active=new Set([egoId,...current.current.highlighted.flatMap(id=>{const e=cy.getElementById(id);return e.isEdge()?[e.source().id(),e.target().id()]:[]})]);
      const points=cy.nodes().filter(node=>current.current.highlighted.length?active.has(node.id()):!current.current.trajectory.ghostNodes.has(node.id())).toArray().flatMap(node=>node.isNode()?[node.position()]:[]);
     const x1=Math.min(...points.map(p=>p.x))-80,x2=Math.max(...points.map(p=>p.x))+80;
     const y1=Math.min(...points.map(p=>p.y))-65,y2=Math.max(...points.map(p=>p.y))+85;
@@ -250,7 +250,7 @@ export function NetworkCanvas(props:Props) {
     const visibleNodes=graph.nodes.filter(n=>(!coreOnly||!n.candidate||n.id===root)&&positions.has(n.id));
     const ids=new Set(visibleNodes.map(n=>n.id));
     const visibleEdges=(mode==='lineage'?[...lineage.edges,...lineage.contextEdges]:current.current.trajectory.edges).filter(e=>ids.has(e.source)&&ids.has(e.target));
-    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:n.id==='augusto'?'Augusto':n.label.startsWith('Concordia (')?'Concordia\n(DeepMind)':n.label},position:positions.get(n.id) ?? {x:0,y:0},classes:[n.kind==='person'&&visibleEdges.some(e=>[e.source,e.target].includes(n.id)&&e.evidence.urls.length>0&&e.evidence.confidence!=='low')?'sourced-person':'',mode==='lineage'?'lineage-node':'',mode==='lineage'&&n.kind==='person'&&n.nobel_prize?'nobel-laureate':'',mode==='lineage'&&lineage.hidden.has(n.id)?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostNodes.has(n.id)?'ghost':'',n.candidate?'candidate':'',n.target?'target':'',n.id!=='augusto'&&(mode==='lineage'?lineage.depth.get(n.id)===1:current.current.trajectory.depths.get(n.id)===1)?'direct-contact':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[mode==='lineage'&&(lineage.hidden.has(e.source)||lineage.hidden.has(e.target))?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostEdges.has(e.id)?'ghost':'',weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length?'unverified':'',e.evidence.confidence==='low'?'low-confidence':'',e.evidence.ego_gateway?'ego-gateway':'',e.evidence.attestation==='user'?'private-attestation':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',(e.evidence.basis==='committee'||e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee'))?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':'',mode==='lineage'&&['talking-to-machines'].some(id=>[e.source,e.target].includes(id))?'branch-link':''].join(' ')}))];
+    const elements:ElementDefinition[]=[...visibleNodes.map(n=>({data:{...n,id:n.id,displayLabel:n.id===egoId?n.label.split(' ')[0]:n.label.startsWith('Concordia (')?'Concordia\n(DeepMind)':n.label},position:positions.get(n.id) ?? {x:0,y:0},classes:[n.kind==='person'&&visibleEdges.some(e=>[e.source,e.target].includes(n.id)&&e.evidence.urls.length>0&&e.evidence.confidence!=='low')?'sourced-person':'',mode==='lineage'?'lineage-node':'',mode==='lineage'&&n.kind==='person'&&n.nobel_prize?'nobel-laureate':'',mode==='lineage'&&lineage.hidden.has(n.id)?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostNodes.has(n.id)?'ghost':'',n.candidate?'candidate':'',n.target?'target':'',n.id!==egoId&&(mode==='lineage'?lineage.depth.get(n.id)===1:current.current.trajectory.depths.get(n.id)===1)?'direct-contact':''].join(' ')})),...visibleEdges.map((e:NetworkEdge)=>({data:{...e,weight:weakBases.has(e.evidence.basis)?1:1.1+e.strength*.16},classes:[mode==='lineage'&&(lineage.hidden.has(e.source)||lineage.hidden.has(e.target))?'lineage-context':'',mode==='path'&&current.current.trajectory.ghostEdges.has(e.id)?'ghost':'',weakBases.has(e.evidence.basis)?'weak':'',!e.evidence.urls.length||e.evidence.review_status==='pending'?'unverified':'',e.evidence.confidence==='low'?'low-confidence':'',e.evidence.ego_gateway?'ego-gateway':'',e.evidence.attestation==='user'?'private-attestation':'',mode==='lineage'&&['phd_advisor','research_group'].includes(e.evidence.basis)?'tree':'',mode==='lineage'&&e.evidence.basis==='phd_advisor'&&!e.evidence.claim.toLowerCase().includes('not repec chair')&&!e.evidence.claim.toLowerCase().includes('committee (academia')?'advisor':'',(e.evidence.basis==='committee'||e.evidence.basis==='phd_advisor'&&e.evidence.claim.startsWith('Dissertation committee'))?'committee':'',mode==='lineage'&&lineage.depth.get(e.source)===lineage.depth.get(e.target)?'peer':'',mode==='lineage'&&['talking-to-machines'].some(id=>[e.source,e.target].includes(id))?'branch-link':''].join(' ')}))];
     const previous={zoom:cy.zoom(),pan:cy.pan()};
     const existing=new Map(cy.nodes().map(node=>[node.id(),node.position()] as const));
     const wanted=new Set(elements.map(element=>element.data.id));
@@ -316,7 +316,7 @@ export function NetworkCanvas(props:Props) {
         };
         const revealBranch=(id:string)=>frameNodes(id,true);
         const focusNode=(id:string)=>frameNodes(id,false);
-        current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:focusNode,reveal:revealBranch,home:()=>focusNode(current.current.mode==='lineage'?current.current.root:'augusto')};
+        current.current.apiRef.current={fit:fitView,zoom:delta=>cy.zoom({level:Math.max(.15,Math.min(3,cy.zoom()+delta)),renderedPosition:{x:cy.width()/2,y:cy.height()/2}}),focus:focusNode,reveal:revealBranch,home:()=>focusNode(current.current.mode==='lineage'?current.current.root:egoId)};
       let previousSize={width:cy.width(),height:cy.height()},previousNarrow=narrow();
         observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;const breakpointChanged=previousNarrow!==narrow();previousNarrow=narrow();if(breakpointChanged){renderGraph.current();if(current.current.selected)focusNode(current.current.selected);else if(narrow()&&current.current.mode==='lineage'){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}else if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,'google-deepmind','santa-fe-institute']){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
     });

@@ -7,7 +7,7 @@ import { NetworkCanvas, type CanvasAPI } from '@/components/network-canvas';
 import { LineageGuide } from '@/components/lineage-guide';
 import { TrailGuide } from '@/components/trail-guide';
 import { NetworkInspector } from '@/components/network-inspector';
-import { edges, egoGatewayEdges, egoGatewayIds, graph, legalEdges, lineageLayout, nodeById, rankedPaths, trajectoryLayout, weakBases, pathTargetIds, type Mode, type RankedPath } from '@/lib/network';
+import { egoId, edges, egoGatewayEdges, egoGatewayIds, graph, legalEdges, lineageLayout, nodeById, rankedPaths, trajectoryLayout, weakBases, pathTargetIds, type Mode, type RankedPath } from '@/lib/network';
 
 export function NetworkExplorer() {
   const [mode,setMode]=useState<Mode>('path');
@@ -18,8 +18,8 @@ export function NetworkExplorer() {
   const [expanded,setExpanded]=useState<Set<string>>(new Set());
   const [commandOpen,setCommandOpen]=useState(false);
   const [query,setQuery]=useState('');
-  const [root,setRoot]=useState('augusto');
-  const [breadcrumbs,setBreadcrumbs]=useState(['augusto']);
+  const [root,setRoot]=useState(egoId);
+  const [breadcrumbs,setBreadcrumbs]=useState([egoId]);
   const [lineageExpanded,setLineageExpanded]=useState<Set<string>>(new Set());
   const [collapsed,setCollapsed]=useState<Set<string>>(new Set());
   const [zoom,setZoom]=useState(.83);
@@ -34,7 +34,7 @@ export function NetworkExplorer() {
   const appRef=useRef<HTMLDivElement>(null);
   const inspectorRef=useRef<HTMLDivElement>(null);
   const paths=useMemo(()=>target&&mode==='path'?rankedPaths(target,coreOnly):[],[target,mode,coreOnly]);
-  const overviewPaths=useMemo<RankedPath[]>(()=>egoGatewayEdges().filter(edge=>!coreOnly||!nodeById.get(edge.source==='augusto'?edge.target:edge.source)?.candidate).map(edge=>({nodes:['augusto',edge.source==='augusto'?edge.target:edge.source],edges:[edge.id],cost:0})),[coreOnly]);
+  const overviewPaths=useMemo<RankedPath[]>(()=>egoGatewayEdges().filter(edge=>!coreOnly||!nodeById.get(edge.source===egoId?edge.target:edge.source)?.candidate).map(edge=>({nodes:[egoId,edge.source===egoId?edge.target:edge.source],edges:[edge.id],cost:0})),[coreOnly]);
   const visiblePaths=useMemo(()=>target?(activePath===null?paths:paths.slice(activePath,activePath+1)):overviewPaths,[target,activePath,paths,overviewPaths]);
   const trajectory=useMemo(()=>trajectoryLayout(visiblePaths,[...pathTargetIds],coreOnly,selected,expanded),[visiblePaths,coreOnly,selected,expanded]);
   const expandNode=(id:string)=>{setExpanded(previous=>new Set([...previous,id]));setSelected(id);setTimeout(()=>apiRef.current?.reveal(id),120);};
@@ -43,7 +43,7 @@ export function NetworkExplorer() {
   const routeNodes=paths[activePath??0]?.nodes??[];
   const lineage=useMemo(()=>lineageLayout(root,coreOnly,collapsed,lineageExpanded),[root,coreOnly,collapsed,lineageExpanded]);
   const matches=useMemo(()=>graph.nodes.filter(n=>`${n.label} ${n.tags.join(' ')}`.toLowerCase().includes(query.toLowerCase())).slice(0,15),[query]);
-  const changeMode=(next:Mode)=>{setMode(next);setExpanded(new Set());setRoutesOpen(false);setSelected(null);setTarget(null);setActivePath(null);setCommandOpen(false);setRoot('augusto');setBreadcrumbs(['augusto']);setCollapsed(new Set());setLineageExpanded(new Set());};
+  const changeMode=(next:Mode)=>{setMode(next);setExpanded(new Set());setRoutesOpen(false);setSelected(null);setTarget(null);setActivePath(null);setCommandOpen(false);setRoot(egoId);setBreadcrumbs([egoId]);setCollapsed(new Set());setLineageExpanded(new Set());};
   const focusRoot=(id:string)=>{setRoot(id);setCollapsed(new Set());setBreadcrumbs(previous=>previous.includes(id)?previous.slice(0,previous.indexOf(id)+1):[...previous,id]);setSelected(null);};
   const expandLineage=(id:string)=>{const chain=new Set([id]);let ancestor=lineage.parent.get(id);while(ancestor){chain.add(ancestor);ancestor=lineage.parent.get(ancestor);}setLineageExpanded(previous=>new Set([...previous,...chain]));setCollapsed(previous=>new Set([...previous].filter(item=>!chain.has(item))));setSelected(id);setTimeout(()=>apiRef.current?.reveal(id),380);};
   const collapseLineage=(id:string)=>{setLineageExpanded(previous=>{const next=new Set(previous);next.delete(id);return next;});};
@@ -61,7 +61,7 @@ export function NetworkExplorer() {
      <header className="hud-header glass">
        <div className="wordmark"><svg className="atlas-mark" viewBox="0 0 36 36" aria-hidden="true"><rect x="5" y="5" width="26" height="26" rx="2"/><path d="M10 18h16M18 10v16"/><circle cx="27" cy="9" r="2"/></svg><h1>Augusto Network</h1><span className="private-label">Private research space</span></div>
       <div className="mode-pill" role="group" aria-label="Canvas mode">{(['path','lineage'] as const).map(value=><Button key={value} variant={mode===value?'secondary':'ghost'} aria-pressed={mode===value} onClick={()=>changeMode(value)}>{value==='path'?'Path':'Lineage'}</Button>)}</div>
-       <div className="header-actions">{mode==='path'?<select className="destination-picker" aria-label="Dream destination" value={target??''} onChange={event=>{const next=event.target.value||null;setTarget(next);setRoutesOpen(!!next);setActivePath(next?0:null);setSelected(null);}}><option value="">Choose a destination</option><option value="google-deepmind">Google DeepMind</option><option value="santa-fe-institute">Santa Fe Institute</option></select>:<select className="root-picker" aria-label="Academic branch root" value={root} onChange={event=>focusRoot(event.target.value)}>{[...new Set([...breadcrumbs,...egoGatewayIds])].map(id=><option key={id} value={id}>{id==='augusto'?'All direct connections':nodeById.get(id)?.label}</option>)}</select>}<Button variant="ghost" size="icon" title="Search · ⌘K" aria-label="Search network" onClick={()=>setCommandOpen(true)}><Search/></Button></div>
+       <div className="header-actions">{mode==='path'?<select className="destination-picker" aria-label="Dream destination" value={target??''} onChange={event=>{const next=event.target.value||null;setTarget(next);setRoutesOpen(!!next);setActivePath(next?0:null);setSelected(null);}}><option value="">Choose a destination</option><option value="google-deepmind">Google DeepMind</option><option value="santa-fe-institute">Santa Fe Institute</option></select>:<select className="root-picker" aria-label="Academic branch root" value={root} onChange={event=>focusRoot(event.target.value)}>{[...new Set([...breadcrumbs,...egoGatewayIds])].map(id=><option key={id} value={id}>{id===egoId?'All direct connections':nodeById.get(id)?.label}</option>)}</select>}<Button variant="ghost" size="icon" title="Search · ⌘K" aria-label="Search network" onClick={()=>setCommandOpen(true)}><Search/></Button></div>
     </header>
      <div className="atlas-summary"><Button variant="ghost" onClick={()=>setLegendOpen(v=>!v)} aria-expanded={legendOpen}>{visibleNodeCount} people & places · {visibleEdgeCount} recorded links</Button><label className="core-toggle" htmlFor="core-only">Hide provisional people<Switch id="core-only" checked={coreOnly} onCheckedChange={value=>{setCoreOnly(value);setSelected(null);setActivePath(null);}}/></label></div>
      {mode==='path'&&!target&&<section className="mission-prompt" aria-label="Choose a Path mission"><span className="mission-index">01 / PATH</span><h2>Where do you want to go?</h2><p>Start with a dream institution. We’ll surface recorded ways in through people you already know.</p><div className="mission-destinations">{pathTargetIds.map(id=><Button key={id} variant="outline" onClick={()=>{setTarget(id);setRoutesOpen(true);setActivePath(0);}}><span>{nodeById.get(id)?.label}</span><small>Find recorded paths</small><ChevronRight/></Button>)}</div><small className="mission-note">Paths are research prompts, not confirmed introductions.</small></section>}
