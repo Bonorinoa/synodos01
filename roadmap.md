@@ -50,7 +50,7 @@
 - [x] Fix Lineage branch buttons re-opening collapsed branches.
 - [x] Start-from-a-bio research assistant plus copyable agent prompt; file upload moved to Advanced.
 - [x] Compact destination card clear of the graph; destinations typed by the user.
-- [ ] Connect Firecrawl and add bounded, source-grounded academic search with owner-only review.
-- [ ] Preserve distinct claims and dated accessibility checks during findings ingestion.
-- [ ] Remove destination reloads and ease graph positions/camera together; preserve current visual system.
-- [ ] Verify real research and desktop/390px/500px target and branch interactions.
+- [x] Connect Firecrawl and add bounded, source-grounded academic search with owner-only review.
+- [x] Preserve distinct claims and dated accessibility checks during findings ingestion.
+- [x] Remove destination reloads and ease graph positions/camera together; preserve current visual system.
+- [x] Verify real research and desktop/390px/500px target and branch interactions.
