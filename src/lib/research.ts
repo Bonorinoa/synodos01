@@ -6,6 +6,23 @@ export const researchBriefSchema = z.object({ owner:z.string().max(200), bio:z.s
 /** "Name (Institution, field)" → name plus a disambiguation hint used only in search queries. */
 export function parseContact(raw:string){const m=raw.trim().match(/^([^()]+?)\s*\(([^)]*)\)\s*$/);return m?.[1]&&m[2]?{name:m[1].trim(),hint:m[2].trim()}:{name:raw.trim(),hint:''};}
 export type ResearchSource = { url:string; title:string; markdown:string; status:number|null; retrieved_at:string };
+/** Conservative automatic acceptance: authoritative source, contiguous full identities, explicit role, no hedging. */
+export function passesAutomaticChecks(finding: Finding): boolean {
+  if (!['phd_advisor', 'committee'].includes(finding.basis)) return false;
+  return finding.sources.some(source => {
+    if (!source.accessible || source.status === null || source.status === undefined || source.status < 200 || source.status >= 300 || !source.checked_at || !source.excerpt) return false;
+    const host = new URL(source.url).hostname.toLowerCase();
+    if (!/(\.edu|\.ac\.[a-z]{2})$/.test(host) && host !== 'iza.org' && host !== 'www.iza.org') return false;
+    const quote = normalizeLabel(source.excerpt);
+    const fullName = (name: string) => new RegExp(`(?:^| )${normalizeLabel(name)}(?: |$)`).test(quote);
+    if (!fullName(finding.from.label) || !fullName(finding.to.label) || /\b(possibly|perhaps|might|alleged|uncertain)\b/.test(quote)) return false;
+    // Advisor must be adjacent to its named person, not simply occur somewhere on a CV.
+    const to = normalizeLabel(finding.to.label);
+    return finding.basis === 'phd_advisor'
+      ? new RegExp(`\\b(?:advisor|adviser|supervisor) ${to}(?: |$)`).test(quote) && /\b(ph d|phd|doctoral|dissertation)\b/.test(quote)
+      : new RegExp(`\\b(?:committee member|committee chair) ${to}(?: |$)`).test(quote);
+  });
+}
 export const extractionSchema = {
   type:'object', additionalProperties:false, required:['findings'], properties:{findings:{type:'array',items:{
     type:'object',additionalProperties:false,required:['from','to','basis','claim','sources'],properties:{
