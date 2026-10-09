@@ -1,10 +1,12 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import type { Mode } from '@/lib/network';
+import mapArt from '@/assets/onboarding-map.jpg';
 
 export const TOUR_KEY = 'an:tour-done';
 type Step = { target: string; title: string; body: string; mode?: Mode };
 const steps: Step[] = [
+  { target: '', title: 'Welcome to your research atlas', body: 'A private map of the people and places around your work. Find hidden ways into the places you dream of reaching, and trace your academic family — every link with its source.', mode: 'path' },
   { target: '.network-canvas', title: 'This is your map', body: 'You sit at the centre. Each line is a recorded relationship. Solid teal lines have a public source; thin dashed ones are weak or still unverified.', mode: 'path' },
   { target: '[data-tour="modes"]', title: 'Two ways to explore', body: 'Path finds routes to places you want to reach. Lineage explores academic family: advisors, committees and frequent coauthors.' },
   { target: '[data-tour="mission"]', title: 'Pick a destination', body: 'Type a place you’d love to work or collaborate with. We rank up to three recorded routes through people you already know.', mode: 'path' },
@@ -19,7 +21,7 @@ export function GuidedTour({ onDone, onMode }: { onDone: () => void; onMode: (mo
   const step = steps[index]!;
   useEffect(() => { if (step.mode) onMode(step.mode); }, [index]); // eslint-disable-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
-    const measure = () => { const el = document.querySelector(step.target); setRect(el ? el.getBoundingClientRect() : null); };
+    const measure = () => { const el = step.target ? document.querySelector(step.target) : null; setRect(el ? el.getBoundingClientRect() : null); };
     const t = setTimeout(measure, 80); window.addEventListener('resize', measure);
     return () => { clearTimeout(t); window.removeEventListener('resize', measure); };
   }, [step.target, index]);
@@ -33,11 +35,16 @@ export function GuidedTour({ onDone, onMode }: { onDone: () => void; onMode: (mo
   const below = rect && !big ? rect.bottom + 16 : window.innerHeight / 2 - 90;
   const top = Math.min(below, window.innerHeight - 220);
   const left = rect && !big ? Math.min(Math.max(12, rect.left), window.innerWidth - 332) : window.innerWidth / 2 - 160;
+  const dots = <div className="tour-dots" aria-hidden="true">{steps.map((_, i) => <button key={i} data-on={i <= index} onClick={() => setIndex(i)} tabIndex={-1} />)}</div>;
+  const nav = <footer><Button variant="ghost" size="sm" onClick={finish}>Skip</Button><div>{index > 0 && <Button variant="ghost" size="sm" onClick={() => setIndex(index - 1)}>Back</Button>}<Button size="sm" onClick={() => index === steps.length - 1 ? finish() : setIndex(index + 1)}>{index === 0 ? 'Begin the tour' : index === steps.length - 1 ? 'Start exploring' : 'Next'}</Button></div></footer>;
+  if (index === 0) return <div className="tour-layer tour-welcome-layer" role="dialog" aria-modal="true" aria-label="Welcome">
+    <section className="tour-welcome glass"><img src={mapArt} alt="" width={1088} height={608} /><div><span className="micro-label">Field guide · {steps.length - 1} quick stops</span><h2>{step.title}</h2><p>{step.body}</p>{dots}{nav}</div></section>
+  </div>;
   return <div className="tour-layer" role="dialog" aria-modal="true" aria-label="Guided tour">
     {spot ? <div className="tour-spot" style={spot} /> : <div className="tour-spot" style={{ left: '50%', top: '50%', width: 0, height: 0, border: 0 }} />}
     <section className="tour-card glass" style={{ top, left }}>
-      <span className="micro-label">{index + 1} of {steps.length}</span>
-      <h3>{step.title}</h3><p>{step.body}</p>
+      <span className="micro-label">Stop {index} of {steps.length - 1}</span>
+      <h3>{step.title}</h3><p>{step.body}</p>{dots}
       <footer><Button variant="ghost" size="sm" onClick={finish}>Skip</Button><div>{index > 0 && <Button variant="ghost" size="sm" onClick={() => setIndex(index - 1)}>Back</Button>}<Button size="sm" onClick={() => index === steps.length - 1 ? finish() : setIndex(index + 1)}>{index === steps.length - 1 ? 'Start exploring' : 'Next'}</Button></div></footer>
     </section>
   </div>;

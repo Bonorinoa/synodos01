@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { LockKeyhole } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { hopContours, terraceContours, terracePositions, verticalTrailPositions } from '@/lib/cartography';
+import { DISPLAY_EVENT, LABEL_SCALE, readDisplay } from '@/lib/display-settings';
 import { MOTION_MS, settleProgress } from '@/lib/graph-motion';
 import type { Core, StylesheetCSS, ElementDefinition } from 'cytoscape';
 import { egoId, egoGatewayIds, pathTargetIds, graph, legalEdges, lineageLayout, trajectoryLayout, rankedPaths, weakBases, type Mode, type NetworkEdge } from '@/lib/network';
@@ -20,7 +21,8 @@ function canvasColor(token:string) {
 }
 function styles():StylesheetCSS[] {
   const color = canvasColor;
-  return [
+  const display=readDisplay(),g=display.ghosts,scale=LABEL_SCALE[display.labels];
+  const sheet:StylesheetCSS[]=[
     { selector:'node',css:{ shape:'ellipse','background-color':color('--foreground'),'background-opacity':.9,width:20,height:20,label:'data(displayLabel)',color:color('--foreground'),'font-family':'Geist','font-size':12,'text-valign':'bottom','text-margin-y':9,'text-outline-color':color('--background'),'text-outline-width':3,'border-width':3,'border-color':color('--background'),'border-opacity':.25,'text-wrap':'wrap','text-max-width':'145px' } },
     { selector:'node.sourced-person',css:{'background-color':color('--verified')} },
     { selector:'node[kind = "lab"]',css:{shape:'round-rectangle','background-color':color('--lab'),'border-color':color('--lab'),width:24,height:24} },
@@ -45,8 +47,8 @@ function styles():StylesheetCSS[] {
     { selector:'edge.ego-gateway',css:{width:2.8,'line-color':color('--verified'),opacity:.9} },
     { selector:'node.focused',css:{'border-color':color('--background'),'border-width':1,'border-opacity':1,'text-opacity':1,opacity:1} },
     { selector:'edge.focused',css:{opacity:1} },
-    { selector:'node.ghost',css:{opacity:.035,'text-opacity':.15,'border-opacity':.04} },
-    { selector:'edge.ghost',css:{opacity:.012} },
+    { selector:'node.ghost',css:{opacity:Math.min(1,.16*g),'text-opacity':Math.min(1,.32*g),'border-opacity':.1} },
+    { selector:'edge.ghost',css:{opacity:Math.min(1,.2*g),'line-color':color('--ghost'),'line-style':'dotted',width:1} },
     { selector:'node.target',css:{opacity:1,'text-opacity':1} },
     { selector:'edge.ego-gateway.unverified',css:{width:.8,'line-style':'dashed',opacity:.55} },
     { selector:'edge.low-confidence',css:{width:1,'line-style':'dashed',opacity:.4} },
@@ -62,6 +64,7 @@ function styles():StylesheetCSS[] {
     { selector:'edge.branch-link',css:{'line-style':'dashed','line-color':color('--verified'),opacity:.5,'curve-style':'bezier'} },
     { selector:'edge.lineage-context',css:{opacity:.09,label:'',width:.6} },
   ];
+  return sheet.map(r=>{const fs=(r.css as Record<string,unknown>)['font-size'];return typeof fs==='number'?{...r,css:{...r.css,'font-size':Math.round(fs*scale*10)/10}}:r;});
 }
 
 export function NetworkCanvas(props:Props) {
@@ -82,7 +85,7 @@ export function NetworkCanvas(props:Props) {
     const starts=new Map(cy.nodes().map(n=>[n.id(),{...n.position()}] as const));
     const zoom=cy.zoom(),pan={...cy.pan()},start=performance.now();
     const apply=(t:number)=>{cy.batch(()=>{cy.nodes().forEach(n=>{const end=positions.get(n.id()),from=starts.get(n.id());if(end&&from)n.position({x:from.x+(end.x-from.x)*t,y:from.y+(end.y-from.y)*t});});if(camera){cy.zoom(zoom+(camera.zoom-zoom)*t);cy.pan({x:pan.x+(camera.pan.x-pan.x)*t,y:pan.y+(camera.pan.y-pan.y)*t});}});};
-    if(instant||window.matchMedia('(prefers-reduced-motion: reduce)').matches){apply(1);motionFrame.current=null;rebuildContours();return;}
+    if(instant||document.documentElement.dataset.motion==='instant'||window.matchMedia('(prefers-reduced-motion: reduce)').matches){apply(1);motionFrame.current=null;rebuildContours();return;}
     const tick=(now:number)=>{const progress=Math.min(1,(now-start)/MOTION_MS);apply(settleProgress(progress));if(progress<1)motionFrame.current=requestAnimationFrame(tick);else{motionFrame.current=null;rebuildContours();}};
     motionFrame.current=requestAnimationFrame(tick);
   };
@@ -296,11 +299,12 @@ export function NetworkCanvas(props:Props) {
   };
 
   useEffect(()=>{
-    let cancelled=false; let observer:ResizeObserver|undefined;let removeWheel:(()=>void)|undefined;
+    let cancelled=false; let observer:ResizeObserver|undefined;let removeWheel:(()=>void)|undefined;let removeDisplay:(()=>void)|undefined;
     import('cytoscape').then(({default:cytoscape})=>{
       if (cancelled||!container.current) return;
       const cy=cytoscape({container:container.current,elements:[],style:styles(),layout:{name:'preset'},minZoom:.04,maxZoom:3,wheelSensitivity:.18,boxSelectionEnabled:false,selectionType:'single'});
       cyRef.current=cy; renderGraph.current();
+      const restyle=()=>cy.style(styles());window.addEventListener(DISPLAY_EVENT,restyle);removeDisplay=()=>window.removeEventListener(DISPLAY_EVENT,restyle);
       const initialZoom=()=>cy.width()<640?.43:Math.min(.83,Math.max(.48,(cy.height()-200)/1100));
       if(current.current.mode==='path'){cy.zoom(.83);fitView();}else {cy.zoom(initialZoom());cy.pan({x:cy.width()*.54,y:cy.height()*.54});}
       current.current.onZoom(cy.zoom());
@@ -342,7 +346,7 @@ export function NetworkCanvas(props:Props) {
       let previousSize={width:cy.width(),height:cy.height()},previousNarrow=narrow();
         observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;const breakpointChanged=previousNarrow!==narrow();previousNarrow=narrow();if(breakpointChanged){renderGraph.current();if(current.current.selected)focusNode(current.current.selected);else if(narrow()&&current.current.mode==='lineage'){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}else if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,...pathTargetIds]){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
     });
-    return()=>{cancelled=true;if(motionFrame.current!==null)cancelAnimationFrame(motionFrame.current);if(overlayFrame.current!==null)cancelAnimationFrame(overlayFrame.current);removeWheel?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
+    return()=>{cancelled=true;if(motionFrame.current!==null)cancelAnimationFrame(motionFrame.current);if(overlayFrame.current!==null)cancelAnimationFrame(overlayFrame.current);removeWheel?.();removeDisplay?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
   },[]);
   useEffect(()=>renderGraph.current(),[props.mode,props.coreOnly,props.root,props.collapsed,props.lineageExpanded,props.trajectory,props.trajectoryKey,props.viewportKey]);
   useEffect(()=>{
