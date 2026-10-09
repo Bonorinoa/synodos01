@@ -5,7 +5,7 @@ import { reviewEdge } from '@/lib/ingest';
 import { saveArtifact } from '@/lib/workspace';
 import { lineageHops } from '@/lib/network';
 const decide=(id:string,decision:'reviewed'|'rejected')=>{saveArtifact(reviewEdge(activeArtifact,Number(id.slice(5)),decision));window.location.reload();};
-const toggleDestination=(id:string)=>{saveArtifact({...activeArtifact,nodes:activeArtifact.nodes.map(n=>n.id===id?{...n,target:!n.target}:n)});window.location.reload();};
+const toggleDestination=(id:string)=>{saveArtifact({...activeArtifact,nodes:activeArtifact.nodes.map(n=>n.id===id?{...n,target:!n.target}:n)});};
 import { activeArtifact, isPending, egoId, basisLabel, edges, nodeById, legalEdges, edgeCost, branchPacket, crossBranchLinks, egoGatewayIds, type Mode, type NetworkEdge } from '@/lib/network';
 
 export function SourceLinks({urls,checks}:{urls:string[];checks?:NetworkEdge["evidence"]["source_checks"]}) {
