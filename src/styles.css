@@ -179,3 +179,10 @@ button,[data-slot=button]{border-radius:2px}
 .research-trace{font:11px var(--font-data);display:grid;gap:2px;max-height:140px;overflow:auto;padding:8px;border:1px dashed var(--border)}
 .atlas-mark{width:36px;height:36px;object-fit:contain;image-rendering:pixelated}.wordmark h1{text-transform:none;font-size:15px}.settings-sheet{max-height:calc(100dvh - 48px);overflow-y:auto}
 @media(max-width:640px){.hud-header{grid-template-columns:minmax(0,1fr) auto auto;gap:8px}.wordmark{gap:6px}.wordmark h1{font-size:12px}.atlas-mark{width:28px;height:28px}.header-actions{position:static}.command-panel,.settings-sheet{position:absolute;top:auto;bottom:0;right:0;left:0;width:100%;max-height:80dvh}.settings-sheet{padding:16px}.setting-row,.setting-row:has(input[type=range]){grid-template-columns:minmax(0,1fr) auto}.setting-row:has(input[type=range])>div{grid-column:1/-1}.setting-row input[type=range]{width:100%;min-width:0}.setting-row:not(:has(input[type=range])){grid-template-columns:1fr}.pixel-segment{width:max-content;max-width:100%}.settings-sheet footer{gap:12px}.panel-grid button{min-width:0}.panel-grid small{overflow-wrap:anywhere}}
+
+.account-card { display: grid; gap: .4rem; border-top: 1px dashed var(--border); padding-top: .75rem; }
+.account-card .account-line { font-size: .8rem; color: var(--muted-foreground); margin: 0; overflow-wrap: anywhere; }
+.account-card small { font-size: .72rem; color: var(--muted-foreground); }
+.invite-list { display: grid; gap: .35rem; }
+.invite-add { display: flex; gap: .35rem; }
+.invite-row { display: flex; align-items: center; justify-content: space-between; font-size: .78rem; }

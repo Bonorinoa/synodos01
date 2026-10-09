@@ -8,7 +8,10 @@ import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 export const runResearch = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .validator((data: unknown) => researchBriefSchema.parse(data))
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    // Research spends the owner's paid credits: owner and invited testers only.
+    const { data: allowed } = await context.supabase.rpc('has_access', { _user_id: context.userId });
+    if (!allowed) return { ok: false as const, error: 'Research is available to invited testers only. Ask the owner for an invite.' };
     const key = process.env['XAI_API_KEY'];
     if (!key) return { ok: false as const, error: 'Save an xAI API key in secure settings to enable direct Grok research.' };
     const firecrawl = process.env['FIRECRAWL_API_KEY'];

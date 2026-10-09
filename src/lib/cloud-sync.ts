@@ -51,6 +51,7 @@ let started = false;
 export function startCloudSync() {
   if (started || typeof window === 'undefined') return; started = true;
   supabase.auth.onAuthStateChange((event, session) => { if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') setTimeout(() => void onSession(session), 0); });
+  window.addEventListener('an:artifact-deleted', e => { void deleteRemoteNetwork((e as CustomEvent<string>).detail); });
   window.addEventListener('an:artifact-saved', e => {
     const id = (e as CustomEvent<string | undefined>).detail; const uid = state.session?.user.id;
     if (pulling || !id || !uid || !['owner', 'tester'].includes(state.access)) return;
