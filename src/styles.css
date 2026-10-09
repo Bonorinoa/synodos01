@@ -132,3 +132,40 @@
 .tour-layer{pointer-events:none}.tour-spot{position:fixed;border-radius:10px;box-shadow:0 0 0 9999px color-mix(in oklab,var(--foreground) 28%,transparent);border:2px solid var(--trail);transition:all .3s ease}.tour-card{position:fixed;pointer-events:auto;width:min(320px,calc(100vw - 24px));padding:16px;border-radius:10px}.tour-card .micro-label{font:11px var(--font-data);color:var(--trail)}.tour-card h3{font:700 15px var(--font-display);margin:6px 0}.tour-card p{font-size:13px;line-height:1.55;color:var(--muted-foreground)}.tour-card footer{display:flex;justify-content:space-between;margin-top:12px}
 @media(max-width:640px){.tour-card{left:12px!important;right:12px;bottom:12px;top:auto!important;width:auto}}
 .workspace-panel details summary{cursor:pointer;list-style:none}.workspace-panel details summary h3{display:inline}.workspace-form textarea{width:100%;padding:8px 10px;font-size:13px;background:var(--background);border:1px solid var(--border);border-radius:6px;resize:vertical}
+
+/* Paper & pixel layer — warmer, deeper paper so background links read; stepped pixel shadows on chrome */
+:root{--background:oklch(.925 .028 82);--paper-hi:oklch(.965 .018 85);--ghost:oklch(.36 .06 245);--ghost-strength:1;--pixel:color-mix(in oklch,var(--foreground) 14%,transparent);--pixel-shadow:3px 3px 0 color-mix(in oklch,var(--foreground) 16%,transparent),6px 6px 0 color-mix(in oklch,var(--foreground) 6%,transparent);--glass:color-mix(in oklch,var(--paper-hi) 90%,transparent);--glass-shadow:var(--pixel-shadow)}
+.network-app{background-color:var(--background);background-image:radial-gradient(color-mix(in oklch,var(--foreground) 12%,transparent) 1px,transparent 1.2px);background-size:16px 16px}
+:root[data-paper=plain] .network-app{background-image:none}
+:root[data-contours=faint] .hop-topography{opacity:.4}:root[data-contours=off] .hop-topography{display:none}
+.glass{border-radius:2px;border:1px solid color-mix(in oklch,var(--foreground) 22%,transparent);box-shadow:var(--pixel-shadow)}
+.hud-header.glass{box-shadow:0 3px 0 color-mix(in oklch,var(--foreground) 8%,transparent);border-width:0 0 2px;border-style:solid}
+button,[data-slot=button]{border-radius:2px}
+.micro-label{font:11px var(--font-data);letter-spacing:.08em;text-transform:uppercase;color:var(--trail)}
+/* Map settings control panel */
+.settings-sheet{width:min(480px,calc(100% - 32px));padding:20px;display:flex;flex-direction:column;gap:4px;background:var(--paper-hi)}
+.settings-sheet header{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:12px;border-bottom:2px dashed var(--pixel)}.settings-sheet h2{font:700 20px var(--font-display);margin-top:4px}
+.setting-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px 16px;padding:12px 0;border-bottom:1px solid var(--border)}.setting-row:has(input[type=range]){grid-template-columns:1fr 120px 44px}
+.setting-row strong{display:block;font:700 12px var(--font-display);text-transform:uppercase}.setting-row small{font-size:12px;color:var(--muted-foreground)}.setting-row output{font:12px var(--font-data);text-align:right}
+.setting-row input[type=range]{accent-color:var(--trail)}
+.pixel-segment{display:flex;border:2px solid var(--foreground);box-shadow:2px 2px 0 var(--pixel)}.pixel-segment button{min-width:44px;height:28px;padding:0 10px;font:12px var(--font-data);border-radius:0}.pixel-segment button+button{border-left:2px solid var(--foreground)}.pixel-segment button[aria-checked=true]{background:var(--foreground);color:var(--background)}
+.settings-sheet footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px}.settings-sheet footer small{font-size:12px;color:var(--muted-foreground)}
+/* Onboarding */
+.tour-welcome-layer{pointer-events:auto;display:grid;place-items:center;background:color-mix(in oklch,var(--foreground) 35%,transparent);backdrop-filter:blur(3px)}
+.tour-welcome{width:min(720px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow-y:auto;background:var(--paper-hi);padding:0;animation:tour-pop .35s steps(6) both}
+.tour-welcome img{display:block;width:100%;height:auto;image-rendering:pixelated;border-bottom:2px solid var(--foreground)}.tour-welcome>div{padding:20px 24px 16px}.tour-welcome h2{font:700 clamp(20px,3vw,28px)/1.2 var(--font-display);margin:8px 0}.tour-welcome p{font-size:15px;line-height:1.6;color:var(--muted-foreground);max-width:56ch}
+.tour-welcome footer,.tour-card footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px}.tour-welcome footer>div,.tour-card footer>div{display:flex;gap:4px}
+.tour-dots{display:flex;gap:6px;margin-top:16px}.tour-dots button{width:10px;height:10px;border:2px solid var(--foreground);border-radius:0;padding:0;pointer-events:auto}.tour-dots button[data-on=true]{background:var(--trail);border-color:var(--trail)}
+.tour-card{background:var(--paper-hi);border-radius:2px;animation:tour-pop .25s steps(4) both}.tour-spot{border-radius:2px;border:3px dashed var(--trail)}
+@keyframes tour-pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+/* Your data — paper index cards */
+.workspace-panel{counter-reset:ws;background:var(--paper-hi);padding:0;gap:0}
+.workspace-panel>header{position:sticky;top:0;z-index:2;padding:16px;background:var(--foreground);color:var(--background);align-items:flex-start}.workspace-panel>header small,.workspace-panel>header .micro-label{color:color-mix(in oklch,var(--background) 75%,transparent)}.workspace-panel>header button{color:var(--background)}
+.workspace-panel>header::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:6px;background:repeating-linear-gradient(90deg,var(--foreground) 0 6px,transparent 6px 12px)}
+.workspace-panel>section{counter-increment:ws;margin:16px 16px 0;padding:14px;border:1px solid color-mix(in oklch,var(--foreground) 20%,transparent);background:var(--background);box-shadow:3px 3px 0 var(--pixel)}.workspace-panel>section:last-child{margin-bottom:16px}
+.workspace-panel>section>h3::before,.workspace-panel>section>details>summary>h3::before{content:counter(ws,decimal-leading-zero);display:inline-grid;place-items:center;width:24px;height:20px;margin-right:4px;background:var(--foreground);color:var(--background);font:11px var(--font-data)}
+.workspace-panel h3{font:700 12px var(--font-display);text-transform:uppercase;align-items:center}
+.workspace-form input,.workspace-form textarea{border-radius:0;border:1px solid color-mix(in oklch,var(--foreground) 25%,transparent);background:var(--paper-hi);box-shadow:inset 2px 2px 0 var(--pixel)}
+.workspace-list li{border-radius:0;border-left:3px solid transparent}.workspace-list li[data-active=true]{border-left-color:var(--verified)}
+.review-list li{border-bottom:1px dashed var(--pixel);padding:4px 0}.file-button{border:1px dashed var(--foreground);border-radius:0}
+.workspace-panel .blurb{font-size:12px;line-height:1.55;color:var(--muted-foreground)}
