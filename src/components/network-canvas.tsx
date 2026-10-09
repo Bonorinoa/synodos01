@@ -98,7 +98,7 @@ export function NetworkCanvas(props:Props) {
         let y=0;
         for(const depth of [...new Set([...layout.positions.keys()].map(id=>layout.depth.get(id)??0))].sort((a,b)=>a-b)){
           const ids=[...layout.positions.keys()].filter(id=>layout.depth.get(id)===depth);
-          const columns=depth===0?1:2;
+          const columns=depth===0?1:depth===1?2:3;
           y=readablePositions(positions,ids,columns,(width-48)/columns,y,depth===0?90:100);
         }
       }
@@ -114,7 +114,7 @@ export function NetworkCanvas(props:Props) {
         const sideX=(width-48)*.28;
         let sideRow=0;for(const id of primary)if(!route.includes(id)&&ids.includes(id))positions.set(id,{x:sideX,y:sideRow++*90});
         const remainder=ids.filter(id=>!primary.has(id));
-        remainder.forEach((id,i)=>positions.set(id,{x:sideX,y:sideRow*90+i*90}));
+        remainder.forEach((id,i)=>positions.set(id,{x:sideX,y:600+i*90}));
         return positions;
       }
       const end=readablePositions(positions,leading,2,narrow()?(width-40)/2:240,0,narrow()?50:140);
@@ -155,7 +155,7 @@ export function NetworkCanvas(props:Props) {
          const node=edge.source().id()===current.current.root?edge.target():edge.source();
          const point=node.renderedPosition();
          if(point.x<24||point.x>cy.width()-24||point.y<24||point.y>cy.height()-24)return [];
-         return [{id:edge.id(),x:point.x+22,y:point.y-22}];
+         return [{id:edge.id(),x:point.x+22,y:point.y-18}];
        }
         return [{id:edge.id(),x:a.x*.65+b.x*.35,y:a.y*.65+b.y*.35-18}];
     }));
@@ -173,7 +173,7 @@ export function NetworkCanvas(props:Props) {
        const lineageNode=compact&&current.current.mode==='lineage'&&!ghost;
        const destination=compact&&node.data('target');
        const stagger=direct&&!compact?Math.max(0,['monica-capra','eitel-lauria','erik-johnston','raymond-duch'].indexOf(node.id())%2)*32:0;
-         const point=node.renderedPosition(),width=Math.max(44,compact&&(direct||routeNode||destination||lineageNode)?(cy.width()-48)/2-12:ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130);
+         const point=node.renderedPosition(),width=Math.max(44,compact&&lineageNode&&!direct&&node.id()!==egoId?(cy.width()-48)/3-12:compact&&(direct||routeNode||destination||lineageNode)?(cy.width()-48)/2-12:ghost?80:compact?(node.id()===current.current.selected||direct?Math.min(160,(cy.width()-40)/2-8):Math.min(108,(cy.width()-40)/(current.current.mode==='path'&&current.current.selected?4:3)-8)):130);
         const labelWidth=Math.max(44,width/Math.max(zoom,.01));
        const box={x:point.x-width/2,y:point.y+node.renderedHeight()/2+(compact?6:12)+stagger,w:width,h:compact&&(direct||routeNode||lineageNode||destination)?36:compact?18:30};
       const collision=occupied.some(other=>box.x<other.x+other.w&&box.x+box.w>other.x&&box.y<other.y+other.h&&box.y+box.h>other.y);
@@ -322,11 +322,12 @@ export function NetworkCanvas(props:Props) {
            const points=nodes.toArray().flatMap(n=>{const point=positions.get(n.id());return point?[point]:[];});if(!points.length)return;
            const stage=container.current?.getBoundingClientRect(),sheet=document.querySelector('.inspector')?.getBoundingClientRect();
            const left=!narrow()&&document.querySelector('.trail-guide[data-open=true]')?330:48,right=!narrow()&&p.selected?400:48;
-           const top=narrow()?174:160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-64:cy.height()-64;
+           const top=narrow()?174:160,bottom=narrow()&&stage&&sheet&&p.selected?sheet.top-stage.top-44:cy.height()-64;
            const width=cy.width()-left-right,height=Math.max(240,bottom-top);
            const x1=Math.min(...points.map(point=>point.x)),x2=Math.max(...points.map(point=>point.x)),y1=Math.min(...points.map(point=>point.y)),y2=Math.max(...points.map(point=>point.y));
             const zoom=narrow()?Math.max(.3,Math.min(1,(bottom-top)/Math.max(1,y2-y1),(cy.width()-64)/Math.max(1,x2-x1))):Math.max(.3,Math.min(1.15,Math.max(100,width-80)/Math.max(1,x2-x1),Math.max(100,height-70)/Math.max(1,y2-y1)));
-           const pan={x:narrow()?cy.width()/2-(x1+x2)/2*zoom:left+width/2-(x1+x2)/2*zoom,y:narrow()?top-y1*zoom:top+height/2-(y1+y2)/2*zoom};
+           if(narrow()){for(const [key,point] of positions)positions.set(key,{x:point.x/zoom,y:point.y});}
+            const pan={x:narrow()?cy.width()/2-(x1+x2)/2:left+width/2-(x1+x2)/2*zoom,y:narrow()?top-y1*zoom:top+height/2-(y1+y2)/2*zoom};
            rebuildContours();
            cy.stop();moveGeometry(positions,{zoom,pan});
         };
