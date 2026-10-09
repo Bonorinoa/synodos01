@@ -138,10 +138,11 @@ export function NetworkCanvas(props:Props) {
     const depths=p.mode==='lineage'?getLineage().depth:p.trajectory.depths;
     const routeDepths=new Map(p.routeNodes.map((id,i)=>[id,i]));
     const terraced=p.mode==='path'&&!narrow()&&!p.selected;
-    setContours((terraced?terraceContours:hopContours)(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
+    const points=(cy.nodes().filter(n=>!n.hasClass('ghost')&&!n.hasClass('lineage-context')&&(p.mode!=='path'||!p.routeNodes.length||p.routeNodes.includes(n.id()))).toArray().flatMap(n=>{
       if(!n.isNode())return [];const depth=routeDepths.get(n.id())??depths.get(n.id())??rankedPaths(n.id(),p.coreOnly)[0]?.edges.length;if(depth===undefined)return [];
       return [{id:n.id(),...n.position(),depth}];
-    }),...(terraced?[]:[Math.max(76,58/cy.zoom())]) as []));
+    }));
+    setContours(terraced?terraceContours(points):hopContours(points,Math.max(76,58/cy.zoom())));
   };
   const [hitNodes,setHitNodes]=useState<{id:string;label:string;x:number;y:number}[]>([]);
   const [bands,setBands]=useState<{depth:number;y:number}[]>([]);
