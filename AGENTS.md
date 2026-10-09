@@ -42,4 +42,4 @@
 - Coordinate graph positions and camera with one interruptible critically damped transition and coalesce overlay updates per animation frame; reduced motion applies instantly.
 - Keep the header to mark, mode toggle and one command-panel button; secondary features live in that pane so the map stays uncluttered.
 - Separate product identity from artifact titles; share the mark and favicon to preserve user network names.
-- Research at most three bounded hops through quoted people; re-read null-status pages. Saved snapshots use pending ingestion, never ego links or auto-approval, to preserve provenance.
+- Research is authenticated direct Grok over Firecrawl text, ≤3 bounded passes. Deterministic acceptance preserves confidence; snapshots stay pending except explicit owner approval. Never infer ego links.
