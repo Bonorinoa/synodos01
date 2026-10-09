@@ -23,18 +23,7 @@
 - Render Lineage from explicit cumulative node expansion with bounded context previews, legal-edge BFS bands and chair-prioritized placement; this keeps hop depth honest while enabling multi-branch exploration.
 - Store major distinctions as optional sourced node metadata and render them only in the relevant view; this preserves evidence provenance without changing graph traversal semantics.
 
-- Preserve Path scale on target picks; selections may frame recorded neighbors and expansions auto-fit them, excluding ghosts, to keep evidence exploration clear of floating records.
-- Clear expansion on mode changes and keep ranked routes collapsible; this prevents stale branches and saves canvas space.
-- Float controls and records over the canvas; frame the unobscured region and keep rendered-coordinate hit targets.
 - Bound cross-branch discovery to recorded legal links into tagged packets, excluding ego and the Capra gateway; this avoids presenting a shared origin as an advisor connection.
-- Derive closed contours from visible non-ghost hop geometry (terrace circles on desktop Path, superlevel hulls elsewhere); elevation stays a recorded hop meaning.
-- Frame an expanded Lineage parent, immediate recorded children, root, and first-hop gateways within the unobscured canvas, excluding context previews; this reveals new depth without losing the shared origin or fitting ghosts.
-- Render narrow Path waypoints in vertical itinerary order and use a bounded draggable record sheet; this protects readable labels and selected-node visibility without fitting the whole graph on selection.
-
-- Encode node kind through shapes with destination-only diamonds and zoom-clamped size hierarchy; this prevents decorative color from implying evidence quality.
-- Render one depth-sorted hop label per band without relationship-type assumptions; this preserves honest distance labels.
-
-- Frame selection and expansion against record bounds; observe sheet resizes and exclude peripheral Path context.
 - Present exploration as mission → story → evidence, with one prominent contextual surface; this reduces overload without changing graph meaning.
 - Methodology docs use shared route-cost and traversal constants.
 - Bounded Firecrawl research retains quotes and dated checks; deterministic rules, never AI decisions, govern acceptance. Never execute discovered tools.
