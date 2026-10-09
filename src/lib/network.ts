@@ -2,20 +2,20 @@ import { bases, nodeSchema, edgeSchema } from '@/lib/schema';
 import { loadActiveArtifact } from '@/lib/workspace';
 import { forceSimulation, forceLink, forceManyBody, forceCollide, forceX, forceY, type SimulationNodeDatum } from 'd3-force';
 export { bases };
-export const activeArtifact = loadActiveArtifact();
+export let activeArtifact = loadActiveArtifact();
 /** The network owner. Every root-relative traversal starts here. */
-export const egoId = activeArtifact.meta.ego;
+export let egoId = activeArtifact.meta.ego;
 export type NetworkNode = z.infer<typeof nodeSchema>;
 import type { z } from 'zod';
 export type NetworkEdge = z.infer<typeof edgeSchema> & { id: string };
 export type Mode = 'path' | 'lineage';
 export const graph = { nodes: activeArtifact.nodes, edges: activeArtifact.edges };
-export const edges: NetworkEdge[] = graph.edges.map((edge, i) => ({ ...edge, id: `edge-${i}` }));
+export let edges: NetworkEdge[] = graph.edges.map((edge, i) => ({ ...edge, id: `edge-${i}` }));
 export const nodeById = new Map(graph.nodes.map(node => [node.id, node]));
 for (const edge of edges) if (!nodeById.has(edge.source) || !nodeById.has(edge.target)) throw new Error('Graph contains an unknown endpoint');
 export const lineageBases = new Set(['phd_advisor', 'committee', 'research_group', 'coauthorship', 'joint_project']);
 export const weakBases = new Set(['shared_field', 'shared_venue', 'shared_institution']);
-export const egoGatewayIds: string[] = [...new Set(edges.filter(e=>e.evidence.ego_gateway===true&&[e.source,e.target].includes(egoId)).map(e=>e.source===egoId?e.target:e.source))].sort((a,b)=>edges.findIndex(e=>[e.source,e.target].includes(a))-edges.findIndex(e=>[e.source,e.target].includes(b)));
+export let egoGatewayIds: string[] = [...new Set(edges.filter(e=>e.evidence.ego_gateway===true&&[e.source,e.target].includes(egoId)).map(e=>e.source===egoId?e.target:e.source))].sort((a,b)=>edges.findIndex(e=>[e.source,e.target].includes(a))-edges.findIndex(e=>[e.source,e.target].includes(b)));
 export const isPending=(edge:NetworkEdge)=>edge.evidence.review_status==='pending';
 export const egoGatewayEdges = () => edges.filter(edge=>edge.evidence.ego_gateway===true && (edge.source===egoId||edge.target===egoId));
 export const basisLabel = (basis: string) => basis.replaceAll('_', ' ');
@@ -34,7 +34,7 @@ export function lineageHops(id: string) {
   for (let i = 0; i < queue.length; i++) { const cur = queue[i]!; for (const e of legal) { const next = e.source === cur ? e.target : e.target === cur ? e.source : null; if (next && !depth.has(next)) { depth.set(next, depth.get(cur)! + 1); queue.push(next); } } }
   return depth.get(id) ?? null;
 }
-export const nobelIds = graph.nodes.filter(n => n.nobel_prize).map(n => n.id);
+export let nobelIds = graph.nodes.filter(n => n.nobel_prize).map(n => n.id);
 export type RankedPath = { nodes: string[]; edges: string[]; cost: number };
 export function rankedPaths(target: string, coreOnly = false): RankedPath[] {
   const adjacency = new Map<string, { next: string; edge: NetworkEdge }[]>();
@@ -117,7 +117,17 @@ export function crossBranchLinks(id:string, targetRoot:string) {
   return legalEdges('lineage').filter(e=>[e.source,e.target].includes(id)&&packet.has(e.source===id?e.target:e.source)&&![e.source,e.target].includes(egoId)&&![e.source,e.target].some(end=>end!==id&&end!==targetRoot&&egoGatewayIds.includes(end)));
 }
 // Horizontal progress is a viewing convention, not a direction or introduction claim.
-export const pathTargetIds: string[] = graph.nodes.filter(node => node.target).map(node => node.id);
+export let pathTargetIds: string[] = graph.nodes.filter(node => node.target).map(node => node.id);
+/** Refresh browser-local indexes without remounting the explorer or losing its camera. */
+export function refreshActiveNetwork() {
+  activeArtifact = loadActiveArtifact(); egoId = activeArtifact.meta.ego;
+  graph.nodes = activeArtifact.nodes; graph.edges = activeArtifact.edges;
+  edges = graph.edges.map((edge,i)=>({...edge,id:`edge-${i}`}));
+  nodeById.clear(); for(const node of graph.nodes) nodeById.set(node.id,node);
+  egoGatewayIds = [...new Set(egoGatewayEdges().map(edge=>edge.source===egoId?edge.target:edge.source))];
+  pathTargetIds = graph.nodes.filter(node=>node.target).map(node=>node.id);
+  nobelIds = graph.nodes.filter(node=>node.nobel_prize).map(node=>node.id);
+}
 export function trajectoryLayout(paths: RankedPath[], targets: string[], coreOnly = false, selected: string | null = null, expanded: Set<string> = new Set()) {
   const legal = pathTraversalEdges(coreOnly);
   const destinations = [...new Set([...pathTargetIds, ...targets])];
