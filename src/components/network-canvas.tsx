@@ -299,7 +299,7 @@ export function NetworkCanvas(props:Props) {
   };
 
   useEffect(()=>{
-    let cancelled=false; let observer:ResizeObserver|undefined;let removeWheel:(()=>void)|undefined;
+    let cancelled=false; let observer:ResizeObserver|undefined;let removeWheel:(()=>void)|undefined;let removeDisplay:(()=>void)|undefined;
     import('cytoscape').then(({default:cytoscape})=>{
       if (cancelled||!container.current) return;
       const cy=cytoscape({container:container.current,elements:[],style:styles(),layout:{name:'preset'},minZoom:.04,maxZoom:3,wheelSensitivity:.18,boxSelectionEnabled:false,selectionType:'single'});
@@ -346,7 +346,7 @@ export function NetworkCanvas(props:Props) {
       let previousSize={width:cy.width(),height:cy.height()},previousNarrow=narrow();
         observer=new ResizeObserver(()=>{const old=previousSize;cy.resize();const next={width:cy.width(),height:cy.height()};cy.panBy({x:(next.width-old.width)/2,y:(next.height-old.height)/2});previousSize=next;const breakpointChanged=previousNarrow!==narrow();previousNarrow=narrow();if(breakpointChanged){renderGraph.current();if(current.current.selected)focusNode(current.current.selected);else if(narrow()&&current.current.mode==='lineage'){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}else if(current.current.mode==='path'&&current.current.routeNodes.length&&!narrow()){const points=displayPositions();for(const id of [...current.current.routeNodes,...pathTargetIds]){const point=points.get(id);if(point)cy.getElementById(id).position(point);}const end=points.get(current.current.routeNodes.at(-1)??'');if(end)cy.pan({x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2});}if(current.current.selected)focusNode(current.current.selected);rebuildContours();updateTopo();updateHalo();updatePathLabels();updateLocks();updateHitTargets();});observer.observe(container.current);
     });
-    return()=>{cancelled=true;if(motionFrame.current!==null)cancelAnimationFrame(motionFrame.current);if(overlayFrame.current!==null)cancelAnimationFrame(overlayFrame.current);removeWheel?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
+    return()=>{cancelled=true;if(motionFrame.current!==null)cancelAnimationFrame(motionFrame.current);if(overlayFrame.current!==null)cancelAnimationFrame(overlayFrame.current);removeWheel?.();removeDisplay?.();observer?.disconnect();cyRef.current?.destroy();cyRef.current=null;current.current.apiRef.current=null;};
   },[]);
   useEffect(()=>renderGraph.current(),[props.mode,props.coreOnly,props.root,props.collapsed,props.lineageExpanded,props.trajectory,props.trajectoryKey,props.viewportKey]);
   useEffect(()=>{
