@@ -45,3 +45,8 @@
 - [x] Verify the redesigned Path and Lineage journeys at desktop, 500px, and 390px.
 - [x] Generalize networks to user-uploaded or created artifacts stored in the browser.
 - [x] Add provenance-aware findings import, owner review, deduplication, and cleanup.
+- [x] First-visit guided tour with replay, and a "How it works" methodology window.
+- [x] Nobel laureate glow, chip and academic-hop distance.
+- [x] Fix Lineage branch buttons re-opening collapsed branches.
+- [x] Start-from-a-bio research assistant plus copyable agent prompt; file upload moved to Advanced.
+- [x] Compact destination card clear of the graph; destinations typed by the user.
