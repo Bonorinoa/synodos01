@@ -44,3 +44,4 @@
 - Separate product identity from artifact titles; share the mark and favicon to preserve user network names.
 - Research is authenticated direct Grok over Firecrawl text, ≤3 bounded passes. Deterministic acceptance preserves confidence; snapshots stay pending except explicit owner approval. Never infer ego links.
 - Account sync and external research require separate default-off, versioned browser opt-ins per user; research verifies explicit request consent before providers. Invite checks gate both.
+- Shared networks are opt-in per-network links read via a sign-in-only definer function into an in-memory read-only view that blocks all saves; handshakes match only identical catalog IDs and add no edges.
