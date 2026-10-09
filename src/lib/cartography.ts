@@ -64,6 +64,6 @@ export function terraceContours(points:ElevationPoint[], center:MapPoint={x:0,y:
     const inner=Math.max(0,...points.filter(p=>p.depth<depth).map(r)),outer=Math.min(...points.filter(p=>p.depth>=depth).map(r));
     const radius=Math.max(60,(inner+outer)/2);
     const path=`M ${center.x-radius} ${center.y} A ${radius} ${radius} 0 1 0 ${center.x+radius} ${center.y} A ${radius} ${radius} 0 1 0 ${center.x-radius} ${center.y} Z`;
-    return {depth,path,label:{x:center.x+radius*Math.cos(-2.2),y:center.y+radius*Math.sin(-2.2)},members:points.filter(p=>p.depth>=depth).map(p=>p.id)};
+    return {depth,path,label:{x:center.x+radius*Math.cos(-.85),y:center.y+radius*Math.sin(-.85)},members:points.filter(p=>p.depth>=depth).map(p=>p.id)};
   });
 }
