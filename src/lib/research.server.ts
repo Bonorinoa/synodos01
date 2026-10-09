@@ -5,7 +5,9 @@ type Document = { url?:string; title?:string; markdown?:string; metadata?:{ sour
 export async function searchAcademicSources(contacts:{name:string;hint:string}[],bio:string,key:string,date:string,trace:string[]=[]) {
   const sources:ResearchSource[]=[];const seen=new Set<string>();
   const call=async(path:string,body:object)=>{
-    const response=await fetch(`https://api.firecrawl.dev/v2/${path}`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${key}`},body:JSON.stringify(body)});
+    const lovable=process.env['LOVABLE_API_KEY'];if(!lovable)throw new Error('Research is missing its connection credentials. No findings were added.');
+    // Gateway-backed Firecrawl connection: the connection key never goes to Firecrawl directly.
+    const response=await fetch(`https://connector-gateway.lovable.dev/firecrawl/v2/${path}`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${lovable}`,'X-Connection-Api-Key':key},body:JSON.stringify(body)});
     if(!response.ok){const detail=await response.text();console.error(`Firecrawl request failed [${response.status}]: ${detail}`);if(response.status===402)throw new Error('Firecrawl has run out of search credits. Top up the connected Firecrawl account before researching again. No findings were added.');throw new Error(`Firecrawl request failed (${response.status}): ${detail}`);}
     const result=await response.json() as {success?:boolean;error?:string;data?:unknown};
     if(result.success===false)throw new Error('Firecrawl could not retrieve sources. No findings were added.');

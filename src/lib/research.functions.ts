@@ -41,17 +41,26 @@ export const runResearch = createServerFn({ method: 'POST' })
       const findings: ReturnType<typeof groundFindings>['file']['findings'] = [];
       let file: ReturnType<typeof groundFindings>['file'] | null = null;
       // Hop n researches only people grounded at hop n-1; each hop is bounded and stays unreviewed.
+      const { coauthorFindings } = await import('@/lib/openalex.server');
       for (let hop = 1; hop <= data.depth && frontier.length; hop++) {
-        trace.push(`— Hop ${hop} from your contacts: ${frontier.map(f => f.name).join(', ')}`);
-        const out = await pass(frontier);
-        if (!out) { if (hop === 1) return { ok: false as const, error: 'No readable public sources were found. No findings were added.', trace }; break; }
-        hops = hop; pages += out.pages; dropped += out.result.dropped; file ??= out.result.file; findings.push(...out.result.file.findings);
+        trace.push(`— Hop ${hop} from: ${frontier.map(f => f.name).join(', ')}`);
+        // Catalog co-authors (OpenAlex) first; web pages add advisor/committee claims that no database lists.
+        const catalog: typeof findings = [];
+        for (const p of frontier) { try { catalog.push(...await coauthorFindings(p.name, p.hint, date, trace)); } catch (e) { trace.push(e instanceof Error ? e.message : 'OpenAlex lookup failed'); } }
+        let out: Awaited<ReturnType<typeof pass>> = null;
+        try { out = await pass(frontier); } catch (e) { if (!catalog.length) throw e; trace.push(e instanceof Error ? e.message : 'Web search failed'); }
+        if (!out && !catalog.length) { if (hop === 1) return { ok: false as const, error: 'No readable public sources were found. No findings were added.', trace }; break; }
+        hops = hop;
+        if (out) { pages += out.pages; dropped += out.result.dropped; file ??= out.result.file; findings.push(...out.result.file.findings); }
+        file ??= { format: 'network-findings', version: 1, source_tool: 'OpenAlex', retrieved_at: date, findings: [] };
+        findings.push(...catalog);
         const next = new Map<string, { name: string; hint: string }>();
-        for (const f of out.result.file.findings) { const k = normalizeLabel(f.to.label); if (!known.has(k)) { known.add(k); next.set(k, { name: f.to.label, hint: '' }); } }
+        // Web-grounded links first, then the strongest catalog co-authors.
+        for (const f of [...(out?.result.file.findings ?? []), ...catalog]) { const k = normalizeLabel(f.to.label); if (!known.has(k)) { known.add(k); next.set(k, { name: f.to.label, hint: '' }); } }
         frontier = [...next.values()].slice(0, RESEARCH.contacts);
       }
       if (!file) return { ok: false as const, error: 'No source-grounded findings were returned.', trace };
-      const merged = { ...file, source_tool: 'Firecrawl search + scrape / direct Grok extraction', findings };
+      const merged = { ...file, source_tool: 'OpenAlex catalog + Firecrawl search / direct Grok extraction', findings };
       const cited = [...new Set(findings.flatMap(f => f.sources.map(s => s.url)))];
       const checked = findings.filter(passesAutomaticChecks);
       trace.push(`${checked.length} links passed conservative automatic checks; other grounded claims await review.`);

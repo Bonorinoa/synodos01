@@ -8,6 +8,14 @@ export function parseContact(raw:string){const m=raw.trim().match(/^([^()]+?)\s*
 export type ResearchSource = { url:string; title:string; markdown:string; status:number|null; retrieved_at:string };
 /** Conservative automatic acceptance: authoritative source, contiguous full identities, explicit role, no hedging. */
 export function passesAutomaticChecks(finding: Finding): boolean {
+  // Co-authorship read from an OpenAlex author list is a catalog fact; owner chose to auto-accept it as co-author only.
+  if (finding.basis === 'coauthorship') return finding.sources.some(source => {
+    try { if (new URL(source.url).hostname !== 'api.openalex.org' || !source.excerpt || !source.accessible) return false; } catch { return false; }
+    // Each listed author must contain every token of the named person (catalog names may add initials).
+    const authors = (source.excerpt.split(' — authors: ')[1] ?? '').split(', ').map(a => normalizeLabel(a).split(' '));
+    const has = (name: string) => { const want = normalizeLabel(name).split(' ').filter(Boolean); return want.length > 1 && authors.some(a => want.every(t => a.includes(t))); };
+    return has(finding.from.label) && has(finding.to.label);
+  });
   if (!['phd_advisor', 'committee'].includes(finding.basis)) return false;
   return finding.sources.some(source => {
     if (!source.accessible || source.status === null || source.status === undefined || source.status < 200 || source.status >= 300 || !source.checked_at || !source.excerpt) return false;

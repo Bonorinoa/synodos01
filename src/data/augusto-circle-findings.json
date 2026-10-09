@@ -1,0 +1,1160 @@
+{
+ "format": "network-findings",
+ "version": 1,
+ "source_tool": "OpenAlex catalog + Firecrawl search / direct Grok extraction",
+ "retrieved_at": "2026-10-09T03:40:12.560Z",
+ "findings": [
+  {
+   "from": {
+    "label": "Monica Capra",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Bing Jiang",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 11 indexed works, e.g. “Green self-image boosts online volunteering for environmental causes: Experimental evidence” (2024).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4392388536",
+     "title": "Green self-image boosts online volunteering for environmental causes: Experimental evidence",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Green self-image boosts online volunteering for environmental causes: Experimental evidence — authors: C. Mónica Capra, Bing Jiang, Yuxin Su"
+    },
+    {
+     "url": "https://api.openalex.org/works/W3204801238",
+     "title": "Do pledges lead to more volunteering? An experimental study",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Do pledges lead to more volunteering? An experimental study — authors: C. Mónica Capra, Bing Jiang, Yuxin Su"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Monica Capra",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Yuxin Su",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 9 indexed works, e.g. “Aim High or Play Safe? Commitment, Prosocial Incentives, and Goal Setting” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7140595235",
+     "title": "Aim High or Play Safe? Commitment, Prosocial Incentives, and Goal Setting",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Aim High or Play Safe? Commitment, Prosocial Incentives, and Goal Setting — authors: Yu Cao, C. Mónica Capra, Yuxin Su"
+    },
+    {
+     "url": "https://api.openalex.org/works/W4392388536",
+     "title": "Green self-image boosts online volunteering for environmental causes: Experimental evidence",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Green self-image boosts online volunteering for environmental causes: Experimental evidence — authors: C. Mónica Capra, Bing Jiang, Yuxin Su"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Monica Capra",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Joshua Tasoff",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 9 indexed works, e.g. “To Savour Consumption or To Confront Dread: The Hedonic Opportunity Cost of Attention” (2025).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4414371309",
+     "title": "To Savour Consumption or To Confront Dread: The Hedonic Opportunity Cost of Attention",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "To Savour Consumption or To Confront Dread: The Hedonic Opportunity Cost of Attention — authors: C. Mónica Capra, Joshua Tasoff, Jin Xu"
+    },
+    {
+     "url": "https://api.openalex.org/works/W4408664214",
+     "title": "Appetite for Ignorance: Does eating meat cause information avoidance about its harms?",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Appetite for Ignorance: Does eating meat cause information avoidance about its harms? — authors: Bénédicte Droz, Berno Buechel, C. Mónica Capra, Xi Chen, Anis Nassar, Seong Gyu Park, Jin Xu, Shanshan Zhang, Joshua Tasoff"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Monica Capra",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Po-Hsuan Lin",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 8 indexed works, e.g. “Virtual observability in sequential play” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4416959405",
+     "title": "Virtual observability in sequential play",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Virtual observability in sequential play — authors: C. Mónica Capra, Charles A. Holt, Po-Hsuan Lin"
+    },
+    {
+     "url": "https://api.openalex.org/works/W4408664214",
+     "title": "Appetite for Ignorance: Does eating meat cause information avoidance about its harms?",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Appetite for Ignorance: Does eating meat cause information avoidance about its harms? — authors: Bénédicte Droz, Berno Buechel, C. Mónica Capra, Xi Chen, Anis Nassar, Seong Gyu Park, Jin Xu, Shanshan Zhang, Joshua Tasoff"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Monica Capra",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Gregory S. Berns",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 8 indexed works, e.g. “Can personality type explain heterogeneity in probability distortions?” (2013).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W3122993865",
+     "title": "Can personality type explain heterogeneity in probability distortions?",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Can personality type explain heterogeneity in probability distortions? — authors: C. Mónica Capra, Bing Jiang, Jan Benjamin Engelmann, Gregory S. Berns"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2167136541",
+     "title": "You cannot gamble on others: Dissociable systems for strategic uncertainty and risk in the brain",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "You cannot gamble on others: Dissociable systems for strategic uncertainty and risk in the brain — authors: W. Gavin Ekins, Ricardo Cáceda, C. Mónica Capra, Gregory S. Berns"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Monica Capra",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Matthew Gomies",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 4 indexed works, e.g. “The sound of cooperation and deception when stakes are high” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7155531813",
+     "title": "The sound of cooperation and deception when stakes are high",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "The sound of cooperation and deception when stakes are high — authors: C. Mónica Capra, Matthew Gomies, Shanshan Zhang"
+    },
+    {
+     "url": "https://api.openalex.org/works/W4396885048",
+     "title": "(When) Would You Lie to a Voicebot?",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "(When) Would You Lie to a Voicebot? — authors: Shanshan Zhang, C. Mónica Capra, Matthew Gomies"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Eitel J.M. Lauría",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Sandeep M. Jayaprakash",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 7 indexed works, e.g. “Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education” (2024).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4394576557",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2341502940",
+     "title": "Benchmarking student performance and engagement in an early alert predictive system using interactive radar charts",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Benchmarking student performance and engagement in an early alert predictive system using interactive radar charts — authors: Sandeep M. Jayaprakash, Eitel J. M. Lauría, Pritesh Gandhi, Dinesh Mendhe"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Eitel J.M. Lauría",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Giri Kumar Tayi",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 5 indexed works, e.g. “Bayesian Data Mining and Knowledge Discovery” (2011).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4233146619",
+     "title": "Bayesian Data Mining and Knowledge Discovery",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Bayesian Data Mining and Knowledge Discovery — authors: Eitel J. M. Lauría, Giri Kumar Tayi"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2078268845",
+     "title": "Statistical machine learning for network intrusion detection: a data quality perspective",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Statistical machine learning for network intrusion detection: a data quality perspective — authors: Eitel J. M. Lauría, Giri Kumar Tayi"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Eitel J.M. Lauría",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Edward Presutti",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 4 indexed works, e.g. “Implementing Open-Domain Question-Answering in a College Setting: An End-to-End Methodology and a Preliminary Exploration” (2022).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4285165709",
+     "title": "Implementing Open-Domain Question-Answering in a College Setting: An End-to-End Methodology and a Preliminary Exploration",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Implementing Open-Domain Question-Answering in a College Setting: An End-to-End Methodology and a Preliminary Exploration — authors: Augusto Gonzalez-Bonorino, Eitel J. M. Lauría, Edward Presutti"
+    },
+    {
+     "url": "https://api.openalex.org/works/W3027223932",
+     "title": "Boosting Early Detection of Spring Semester Freshmen Attrition: A Preliminary Exploration",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Boosting Early Detection of Spring Semester Freshmen Attrition: A Preliminary Exploration — authors: Eitel J. M. Lauría, Eric Stenton, Edward Presutti"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Eitel J.M. Lauría",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Christian Sarmiento",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 3 indexed works, e.g. “Investigating Flavors of RAG for Applications in College Chatbots” (2025).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4409194872",
+     "title": "Investigating Flavors of RAG for Applications in College Chatbots",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Investigating Flavors of RAG for Applications in College Chatbots — authors: Christian Sarmiento, Eitel J. M. Lauría"
+    },
+    {
+     "url": "https://api.openalex.org/works/W4391986699",
+     "title": "Early Perceptions of Teaching and Learning Using Generative AI in Higher Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Early Perceptions of Teaching and Learning Using Generative AI in Higher Education — authors: Amanda D. Damiano, Eitel J. M. Lauría, Christian Sarmiento, Ningjing Zhao"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Eitel J.M. Lauría",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Joshua D. Baron",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 3 indexed works, e.g. “Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative” (2014).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W1486785378",
+     "title": "Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative — authors: Sandeep M. Jayaprakash, Erik W. Moody, Eitel J. M. Lauría, James R. Regan, Joshua D. Baron"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2132154562",
+     "title": "Open academic analytics initiative",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Open academic analytics initiative — authors: Eitel J. M. Lauría, Erik W. Moody, Sandeep M. Jayaprakash, Nagamani Jonnalagadda, Joshua D. Baron"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Eitel J.M. Lauría",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Peter J. Duchessi",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 3 indexed works, e.g. “Decision tree models for profiling ski resorts’ promotional and advertising strategies and the impact on sales” (2013).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W1964096639",
+     "title": "Decision tree models for profiling ski resorts’ promotional and advertising strategies and the impact on sales",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Decision tree models for profiling ski resorts’ promotional and advertising strategies and the impact on sales — authors: Peter J. Duchessi, Eitel J. M. Lauría"
+    },
+    {
+     "url": "https://api.openalex.org/works/W1968354614",
+     "title": "A methodology for developing Bayesian networks: An application to information technology (IT) implementation",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "A methodology for developing Bayesian networks: An application to information technology (IT) implementation — authors: Eitel J. M. Lauría, Peter J. Duchessi"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Erik Johnston",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Chul Hyun Park",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 8 indexed works, e.g. “Exploring Non-State Stakeholder and Community-Led Open Governance: Beyond the Three Pillars of Open Government” (2019).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W2981047529",
+     "title": "Exploring Non-State Stakeholder and Community-Led Open Governance: Beyond the Three Pillars of Open Government",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Exploring Non-State Stakeholder and Community-Led Open Governance: Beyond the Three Pillars of Open Government — authors: Chul Hyun Park, Justin Longo, Erik Johnston"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2946657072",
+     "title": "Intentionally building relationships between participatory online groups and formal organisations for effective emergency response",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Intentionally building relationships between participatory online groups and formal organisations for effective emergency response — authors: Chul Hyun Park, Erik Johnston"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Erik Johnston",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Caity Roe",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 5 indexed works, e.g. “AI Integration in Mental Health Services: Examining Trends in the USA and Peoria, Illinois” (2025).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4408095509",
+     "title": "AI Integration in Mental Health Services: Examining Trends in the USA and Peoria, Illinois",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "AI Integration in Mental Health Services: Examining Trends in the USA and Peoria, Illinois — authors: Margaret M. Hinrichs, Jieshu Wang, Caity Roe, Erik Johnston"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2589320140",
+     "title": "Technology Use, Exposure to Natural Hazards, and Being Digitally Invisible: Implications for Policy Analytics",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Technology Use, Exposure to Natural Hazards, and Being Digitally Invisible: Implications for Policy Analytics — authors: Justin Longo, Evan R. Kuras, Holly Smith, David M. Hondula, Erik Johnston"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Erik Johnston",
+    "kind": "person"
+   },
+   "to": {
+    "label": "David M. Hondula",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 5 indexed works, e.g. “Toward precision governance: infusing data into public management of environmental hazards” (2021).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4225923460",
+     "title": "Toward precision governance: infusing data into public management of environmental hazards",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Toward precision governance: infusing data into public management of environmental hazards — authors: David M. Hondula, Evan R. Kuras, Justin Longo, Erik Johnston"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2607633755",
+     "title": "Toward precision governance: infusing data into public management of environmental hazards",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Toward precision governance: infusing data into public management of environmental hazards — authors: David M. Hondula, Evan R. Kuras, Justin Longo, Erik Johnston"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Erik Johnston",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Justin Longo",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 4 indexed works, e.g. “Toward precision governance: infusing data into public management of environmental hazards” (2021).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4225923460",
+     "title": "Toward precision governance: infusing data into public management of environmental hazards",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Toward precision governance: infusing data into public management of environmental hazards — authors: David M. Hondula, Evan R. Kuras, Justin Longo, Erik Johnston"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2981047529",
+     "title": "Exploring Non-State Stakeholder and Community-Led Open Governance: Beyond the Three Pillars of Open Government",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Exploring Non-State Stakeholder and Community-Led Open Governance: Beyond the Three Pillars of Open Government — authors: Chul Hyun Park, Justin Longo, Erik Johnston"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Erik Johnston",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Dara M. Wald",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 4 indexed works, e.g. “How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents” (2021).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W3130362615",
+     "title": "How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents — authors: Dara M. Wald, Erik Johnston, Ned M. Wellman, John Harlow"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2618566958",
+     "title": "Understanding the influence of power and empathic perspective-taking on collaborative natural resource management",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Understanding the influence of power and empathic perspective-taking on collaborative natural resource management — authors: Dara M. Wald, Elizabeth A. Segal, Erik Johnston, Ajay Vinzé"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Erik Johnston",
+    "kind": "person"
+   },
+   "to": {
+    "label": "John Harlow",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 4 indexed works, e.g. “How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents” (2021).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W3130362615",
+     "title": "How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents — authors: Dara M. Wald, Erik Johnston, Ned M. Wellman, John Harlow"
+    },
+    {
+     "url": "https://api.openalex.org/works/W3122239891",
+     "title": "Toward Understanding Civic Data Bias in 311 Systems: An Information Deserts Perspective",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Toward Understanding Civic Data Bias in 311 Systems: An Information Deserts Perspective — authors: Myeong Ae Lee, Jieshu Wang, Erik Johnston, John Harlow, Eric Gordon, Shawn Janzen, Susan J. Winter"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Raymond Duch",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Laurence S. J. Roope",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 14 indexed works, e.g. “Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7164053191",
+     "title": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study — authors: Georgia Porter, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke, Marian Knight, Rema Ramakrishnan"
+    },
+    {
+     "url": "https://api.openalex.org/works/W7150822330",
+     "title": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic — authors: Fiorella Parra-Mujica, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Raymond Duch",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Philip Clarke",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 14 indexed works, e.g. “Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7164053191",
+     "title": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study — authors: Georgia Porter, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke, Marian Knight, Rema Ramakrishnan"
+    },
+    {
+     "url": "https://api.openalex.org/works/W7150822330",
+     "title": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic — authors: Fiorella Parra-Mujica, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Raymond Duch",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Mara Violato",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 9 indexed works, e.g. “Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7164053191",
+     "title": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study — authors: Georgia Porter, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke, Marian Knight, Rema Ramakrishnan"
+    },
+    {
+     "url": "https://api.openalex.org/works/W7150822330",
+     "title": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic — authors: Fiorella Parra-Mujica, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Raymond Duch",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Georgia Porter",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 8 indexed works, e.g. “Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7164053191",
+     "title": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study — authors: Georgia Porter, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke, Marian Knight, Rema Ramakrishnan"
+    },
+    {
+     "url": "https://api.openalex.org/works/W4417014790",
+     "title": "On “Inequality in COVID-19 vaccine acceptance and uptake”",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "On “Inequality in COVID-19 vaccine acceptance and uptake” — authors: Zachary D V Abel, Laurence S. J. Roope, Raymond M Duch, Sophie Cole, Philip Clarke"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Raymond Duch",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Thomas Samuel Robinson",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 7 indexed works, e.g. “Lottery or Triage? Controlled Experimental Evidence from the COVID-19 Pandemic on Public Preferences for Allocation of Scarce Medical Resources” (2025).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4414570938",
+     "title": "Lottery or Triage? Controlled Experimental Evidence from the COVID-19 Pandemic on Public Preferences for Allocation of Scarce Medical Resources",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Lottery or Triage? Controlled Experimental Evidence from the COVID-19 Pandemic on Public Preferences for Allocation of Scarce Medical Resources — authors: Rhys Llewellyn Thomas, Laurence S. J. Roope, Raymond M Duch, Thomas Samuel Robinson, Alexei Zakharov, Philip Clarke"
+    },
+    {
+     "url": "https://api.openalex.org/works/W4406758684",
+     "title": "Governing in the face of a global crisis: When do voters punish and reward incumbent governments?",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Governing in the face of a global crisis: When do voters punish and reward incumbent governments? — authors: Raymond M Duch, Peter John Loewen, Thomas Samuel Robinson, Alexei Zakharov"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Raymond Duch",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Roberto Cerina",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 6 indexed works, e.g. “Validating LLM-Based Digital Interviews for Individual-Level Public Opinion: A Chilean Election Study” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7204093485",
+     "title": "Validating LLM-Based Digital Interviews for Individual-Level Public Opinion: A Chilean Election Study",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Validating LLM-Based Digital Interviews for Individual-Level Public Opinion: A Chilean Election Study — authors: Raymond M Duch, Roberto Cerina, Matias Fuentes Becerra, Raymond Low, Lucas Bellolio Badiola"
+    },
+    {
+     "url": "https://api.openalex.org/works/W7138913694",
+     "title": "Artificially intelligent opinion polling",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Artificially intelligent opinion polling — authors: Roberto Cerina, Raymond M Duch"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Sandeep M. Jayaprakash",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Eitel J.M. Lauría",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 7 indexed works, e.g. “Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education” (2024).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4394576557",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2341502940",
+     "title": "Benchmarking student performance and engagement in an early alert predictive system using interactive radar charts",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Benchmarking student performance and engagement in an early alert predictive system using interactive radar charts — authors: Sandeep M. Jayaprakash, Eitel J. M. Lauría, Pritesh Gandhi, Dinesh Mendhe"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Sandeep M. Jayaprakash",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Joshua D. Baron",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 3 indexed works, e.g. “Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative” (2014).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W1486785378",
+     "title": "Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative — authors: Sandeep M. Jayaprakash, Erik W. Moody, Eitel J. M. Lauría, James R. Regan, Joshua D. Baron"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2132154562",
+     "title": "Open academic analytics initiative",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Open academic analytics initiative — authors: Eitel J. M. Lauría, Erik W. Moody, Sandeep M. Jayaprakash, Nagamani Jonnalagadda, Joshua D. Baron"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Sandeep M. Jayaprakash",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Jay Bainbridge",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 2 indexed works, e.g. “Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education” (2024).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4394576557",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2811036069",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Sandeep M. Jayaprakash",
+    "kind": "person"
+   },
+   "to": {
+    "label": "James Melitski",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 2 indexed works, e.g. “Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education” (2024).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4394576557",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2811036069",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Sandeep M. Jayaprakash",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Anne G. Zahradnik",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 2 indexed works, e.g. “Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education” (2024).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4394576557",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2811036069",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Sandeep M. Jayaprakash",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Josh Baron",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 2 indexed works, e.g. “Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education” (2024).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4394576557",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    },
+    {
+     "url": "https://api.openalex.org/works/W2811036069",
+     "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Laurence S. J. Roope",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Philip Clarke",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 30 indexed works, e.g. “Moving beyond the average: a method to measure health related-inequalities within randomised trials” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7214751787",
+     "title": "Moving beyond the average: a method to measure health related-inequalities within randomised trials",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Moving beyond the average: a method to measure health related-inequalities within randomised trials — authors: Zachary D V Abel, Sophie Cole, Guido Erreygers, Laurence S. J. Roope, Philip Clarke"
+    },
+    {
+     "url": "https://api.openalex.org/works/W7214911440",
+     "title": "Additional file 1 of Moving beyond the average: a method to measure health related-inequalities within randomised trials",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Additional file 1 of Moving beyond the average: a method to measure health related-inequalities within randomised trials — authors: Zachary D V Abel, Sophie Cole, Guido Erreygers, Laurence S. J. Roope, Philip Clarke"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Laurence S. J. Roope",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Raymond Duch",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 18 indexed works, e.g. “Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7164053191",
+     "title": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study — authors: Georgia Porter, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke, Marian Knight, Rema Ramakrishnan"
+    },
+    {
+     "url": "https://api.openalex.org/works/W7150822330",
+     "title": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic — authors: Fiorella Parra-Mujica, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Laurence S. J. Roope",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Mara Violato",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 13 indexed works, e.g. “Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7164053191",
+     "title": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study — authors: Georgia Porter, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke, Marian Knight, Rema Ramakrishnan"
+    },
+    {
+     "url": "https://api.openalex.org/works/W7150822330",
+     "title": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Public preferences for saving lives versus life-years: evidence from a person-trade-off experiment in 12 countries during the COVID-19 pandemic — authors: Fiorella Parra-Mujica, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Laurence S. J. Roope",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Zachary D V Abel",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 7 indexed works, e.g. “Moving beyond the average: a method to measure health related-inequalities within randomised trials” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7214751787",
+     "title": "Moving beyond the average: a method to measure health related-inequalities within randomised trials",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Moving beyond the average: a method to measure health related-inequalities within randomised trials — authors: Zachary D V Abel, Sophie Cole, Guido Erreygers, Laurence S. J. Roope, Philip Clarke"
+    },
+    {
+     "url": "https://api.openalex.org/works/W7214911440",
+     "title": "Additional file 1 of Moving beyond the average: a method to measure health related-inequalities within randomised trials",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Additional file 1 of Moving beyond the average: a method to measure health related-inequalities within randomised trials — authors: Zachary D V Abel, Sophie Cole, Guido Erreygers, Laurence S. J. Roope, Philip Clarke"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Laurence S. J. Roope",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Jack Pollard",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 7 indexed works, e.g. “A mathematical modelling framework for the “stop when you feel better” approach to antibiotic prescribing” (2026).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W7172538310",
+     "title": "A mathematical modelling framework for the “stop when you feel better” approach to antibiotic prescribing",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "A mathematical modelling framework for the “stop when you feel better” approach to antibiotic prescribing — authors: Alice Ledda, Stephanie Evans, Luca Ferretti A, Laurence S. J. Roope, Diane Pople, Jack Pollard, Aleksandra Borek, Koen Bernardus Pouwels, Sarah KG Tonkin-Crine, A. Sarah Walker, Julie V. Robotham"
+    },
+    {
+     "url": "https://api.openalex.org/works/W7164053191",
+     "title": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Attitudes to mandatory COVID-19 vaccination in early life: findings from the multi-country cross-sectional CANDOUR study — authors: Georgia Porter, Laurence S. J. Roope, Mara Violato, Raymond M Duch, Philip Clarke, Marian Knight, Rema Ramakrishnan"
+    }
+   ]
+  },
+  {
+   "from": {
+    "label": "Laurence S. J. Roope",
+    "kind": "person"
+   },
+   "to": {
+    "label": "Adrian Gerard Barnett",
+    "kind": "person"
+   },
+   "basis": "coauthorship",
+   "claim": "Co-authored 6 indexed works, e.g. “Author Correction: Financial incentives for COVID-19 vaccines in a rural low-resource setting: a cluster-randomized trial” (2023).",
+   "sources": [
+    {
+     "url": "https://api.openalex.org/works/W4390105118",
+     "title": "Author Correction: Financial incentives for COVID-19 vaccines in a rural low-resource setting: a cluster-randomized trial",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Author Correction: Financial incentives for COVID-19 vaccines in a rural low-resource setting: a cluster-randomized trial — authors: Raymond M Duch, Edward Asiedu, Ryota Nakamura, Thomas Rouyard, Alberto Mayol Miranda, Adrian Gerard Barnett, Laurence S. J. Roope, Mara Violato, Dorcas Sowah, Piotr Kotlarz, Philip Clarke"
+    },
+    {
+     "url": "https://api.openalex.org/works/W4389058612",
+     "title": "Financial incentives for COVID-19 vaccines in a rural low-resource setting: a cluster-randomized trial",
+     "retrieved_at": "2026-10-09T03:40:12.560Z",
+     "checked_at": "2026-10-09T03:40:12.560Z",
+     "status": 200,
+     "accessible": true,
+     "excerpt": "Financial incentives for COVID-19 vaccines in a rural low-resource setting: a cluster-randomized trial — authors: Raymond M Duch, Edward Asiedu, Ryota Nakamura, Thomas Rouyard, Alberto Mayol Miranda, Adrian Gerard Barnett, Laurence S. J. Roope, Mara Violato, Dorcas Sowah, Piotr Kotlarz, Philip Clarke"
+    }
+   ]
+  }
+ ]
+}
