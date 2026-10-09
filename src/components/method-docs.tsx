@@ -58,6 +58,7 @@ show a branch's deeper rows only when you open it`}</pre>
       <li><b>Sourced</b>: the link has at least one public URL. Links without a URL always show as unverified.</li>
       <li><b>Private attestation</b> (lock): you vouch for it yourself; it is not public.</li>
       <li><b>Unreviewed</b>: found by a tool or assistant. Kept dashed and penalised in routes until you approve it.</li>
+      <li><b>Automatically source-checked</b>: a fresh, successful retrieval from an academic source explicitly names both people and their advisor or committee role. This is not owner review and does not raise confidence. Coauthor lists, namesakes, indirect wording and personal links still need review.</li>
       <li><b>Rejected</b> findings are remembered and never re-imported.</li>
       <li><b>Cleanup</b> removes unlinked records, exact duplicate links and repeated sources. It never merges links with different descriptions.</li>
     </ul>}
@@ -66,11 +67,13 @@ show a branch's deeper rows only when you open it`}</pre>
       <pre>{`for each named contact:
   search for coauthors, PhD advisor, committee
   keep a finding only if it cites a public URL
-findings → preview → you approve or reject each one`}</pre>
+fresh research → source checks → automatic acceptance or review
+uploads → preview → owner review`}</pre>
       <p>Allowed link types for findings: {list(discoveryBases)}.</p>
       <h3>What gets searched, and with what</h3>
       <p>Firecrawl searches public web pages and retrieves their text with search + scrape. Queries look for publication author lists (DOI, DBLP, OpenAlex, RePEc and arXiv), university pages, CVs and dissertation committee records. These are search candidates, not a guarantee that every index is queried or accessible. No logins or Academic Tree scraping.</p>
-      <pre>{`up to ${RESEARCH.contacts} named contacts per run\n  ${RESEARCH.queriesPerContact} queries per contact; ${RESEARCH.resultsPerQuery} results per query\n  retrieve at most ${RESEARCH.pages} source pages\nAI extracts claims from retrieved text only\n  require a literal excerpt naming both people\n  attach actual source URL + retrieval date + accessibility check\n  stage as low-confidence, unreviewed findings\nowner checks identity and relationship before approval`}</pre>
+      <pre>{`up to ${RESEARCH.contacts} named contacts per pass, at most 3 passes\n  ${RESEARCH.queriesPerContact} queries per contact; ${RESEARCH.resultsPerQuery} results per query\n  retrieve at most ${RESEARCH.pages} source pages per pass\nGrok extracts claims from retrieved text only\n  require a literal excerpt naming both people\n  attach actual source URL + retrieval date + accessibility check\n  deterministic checks accept explicit academic roles\n  personal links and ambiguous claims await owner review\nconfidence and provisional identity do not change on automatic acceptance`}</pre>
+      <p>The research button calls Grok directly. Firecrawl receives search queries and Grok receives the research brief and retrieved text. Networks stay in this browser; export a backup before clearing browser data or switching devices. Paid research requires sign-in; tester access and per-user budgets must be configured before release.</p>
       <p>A fetched page and matching names do not verify a relationship. The quoted passage stays with its dated source, while accessibility is stored separately. Different claims stay separate. Alexandria is Firecrawl’s tool-discovery index, not an academic evidence database; this pipeline uses web search and does not execute Alexandria tools.</p>
       <p>Using your own agent (for example one with Firecrawl search and scraping) works the same way: copy the prompt, paste the reply, and its findings arrive unreviewed with the tool name recorded.</p>
     </>}

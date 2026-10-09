@@ -6,6 +6,9 @@ import { artifactFromUpload, collectGarbage, createArtifact, csvColumns, finding
 import { collectTemporaryFiles, deleteArtifact, discardStaged, readIndex, saveArtifact, setActiveArtifact, stageUpload, type StagedUpload } from '@/lib/workspace';
 import { buildResearchPrompt } from '@/lib/research-prompt';
 import { runResearch } from '@/lib/research.functions';
+import { acceptCheckedResearch } from '@/lib/ingest';
+import { supabase } from '@/integrations/supabase/client';
+import { useServerFn } from '@tanstack/react-start';
 import type { Artifact } from '@/lib/schema';
 import fernandoFindings from '@/data/fernando-findings.json';
 
@@ -16,6 +19,7 @@ const readFile = (file: File) => file.text();
 export const exportArtifact = (artifact: Artifact = activeArtifact) => download(`${artifact.meta.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.network.json`, JSON.stringify(artifact, null, 2));
 
 export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onSelect: (id: string) => void }) {
+  const callResearch = useServerFn(runResearch);
   const index = readIndex();
   const [error, setError] = useState<string | null>(null);
   const [staged, setStaged] = useState<{ upload: StagedUpload; preview: { artifact: Artifact; report: IngestReport } } | null>(null);
@@ -41,7 +45,17 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
   const prompt = buildResearchPrompt(brief);
   const research = guard(async () => {
     setResearching(true);
-    try { setTrace([]); const result = await runResearch({ data: brief }); setTrace(result.trace ?? []); if (!result.ok) throw new Error(result.error); stageText('research-assistant.json', result.text);setResearchSummary(`Read ${result.pages} public sources across ${result.hops} hop${result.hops > 1 ? 's' : ''}; ${result.dropped} unsupported or ambiguous findings dropped. Remaining links still need your review.`); }
+    try {
+      setTrace([]); setResearchSummary('');
+      const { data: auth } = await supabase.auth.getSession();
+      if (!auth.session) throw new Error('Research requires sign-in to protect shared credits. Sign-in setup is still needed before inviting testers.');
+      const result = await callResearch({ data: brief }); setTrace(result.trace ?? []);
+      if (!result.ok) throw new Error(result.error);
+      const preview = ingestFindings(activeArtifact, parseFindings(result.text, 'research-assistant.json'), 'research-assistant.json');
+      const accepted = acceptCheckedResearch(preview.artifact, result.checked);
+      saveArtifact(accepted.artifact);
+      setResearchSummary(`Read ${result.pages} public sources across ${result.hops} passes; ${accepted.accepted} links automatically accepted without changing confidence. ${accepted.artifact.edges.filter(e => e.evidence.review_status === 'pending').length} links await review; ${result.dropped} unsupported claims dropped.`);
+    }
     finally { setResearching(false); }
   });
   const onNetwork = (file: File) => guard(async () => { saveArtifact(artifactFromUpload(await readFile(file), file.name)); reload(); })();
@@ -77,7 +91,7 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
     </section>
 
     <section data-tour="bio"><h3>Start from a bio</h3>
-      <p className="blurb">Describe yourself and name people you know. A research assistant looks for their coauthors and committees, with a source for every link. Everything arrives <strong>unreviewed</strong>.</p>
+      <p className="blurb">Describe yourself and name people you know. Grok extracts relationships from Firecrawl’s retrieved sources. Explicit academic roles passing conservative source checks are accepted automatically; uncertain claims wait for you. Personal connections always need your approval.</p>
       <div className="workspace-form">
         <input aria-label="Your name" placeholder="Your name" value={brief.owner} onChange={e => setBrief({ ...brief, owner: e.target.value })} />
         <textarea aria-label="Short bio" rows={4} placeholder="A paragraph about your research, where you studied, what you work on…" value={brief.bio} onChange={e => setBrief({ ...brief, bio: e.target.value })} />
@@ -89,7 +103,7 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
         <Button size="sm" onClick={research} disabled={researching || !brief.people.trim()}><Sparkle size={13} />{researching ? (brief.depth > 1 ? `Building ${brief.depth} hops… (a few minutes, once)` : 'Researching… (about a minute)') : 'Research it for me'}</Button>
         <Button variant="ghost" size="sm" onClick={() => { void navigator.clipboard.writeText(prompt); setCopied(true); setTimeout(() => setCopied(false), 1800); }}>{copied ? <Check size={13} /> : <Copy size={13} />}{copied ? 'Copied' : 'Copy prompt for your own agent'}</Button>
       </div>
-      <p className="blurb">Uses Firecrawl and Lovable AI credits. Up to 4 contacts per hop. Add an institution or field in brackets to tell apart people with the same name. Each hop only follows people found with a quoted source.</p>
+      <p className="blurb">Uses Firecrawl and xAI credits. Your research brief is sent to these providers. Up to 4 contacts per pass. Add an institution or field in brackets to distinguish namesakes. Each pass follows sourced people, not invented links. Research needs a signed-in account.</p>
       <Button variant="outline" size="sm" onClick={guard(() => stageText('fernando-lozano-research.json', JSON.stringify(fernandoFindings)))}><ShieldQuestion size={13}/>Review Fernando’s saved research</Button>
       <p className="blurb">The saved run found Fernando Lozano’s doctoral advisor in his public CV. A three-hop request stopped after the second pass found no further grounded links. No personal connection to you has been inferred.</p>
       {researchSummary&&<p className="blurb" role="status">{researchSummary}</p>}{trace.length>0&&<div className="research-trace" aria-label="What the research did">{trace.map((t,i)=><span key={i}>{t}</span>)}</div>}
