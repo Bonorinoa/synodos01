@@ -43,3 +43,5 @@
 - Research uses bounded server-side Firecrawl web search and retrieved text, with literal source excerpts and dated accessibility checks; AI never approves links or executes discovered tools.
 - Refresh active browser-network indexes on artifact saves without remounting the canvas; destination edits must preserve exploration state.
 - Coordinate graph positions and camera with one interruptible critically damped transition and coalesce overlay updates per animation frame; reduced motion applies instantly.
+- Keep the header to mark, mode toggle and one command-panel button; secondary features live in that pane so the map stays uncluttered.
+- Research runs up to three bounded hops, each following only people grounded with quoted sources at the previous hop; null-status search pages are re-read for a real status check.
