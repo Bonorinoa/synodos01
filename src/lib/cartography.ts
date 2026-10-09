@@ -35,3 +35,35 @@ export function verticalTrailPositions(ids:string[], destinations:string[], dept
   for(const [id] of original){if(positions.has(id))continue;const depth=depths.get(id)??2;const index=rows.get(depth)??0;rows.set(depth,index+1);positions.set(id,{x:(index%2===0?-1:1)*(135+Math.floor(index/2)*135),y:depth*104});}
   return positions;
 }
+/** Concentric terraces: hop depth becomes radius around the root; angle follows the nearest shallower recorded neighbor. Presentation only. */
+export function terracePositions(root:string, depths:Map<string,number>, ids:string[], destinations:string[], edges:{source:string;target:string}[], gap=250) {
+  const positions=new Map<string,MapPoint>([[root,{x:0,y:0}]]);const angle=new Map<string,number>([[root,0]]);
+  const near=new Map<string,string[]>();for(const e of edges){near.set(e.source,[...(near.get(e.source)??[]),e.target]);near.set(e.target,[...(near.get(e.target)??[]),e.source]);}
+  const rings=new Map<number,string[]>();
+  for(const id of ids){if(id===root||destinations.includes(id))continue;const d=Math.max(1,depths.get(id)??2);rings.set(d,[...(rings.get(d)??[]),id]);}
+  let radius=0;let outer=0;
+  for(const d of [...rings.keys()].sort((a,b)=>a-b)){
+    const ring=rings.get(d)??[];
+    // Order by inherited parent angle so branches fan outward instead of crossing the basin.
+    const parentAngle=(id:string)=>{const a=(near.get(id)??[]).filter(n=>angle.has(n)&&(depths.get(n)??0)<d).map(n=>angle.get(n)??0);return a.length?Math.atan2(a.reduce((s,v)=>s+Math.sin(v),0),a.reduce((s,v)=>s+Math.cos(v),0)):Math.PI;};
+    const order=ring.map(id=>({id,a:parentAngle(id)})).sort((x,y)=>x.a-y.a||x.id.localeCompare(y.id));
+    radius=Math.max(radius+gap,(ring.length*118)/(2*Math.PI));outer=radius;
+    const offset=order.length?order.reduce((s,o)=>s+o.a,0)/order.length-Math.PI:0;
+    order.forEach(({id},i)=>{const a=offset+(i+.5)*2*Math.PI/order.length-Math.PI+Math.PI;angle.set(id,a);positions.set(id,{x:radius*Math.cos(a),y:radius*Math.sin(a)});});
+  }
+  const rim=outer+gap*1.1,spread=Math.min(.9,.32*Math.max(0,destinations.length-1));
+  destinations.forEach((id,i)=>{const a=destinations.length>1?-spread/2+spread*i/(destinations.length-1):0;positions.set(id,{x:rim*Math.cos(a),y:rim*Math.sin(a)});});
+  return positions;
+}
+
+/** Closed circular isolines halfway between adjacent terraces, measured from the shown geometry. */
+export function terraceContours(points:ElevationPoint[], center:MapPoint={x:0,y:0}) {
+  const r=(p:MapPoint)=>Math.hypot(p.x-center.x,p.y-center.y);
+  const depths=[...new Set(points.map(p=>p.depth))].sort((a,b)=>a-b).filter(d=>d>0);
+  return depths.map(depth=>{
+    const inner=Math.max(0,...points.filter(p=>p.depth<depth).map(r)),outer=Math.min(...points.filter(p=>p.depth>=depth).map(r));
+    const radius=Math.max(60,(inner+outer)/2);
+    const path=`M ${center.x-radius} ${center.y} A ${radius} ${radius} 0 1 0 ${center.x+radius} ${center.y} A ${radius} ${radius} 0 1 0 ${center.x-radius} ${center.y} Z`;
+    return {depth,path,label:{x:center.x+radius*Math.cos(-2.2),y:center.y+radius*Math.sin(-2.2)},members:points.filter(p=>p.depth>=depth).map(p=>p.id)};
+  });
+}
