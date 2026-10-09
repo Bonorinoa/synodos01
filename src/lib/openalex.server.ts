@@ -42,21 +42,21 @@ export async function coauthorFindings(name: string, hint: string, date: string,
   catalogAliases.set(normalizeLabel(author.display_name), name);
   const id = author.id.split('/').pop();
   const { results } = await get<{ results: Work[] }>(`/works?filter=author.id:${id}&sort=publication_year:desc&per-page=${OPENALEX.worksPerAuthor}&select=id,doi,display_name,publication_year,authorships`);
-  const shared = new Map<string, { name: string; works: Work[] }>();
+  const shared = new Map<string, { name: string; works: Work[]; id: string }>();
   for (const work of results) {
     // Large consortium papers say nothing about a working relationship.
     if (work.authorships.length > 12) continue;
     for (const { author: co } of work.authorships) {
       if (co.id === author.id || !co.display_name) continue;
-      const entry = shared.get(co.id) ?? { name: co.display_name, works: [] };
+      const entry = shared.get(co.id) ?? { name: co.display_name, works: [], id: co.id };
       entry.works.push(work); shared.set(co.id, entry);
     }
   }
   const top = [...shared.values()].filter(e => e.works.length >= OPENALEX.minSharedWorks).sort((a, b) => b.works.length - a.works.length).slice(0, OPENALEX.coauthorsPerAuthor);
   trace.push(`OpenAlex: ${author.display_name} → ${results.length} works, ${top.length} co-authors kept`);
   return top.map(entry => ({
-    from: { label: name, kind: 'person' as const },
-    to: { label: catalogAliases.get(normalizeLabel(entry.name)) ?? entry.name, kind: 'person' as const },
+    from: { label: name, kind: 'person' as const, catalog_id: `openalex:${id}` },
+    to: { label: catalogAliases.get(normalizeLabel(entry.name)) ?? entry.name, kind: 'person' as const, catalog_id: `openalex:${entry.id.split('/').pop()}` },
     basis: 'coauthorship' as const,
     claim: `Co-authored ${entry.works.length} indexed work${entry.works.length > 1 ? 's' : ''}, e.g. “${entry.works[0]!.display_name ?? 'untitled'}” (${entry.works[0]!.publication_year ?? 'n.d.'}).`,
     sources: entry.works.slice(0, 2).map(work => ({

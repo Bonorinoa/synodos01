@@ -14,6 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      network_share_views: {
+        Row: {
+          id: string
+          share_id: string
+          viewed_at: string
+          viewer_id: string
+        }
+        Insert: {
+          id?: string
+          share_id: string
+          viewed_at?: string
+          viewer_id: string
+        }
+        Update: {
+          id?: string
+          share_id?: string
+          viewed_at?: string
+          viewer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "network_share_views_share_id_fkey"
+            columns: ["share_id"]
+            isOneToOne: false
+            referencedRelation: "network_shares"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      network_shares: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          network_id: string
+          owner_id: string
+          token: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          network_id: string
+          owner_id: string
+          token?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          network_id?: string
+          owner_id?: string
+          token?: string
+        }
+        Relationships: []
+      }
       networks: {
         Row: {
           data: Json
@@ -74,6 +130,7 @@ export type Database = {
     }
     Functions: {
       claim_access: { Args: never; Returns: string }
+      get_shared_network: { Args: { _token: string }; Returns: Json }
       has_access: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
@@ -81,6 +138,13 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      list_share_viewers: {
+        Args: { _share_id: string }
+        Returns: {
+          email: string
+          viewed_at: string
+        }[]
       }
     }
     Enums: {

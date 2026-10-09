@@ -6,7 +6,7 @@ import { artifactSchema, graphSchema, isoDate, nodeKinds, type Artifact, type Ed
  * Pure functions only: every function takes an artifact and returns a new one plus a report.
  */
 export const discoveryBases = ['coauthorship', 'committee', 'phd_advisor', 'joint_project', 'research_group'] as const;
-const nodeRef = z.object({ id: z.string().optional(), label: z.string().min(1), kind: z.enum(nodeKinds).optional() });
+const nodeRef = z.object({ id: z.string().optional(), label: z.string().min(1), kind: z.enum(nodeKinds).optional(), catalog_id: z.string().regex(/^openalex:A\d+$/).optional() });
 const sourceSchema = z.object({ url: z.string().url().refine(url=>['https:','http:'].includes(new URL(url).protocol),'Use a public HTTP source'), retrieved_at: isoDate.optional(), title: z.string().optional(), excerpt:z.string().optional(), checked_at:isoDate.optional(), status:z.number().nullable().optional(), accessible:z.boolean().optional() });
 export const findingSchema = z.object({ from: nodeRef, to: nodeRef, basis: z.enum(discoveryBases), claim: z.string().optional(), strength: z.number().int().min(1).max(10).optional(), sources: z.array(sourceSchema).min(1, 'Each finding needs at least one source') });
 export const findingsFileSchema = z.object({ format: z.literal('network-findings'), version: z.literal(1), source_tool: z.string().min(1), retrieved_at: isoDate.optional(), findings: z.array(z.unknown()) });
@@ -81,9 +81,10 @@ export function ingestFindings(artifact: Artifact, parsed: ParsedFindings, fileN
   const report: IngestReport = { added: 0, merged: 0, alreadyRecorded: 0, skippedRejected: 0, duplicateInFile: 0, newNodes: [], invalid: [] };
   const resolve = (ref: Finding['from']) => {
     const found = (ref.id && byId.get(ref.id)) || byLabel.get(normalizeLabel(ref.label));
-    if (found) return found;
+    // A catalog ID is only filled from an exact OpenAlex author match, never overwritten.
+    if (found) { if (ref.catalog_id && !found.catalog_id) found.catalog_id = ref.catalog_id; return found; }
     let id = ref.id && !byId.has(ref.id) ? ref.id : slugify(ref.label); let n = 2; while (byId.has(id)) id = `${slugify(ref.label)}-${n++}`;
-    const node: NodeRecord = { id, label: ref.label.trim(), kind: ref.kind ?? 'person', blurb: `Added by a findings import (${fileName}). Not reviewed.`, tags: ['imported'], candidate: true, evidence_packet: { urls: [], notes: `Created on ${date} from ${parsed.source_tool} findings. Identity not reviewed.` } };
+    const node: NodeRecord = { id, label: ref.label.trim(), kind: ref.kind ?? 'person', blurb: `Added by a findings import (${fileName}). Not reviewed.`, tags: ['imported'], candidate: true, ...(ref.catalog_id ? { catalog_id: ref.catalog_id } : {}), evidence_packet: { urls: [], notes: `Created on ${date} from ${parsed.source_tool} findings. Identity not reviewed.` } };
     nodes.push(node); byId.set(id, node); byLabel.set(normalizeLabel(node.label), node); report.newNodes.push(id);
     return node;
   };
