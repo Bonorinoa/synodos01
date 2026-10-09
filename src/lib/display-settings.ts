@@ -12,7 +12,7 @@ export function readDisplay(): DisplaySettings {
 export function applyDisplay(s: DisplaySettings) {
   const root = document.documentElement;
   root.style.setProperty('--ghost-strength', String(s.ghosts));
-  root.dataset.contours = s.contours; root.dataset.paper = s.paper; root.dataset.motion = s.motion;
+  root.dataset['contours'] = s.contours; root.dataset['paper'] = s.paper; root.dataset['motion'] = s.motion;
 }
 export function saveDisplay(s: DisplaySettings) {
   localStorage.setItem(KEY, JSON.stringify(s)); applyDisplay(s);

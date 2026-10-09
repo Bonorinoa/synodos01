@@ -85,7 +85,7 @@ export function NetworkCanvas(props:Props) {
     const starts=new Map(cy.nodes().map(n=>[n.id(),{...n.position()}] as const));
     const zoom=cy.zoom(),pan={...cy.pan()},start=performance.now();
     const apply=(t:number)=>{cy.batch(()=>{cy.nodes().forEach(n=>{const end=positions.get(n.id()),from=starts.get(n.id());if(end&&from)n.position({x:from.x+(end.x-from.x)*t,y:from.y+(end.y-from.y)*t});});if(camera){cy.zoom(zoom+(camera.zoom-zoom)*t);cy.pan({x:pan.x+(camera.pan.x-pan.x)*t,y:pan.y+(camera.pan.y-pan.y)*t});}});};
-    if(instant||document.documentElement.dataset.motion==='instant'||window.matchMedia('(prefers-reduced-motion: reduce)').matches){apply(1);motionFrame.current=null;rebuildContours();return;}
+    if(instant||document.documentElement.dataset['motion']==='instant'||window.matchMedia('(prefers-reduced-motion: reduce)').matches){apply(1);motionFrame.current=null;rebuildContours();return;}
     const tick=(now:number)=>{const progress=Math.min(1,(now-start)/MOTION_MS);apply(settleProgress(progress));if(progress<1)motionFrame.current=requestAnimationFrame(tick);else{motionFrame.current=null;rebuildContours();}};
     motionFrame.current=requestAnimationFrame(tick);
   };
