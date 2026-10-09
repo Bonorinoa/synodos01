@@ -58,11 +58,13 @@
 - [x] Optional upfront two-hop research build (bounded, unreviewed).
 - [ ] Source-document suggestions — deferred; needs a separate scoped request and supplied documents.
 - [x] Run Fernando two-hop and requested three-hop research; preserve the CV-sourced advisor finding in an owner-review preview. Three-hop request stopped at an empty second frontier.
-- [ ] Apply the owner's approval of Fernando → Peter J. Kuhn to Augusto's browser artifact; do not infer a personal gateway.
-- [ ] Add conservative automatic source-check acceptance, keeping ambiguous claims pending and confidence separate.
-- [ ] Connect direct Grok research using a securely supplied xAI key.
-- [ ] Run Fernando's three-hop research again; report credit/configuration blockers without retry loops.
-- [ ] Assess small-tester release readiness; do not publish or redesign Lineage in this task.
+- [x] Apply owner's Fernando → Peter J. Kuhn approval to the default browser artifact; verified persistence and Lineage search; no personal gateway inferred.
+- [x] Add conservative automatic source-check acceptance, keeping ambiguous claims pending and confidence separate; 37 tests pass.
+- [x] Wire direct authenticated Grok research using saved xAI key; successful provider extraction awaits funding/access configuration.
+- [x] Attempt Fernando's new three-hop search; Firecrawl returned 402, xAI discovery returned 403; stopped without retry loops or new claims.
+- [x] Assess small-tester release readiness in docs/tester-readiness.md: not ready; remained unpublished and Lineage redesign untouched.
+- [ ] Configure tester sign-in/invites, account data isolation, per-user research budgets and durable job progress — needs a scoped release decision.
+- [ ] Verify a complete direct Grok three-hop job — blocked by provider credits/permissions and app sign-in setup.
 - [ ] Broaden Fernando’s academic circle — Firecrawl returned 402; connected account needs search credits before another run.
 - [x] Verify phone and desktop Path/Lineage, command panel and settings; refine radial spacing, phone columns and lock positions. Deep phone branches remain scroll/pan exploration rather than shrinking labels.
 - [x] Update tutorial-inspired identity and favicon; app identity remains separate from user artifact titles.
