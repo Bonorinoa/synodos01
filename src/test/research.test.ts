@@ -18,6 +18,7 @@ describe('Source grounding',()=>{
       expect(groundFindings({findings:[{...finding,sources}]},[source],['Ada Lovelace'],date).file.findings).toHaveLength(0);
     }
     expect(groundFindings({findings:[finding]},[{...source,status:403}],['Ada Lovelace'],date).file.findings).toHaveLength(0);
+    expect(groundFindings({findings:[finding]},[{...source,status:null}],['Ada Lovelace'],date).file.findings).toHaveLength(0);
   });
   it('never combines differing discovered claims',()=>{
     const file=groundFindings({findings:[finding,{...finding,claim:'A different publication claim.'}]},[source],['Ada Lovelace'],date).file;

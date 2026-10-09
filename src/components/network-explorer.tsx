@@ -40,7 +40,7 @@ export function NetworkExplorer() {
   useEffect(()=>{if(!localStorage.getItem(TOUR_KEY)){localStorage.setItem(TOUR_KEY,'1');setTourOpen(true);}},[]);
    const addDestination=(label:string)=>{const clean=label.trim();if(!clean)return;const match=activeArtifact.nodes.find(n=>normalizeLabel(n.label)===normalizeLabel(clean));let nodes=activeArtifact.nodes;let id=match?.id;if(match)nodes=nodes.map(n=>n.id===match.id?{...n,target:true}:n);else{id=slugify(clean);while(nodes.some(n=>n.id===id))id+='-d';nodes=[...nodes,{id,label:clean,kind:'institution',blurb:'Added by you as a destination. No recorded links yet.',tags:['destination'],target:true,evidence_packet:{urls:[],notes:''}}];}saveArtifact({...activeArtifact,nodes});setDestination('');if(id)pickTarget(id);};
    const removeDestination=(id:string)=>{const node=nodeById.get(id);const linked=edges.some(e=>[e.source,e.target].includes(id));saveArtifact({...activeArtifact,nodes:node?.tags.includes('destination')&&!linked?activeArtifact.nodes.filter(n=>n.id!==id):activeArtifact.nodes.map(n=>n.id===id?{...n,target:false}:n)});if(target===id){setTarget(null);setActivePath(null);setRoutesOpen(false);}if(selected===id)setSelected(null);};
-  const pickTarget=(id:string)=>{setTarget(id);setRoutesOpen(true);setActivePath(0);setSelected(null);};
+   const pickTarget=(id:string)=>{setTarget(id);setRoutesOpen(!window.matchMedia('(max-width:640px)').matches);setActivePath(0);setSelected(null);};
   useEffect(()=>{const id=sessionStorage.getItem('an:pick');if(id&&pathTargetIds.includes(id)){sessionStorage.removeItem('an:pick');pickTarget(id);}},[]);
 
   const [legendOpen,setLegendOpen]=useState(false);
