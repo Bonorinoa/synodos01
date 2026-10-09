@@ -17,7 +17,7 @@ export async function searchAcademicSources(contacts:{name:string;hint:string}[]
   };
   // Sequential bounded calls avoid a fan-out crawl and keep names tied to a research scope.
   for(const {name,hint} of contacts.slice(0,RESEARCH.contacts)){
-    for(const topic of ['coauthors publications DOI DBLP OpenAlex','PhD dissertation advisor committee university CV']){
+    for(const topic of ['publications coauthors','PhD advisor committee CV']){
       const data=await call('search',{query:`"${name}" ${hint} ${topic} ${hint?'':bio.slice(0,120)} -site:academictree.org`.replace(/\s+/g,' '),limit:RESEARCH.resultsPerQuery,sources:['web'],scrapeOptions:{formats:['markdown'],onlyMainContent:true}});
       const docs=Array.isArray(data)?data:(data as {web?:Document[]}).web??[];
       const before=sources.length;for(const doc of docs)add(doc as Document);trace.push(`Searched “${name}${hint?` (${hint})`:''}” · ${topic.split(' ')[0]} → ${sources.length-before} new pages`);
