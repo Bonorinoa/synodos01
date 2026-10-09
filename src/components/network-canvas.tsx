@@ -276,13 +276,13 @@ export function NetworkCanvas(props:Props) {
     const wanted=new Set(elements.map(element=>element.data.id));
     cy.batch(()=>{cy.elements().filter(element=>!wanted.has(element.id())).remove();for(const element of elements){const previousElement=cy.getElementById(element.data.id??'');if(previousElement.length)previousElement.data(element.data).classes(element.classes??'');else cy.add(element);}});
     
-      const destinations=new Map(positions);cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&!narrow()&&!current.current.routeNodes.includes(node.id())&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;if(!current.current.selected&&oldPosition)destinations.set(node.id(),oldPosition);node.stop();});moveGeometry(destinations,undefined,changed||existing.size===0);
+      const destinations=new Map(positions);cy.nodes().forEach(node=>{const oldPosition=mode==='path'&&narrow()&&!current.current.routeNodes.includes(node.id())&&!changed&&lastViewportKey.current===current.current.viewportKey?existing.get(node.id()):undefined;if(!current.current.selected&&oldPosition)destinations.set(node.id(),oldPosition);node.stop();});moveGeometry(destinations,undefined,changed||existing.size===0);
     if (changed) { const saved=viewports.current[mode]; if (saved) {cy.zoom(saved.zoom);cy.pan(saved.pan);} else if (mode==='lineage') { cy.zoom(.8); cy.pan({x:cy.width()*.53,y:cy.height()*.35}); } }
     else {cy.zoom(previous.zoom);cy.pan(previous.pan);}
     if(mode==='lineage'&&(changed||lastRoot.current!==root)){if(narrow()){cy.zoom(1);cy.pan({x:cy.width()/2,y:184});}else fitView();}
     if(mode==='path'&&(changed||lastViewportKey.current!==current.current.viewportKey)){lastViewportKey.current=current.current.viewportKey;fitView();}
     const routeKey=current.current.routeNodes.join('|');
-    if(mode==='path'&&routeKey&&routeKey!==lastRoute.current&&!narrow()){const end=positions.get(current.current.routeNodes.at(-1)??'');if(end)moveGeometry(destinations,{zoom:cy.zoom(),pan:{x:(cy.width()-end.x*cy.zoom())/2,y:cy.height()/2}});}
+    if(mode==='path'&&routeKey&&routeKey!==lastRoute.current&&!narrow()){const pts=current.current.routeNodes.map(id=>destinations.get(id)).filter((q):q is {x:number;y:number}=>!!q);if(pts.length){const xs=pts.map(q=>q.x),ys=pts.map(q=>q.y),free=cy.width()-340,zoom=Math.min(cy.zoom(),Math.max(.3,Math.min(free/(Math.max(...xs)-Math.min(...xs)+240),(cy.height()-180)/(Math.max(...ys)-Math.min(...ys)+240)))),cx=(Math.max(...xs)+Math.min(...xs))/2,cyy=(Math.max(...ys)+Math.min(...ys))/2;moveGeometry(destinations,{zoom,pan:{x:340+free/2-cx*zoom,y:(cy.height()+56)/2-cyy*zoom}});}}
     if(mode==='lineage'&&!changed&&existing.size)requestAnimationFrame(()=>current.current.apiRef.current?.reveal(current.current.selected??root));
     lastRoute.current=routeKey;
     if(current.current.highlighted.length){cy.elements().addClass('dim');for(const id of current.current.highlighted){const edge=cy.getElementById(id);edge.removeClass('dim').addClass('highlight');edge.connectedNodes().removeClass('dim').addClass('highlight');}}
