@@ -7,6 +7,7 @@ export const TOUR_KEY = 'an:tour-done';
 type Step = { target: string; title: string; body: string; mode?: Mode };
 const steps: Step[] = [
   { target: '', title: 'Welcome to Synodos', body: 'A private map of the people and places around your work. Find hidden ways into the places you dream of reaching, and trace your academic family — every link with its source.', mode: 'path' },
+  { target: '.wordmark', title: 'Why “Synodos”', body: 'Greek σύνοδος: syn (“with”) + hodos (“a way, a road”) — journeying together. The same word once meant a gathering or assembly. This map is both: a road travelled with others, and the company kept along it.', mode: 'path' },
   { target: '.network-canvas', title: 'This is your map', body: 'You sit at the centre. Each line is a recorded relationship. Solid teal lines have a public source; thin dashed ones are weak or still unverified.', mode: 'path' },
   { target: '[data-tour="modes"]', title: 'Two ways to explore', body: 'Path finds routes to places you want to reach. Lineage explores academic family: advisors, committees and frequent coauthors.' },
   { target: '[data-tour="mission"]', title: 'Pick a destination', body: 'Type a place you’d love to work or collaborate with. We rank up to three recorded routes through people you already know.', mode: 'path' },
