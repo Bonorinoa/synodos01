@@ -43,7 +43,7 @@ export const runResearch = createServerFn({ method: 'POST' })
       let file: ReturnType<typeof groundFindings>['file'] | null = null;
       // Hop n researches only people grounded at hop n-1; each hop is bounded and stays unreviewed.
       for (let hop = 1; hop <= data.depth && frontier.length; hop++) {
-        trace.push(`— Hop ${hop + (hop > 1 ? 0 : 0)} from your contacts: ${frontier.map(f => f.name).join(', ')}`);
+        trace.push(`— Hop ${hop} from your contacts: ${frontier.map(f => f.name).join(', ')}`);
         const out = await pass(frontier);
         if (!out) { if (hop === 1) return { ok: false as const, error: 'No readable public sources were found. No findings were added.', trace }; break; }
         hops = hop; pages += out.pages; dropped += out.result.dropped; file ??= out.result.file; findings.push(...out.result.file.findings);

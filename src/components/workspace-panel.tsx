@@ -34,13 +34,13 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
     setStaged({ upload: stageUpload(name, text), preview });
   };
   const onFindings = (file: File) => guard(async () => stageText(file.name, await readFile(file)))();
-  const [brief, setBrief] = useState({ owner: nodeLabel(activeArtifact.meta.ego), bio: '', people: activeArtifact.nodes.filter(n => activeArtifact.edges.some(e => e.evidence.ego_gateway && [e.source, e.target].includes(n.id) && n.id !== activeArtifact.meta.ego)).map(n => n.label).join(', '), destinations: activeArtifact.nodes.filter(n => n.target).map(n => n.label).join(', '), depth: 2 as 1 | 2 });
+  const [brief, setBrief] = useState({ owner: nodeLabel(activeArtifact.meta.ego), bio: '', people: activeArtifact.nodes.filter(n => activeArtifact.edges.some(e => e.evidence.ego_gateway && [e.source, e.target].includes(n.id) && n.id !== activeArtifact.meta.ego)).map(n => n.label).join(', '), destinations: activeArtifact.nodes.filter(n => n.target).map(n => n.label).join(', '), depth: 2 as 1 | 2 | 3 });
   const [researching, setResearching] = useState(false); const [copied, setCopied] = useState(false); const [pasted, setPasted] = useState('');
-  const [researchSummary,setResearchSummary]=useState('');
+  const [researchSummary,setResearchSummary]=useState('');const [trace,setTrace]=useState<string[]>([]);
   const prompt = buildResearchPrompt(brief);
   const research = guard(async () => {
     setResearching(true);
-    try { const result = await runResearch({ data: brief }); if (!result.ok) throw new Error(result.error); stageText('research-assistant.json', result.text);setResearchSummary(`Read ${result.pages} public sources${result.second ? ` across two hops (${result.second} discovered people researched again)` : ''}; ${result.dropped} unsupported or ambiguous findings dropped. Remaining links still need your review.`); }
+    try { setTrace([]); const result = await runResearch({ data: brief }); setTrace(result.trace ?? []); if (!result.ok) throw new Error(result.error); stageText('research-assistant.json', result.text);setResearchSummary(`Read ${result.pages} public sources across ${result.hops} hop${result.hops > 1 ? 's' : ''}; ${result.dropped} unsupported or ambiguous findings dropped. Remaining links still need your review.`); }
     finally { setResearching(false); }
   });
   const onNetwork = (file: File) => guard(async () => { saveArtifact(artifactFromUpload(await readFile(file), file.name)); reload(); })();
@@ -80,16 +80,16 @@ export function WorkspacePanel({ onClose, onSelect }: { onClose: () => void; onS
       <div className="workspace-form">
         <input aria-label="Your name" placeholder="Your name" value={brief.owner} onChange={e => setBrief({ ...brief, owner: e.target.value })} />
         <textarea aria-label="Short bio" rows={4} placeholder="A paragraph about your research, where you studied, what you work on…" value={brief.bio} onChange={e => setBrief({ ...brief, bio: e.target.value })} />
-        <input aria-label="People you know" placeholder="People you know (advisor, coauthors…), comma-separated" value={brief.people} onChange={e => setBrief({ ...brief, people: e.target.value })} />
+        <input aria-label="People you know" placeholder="People you know, e.g. Fernando Lozano (Pomona College, economics)" value={brief.people} onChange={e => setBrief({ ...brief, people: e.target.value })} />
         <input aria-label="Dream destinations" placeholder="Dream destinations, comma-separated" value={brief.destinations} onChange={e => setBrief({ ...brief, destinations: e.target.value })} />
       </div>
       <div className="workspace-actions">
-        <label className="blurb"><input type="checkbox" checked={brief.depth === 2} onChange={e => setBrief({ ...brief, depth: e.target.checked ? 2 : 1 })} /> Also research their coauthors (second hop — slower, built once up front)</label>
-        <Button size="sm" onClick={research} disabled={researching || !brief.people.trim()}><Sparkle size={13} />{researching ? (brief.depth === 2 ? 'Building two hops… (a few minutes, once)' : 'Researching… (about a minute)') : 'Research it for me'}</Button>
+        <div className="pixel-segment" role="radiogroup" aria-label="Research depth">{([1,2,3] as const).map(d=><button key={d} role="radio" aria-checked={brief.depth===d} onClick={()=>setBrief({...brief,depth:d})}>{d} hop{d>1?'s':''}</button>)}</div>
+        <Button size="sm" onClick={research} disabled={researching || !brief.people.trim()}><Sparkle size={13} />{researching ? (brief.depth > 1 ? `Building ${brief.depth} hops… (a few minutes, once)` : 'Researching… (about a minute)') : 'Research it for me'}</Button>
         <Button variant="ghost" size="sm" onClick={() => { void navigator.clipboard.writeText(prompt); setCopied(true); setTimeout(() => setCopied(false), 1800); }}>{copied ? <Check size={13} /> : <Copy size={13} />}{copied ? 'Copied' : 'Copy prompt for your own agent'}</Button>
       </div>
-      <p className="blurb">Uses Firecrawl and Lovable AI credits. Up to 4 contacts per run; source excerpts are checked before review.</p>
-      {researchSummary&&<p className="blurb" role="status">{researchSummary}</p>}
+      <p className="blurb">Uses Firecrawl and Lovable AI credits. Up to 4 contacts per hop. Add an institution or field in brackets to tell apart people with the same name. Each hop only follows people found with a quoted source.</p>
+      {researchSummary&&<p className="blurb" role="status">{researchSummary}</p>}{trace.length>0&&<div className="research-trace" aria-label="What the research did">{trace.map((t,i)=><span key={i}>{t}</span>)}</div>}
       <p className="blurb">Using your own agent? Paste its reply here:</p>
       <div className="workspace-form"><textarea aria-label="Paste agent reply" rows={2} placeholder='Paste the JSON your agent returned…' value={pasted} onChange={e => setPasted(e.target.value)} /><div><Button size="sm" variant="outline" disabled={!pasted.trim()} onClick={guard(() => { stageText('pasted-agent-reply.json', pasted.slice(pasted.indexOf('{'), pasted.lastIndexOf('}') + 1)); setPasted(''); })}>Preview findings</Button></div></div>
     </section>
