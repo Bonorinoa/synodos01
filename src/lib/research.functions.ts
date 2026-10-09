@@ -4,7 +4,7 @@ import { buildResearchPrompt } from '@/lib/research-prompt';
 
 /** Runs the shared research brief with web search; output is only ever staged as unreviewed findings. */
 export const runResearch = createServerFn({ method: 'POST' })
-  .inputValidator((data: unknown) => researchBriefSchema.parse(data))
+  .validator((data: unknown) => researchBriefSchema.parse(data))
   .handler(async ({ data }) => {
     const key = process.env['LOVABLE_API_KEY'];
     if (!key) return { ok: false as const, error: 'The research assistant is not configured yet.' };
@@ -13,7 +13,7 @@ export const runResearch = createServerFn({ method: 'POST' })
     try {
     const {searchAcademicSources,readResearchStream}=await import('@/lib/research.server');
     const contacts=[...new Set(data.people.split(/[,;\n]/).map(name=>name.trim()).filter(Boolean))];
-    if(contacts.length>RESEARCH.contacts)return {ok:false as const,error:`Research up to ${RESEARCH.contacts} named contacts at a time so each source can be checked.`};
+    if(!contacts.length||contacts.length>RESEARCH.contacts)return {ok:false as const,error:`Research 1 to ${RESEARCH.contacts} named contacts at a time so each source can be checked.`};
     const date=new Date().toISOString();
     const sources=await searchAcademicSources(contacts,data.bio,firecrawl,date);
     if(!sources.some(s=>s.markdown))return {ok:false as const,error:'No readable public sources were found. No findings were added.'};
@@ -26,8 +26,7 @@ export const runResearch = createServerFn({ method: 'POST' })
       ], stream: true, store: false, reasoning: { effort: 'low',summary:'auto' },include:['reasoning.encrypted_content'],text:{format:{type:'json_schema',name:'academic_findings',strict:true,schema:extractionSchema}} }),
     });
     if (!response.ok || !response.body) {
-      const body=await response.text();console.error(`AI research [${response.status}]: ${body}`);
-      return { ok: false as const, error:`Research [${response.status}]: ${body}` };
+      return { ok: false as const, error:`Research extraction failed (${response.status}). No findings were added. Try again later.` };
     }
     const result=groundFindings(await readResearchStream(response),sources,contacts,date);
     return {ok:true as const,text:JSON.stringify(result.file),cited:result.cited,pages:sources.filter(s=>s.markdown).length,dropped:result.dropped};

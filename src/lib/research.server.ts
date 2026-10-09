@@ -6,9 +6,9 @@ export async function searchAcademicSources(contacts:string[],bio:string,key:str
   const sources:ResearchSource[]=[];const seen=new Set<string>();
   const call=async(path:string,body:object)=>{
     const response=await fetch(`https://api.firecrawl.dev/v2/${path}`,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${key}`},body:JSON.stringify(body)});
-    if(!response.ok){const error=await response.text();console.error(`Firecrawl [${response.status}]: ${error}`);throw new Error(`Firecrawl [${response.status}]: ${error}`);}
+    if(!response.ok){throw new Error(`Firecrawl request failed (${response.status}). No findings were added. Try again later or check the connection.`);}
     const result=await response.json() as {success?:boolean;error?:string;data?:unknown};
-    if(result.success===false)throw new Error(`Firecrawl: ${result.error??'Source request failed'}`);
+    if(result.success===false)throw new Error('Firecrawl could not retrieve sources. No findings were added.');
     return result.data??result;
   };
   const add=(doc:Document)=>{const url=doc.url??doc.metadata?.sourceURL;if(!url)return;try{const u=new URL(url);if(u.protocol!=='https:'&&u.protocol!=='http:')return;if(/(^|\.)academictree\.org$/i.test(u.hostname))return;}catch{return;}
