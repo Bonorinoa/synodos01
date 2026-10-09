@@ -2,31 +2,8 @@
  "format": "network-findings",
  "version": 1,
  "source_tool": "OpenAlex catalog + Firecrawl search / direct Grok extraction",
- "retrieved_at": "2026-10-09T03:36:07.180Z",
+ "retrieved_at": "2026-10-09T03:39:02.120Z",
  "findings": [
-  {
-   "from": {
-    "label": "Monica Capra",
-    "kind": "person"
-   },
-   "to": {
-    "label": "Kseniia Biriukova",
-    "kind": "person"
-   },
-   "basis": "coauthorship",
-   "claim": "Co-authored 1 indexed work, e.g. “Synthetic Cultural Agents from Aggregate Anchors” (2026).",
-   "sources": [
-    {
-     "url": "https://api.openalex.org/works/W7220702780",
-     "title": "Synthetic Cultural Agents from Aggregate Anchors",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Synthetic Cultural Agents from Aggregate Anchors — authors: Augusto Gonzalez-Bonorino, Kseniia Biriukova, Monica Capra"
-    }
-   ]
-  },
   {
    "from": {
     "label": "Eitel J.M. Lauría",
@@ -42,8 +19,8 @@
     {
      "url": "https://api.openalex.org/works/W4394576557",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -51,8 +28,8 @@
     {
      "url": "https://api.openalex.org/works/W2341502940",
      "title": "Benchmarking student performance and engagement in an early alert predictive system using interactive radar charts",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Benchmarking student performance and engagement in an early alert predictive system using interactive radar charts — authors: Sandeep M. Jayaprakash, Eitel J. M. Lauría, Pritesh Gandhi, Dinesh Mendhe"
@@ -74,8 +51,8 @@
     {
      "url": "https://api.openalex.org/works/W4233146619",
      "title": "Bayesian Data Mining and Knowledge Discovery",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Bayesian Data Mining and Knowledge Discovery — authors: Eitel J. M. Lauría, Giri Kumar Tayi"
@@ -83,8 +60,8 @@
     {
      "url": "https://api.openalex.org/works/W2078268845",
      "title": "Statistical machine learning for network intrusion detection: a data quality perspective",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Statistical machine learning for network intrusion detection: a data quality perspective — authors: Eitel J. M. Lauría, Giri Kumar Tayi"
@@ -106,8 +83,8 @@
     {
      "url": "https://api.openalex.org/works/W4285165709",
      "title": "Implementing Open-Domain Question-Answering in a College Setting: An End-to-End Methodology and a Preliminary Exploration",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Implementing Open-Domain Question-Answering in a College Setting: An End-to-End Methodology and a Preliminary Exploration — authors: Augusto Gonzalez-Bonorino, Eitel J. M. Lauría, Edward Presutti"
@@ -115,8 +92,8 @@
     {
      "url": "https://api.openalex.org/works/W3027223932",
      "title": "Boosting Early Detection of Spring Semester Freshmen Attrition: A Preliminary Exploration",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Boosting Early Detection of Spring Semester Freshmen Attrition: A Preliminary Exploration — authors: Eitel J. M. Lauría, Eric Stenton, Edward Presutti"
@@ -138,8 +115,8 @@
     {
      "url": "https://api.openalex.org/works/W4409194872",
      "title": "Investigating Flavors of RAG for Applications in College Chatbots",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Investigating Flavors of RAG for Applications in College Chatbots — authors: Christian Sarmiento, Eitel J. M. Lauría"
@@ -147,8 +124,8 @@
     {
      "url": "https://api.openalex.org/works/W4391986699",
      "title": "Early Perceptions of Teaching and Learning Using Generative AI in Higher Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Early Perceptions of Teaching and Learning Using Generative AI in Higher Education — authors: Amanda D. Damiano, Eitel J. M. Lauría, Christian Sarmiento, Ningjing Zhao"
@@ -170,8 +147,8 @@
     {
      "url": "https://api.openalex.org/works/W1486785378",
      "title": "Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative — authors: Sandeep M. Jayaprakash, Erik W. Moody, Eitel J. M. Lauría, James R. Regan, Joshua D. Baron"
@@ -179,8 +156,8 @@
     {
      "url": "https://api.openalex.org/works/W2132154562",
      "title": "Open academic analytics initiative",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Open academic analytics initiative — authors: Eitel J. M. Lauría, Erik W. Moody, Sandeep M. Jayaprakash, Nagamani Jonnalagadda, Joshua D. Baron"
@@ -202,8 +179,8 @@
     {
      "url": "https://api.openalex.org/works/W1964096639",
      "title": "Decision tree models for profiling ski resorts’ promotional and advertising strategies and the impact on sales",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Decision tree models for profiling ski resorts’ promotional and advertising strategies and the impact on sales — authors: Peter J. Duchessi, Eitel J. M. Lauría"
@@ -211,8 +188,8 @@
     {
      "url": "https://api.openalex.org/works/W1968354614",
      "title": "A methodology for developing Bayesian networks: An application to information technology (IT) implementation",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "A methodology for developing Bayesian networks: An application to information technology (IT) implementation — authors: Eitel J. M. Lauría, Peter J. Duchessi"
@@ -234,8 +211,8 @@
     {
      "url": "https://api.openalex.org/works/W2981047529",
      "title": "Exploring Non-State Stakeholder and Community-Led Open Governance: Beyond the Three Pillars of Open Government",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Exploring Non-State Stakeholder and Community-Led Open Governance: Beyond the Three Pillars of Open Government — authors: Chul Hyun Park, Justin Longo, Erik Johnston"
@@ -243,8 +220,8 @@
     {
      "url": "https://api.openalex.org/works/W2946657072",
      "title": "Intentionally building relationships between participatory online groups and formal organisations for effective emergency response",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Intentionally building relationships between participatory online groups and formal organisations for effective emergency response — authors: Chul Hyun Park, Erik Johnston"
@@ -266,8 +243,8 @@
     {
      "url": "https://api.openalex.org/works/W4408095509",
      "title": "AI Integration in Mental Health Services: Examining Trends in the USA and Peoria, Illinois",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "AI Integration in Mental Health Services: Examining Trends in the USA and Peoria, Illinois — authors: Margaret M. Hinrichs, Jieshu Wang, Caity Roe, Erik Johnston"
@@ -275,8 +252,8 @@
     {
      "url": "https://api.openalex.org/works/W2589320140",
      "title": "Technology Use, Exposure to Natural Hazards, and Being Digitally Invisible: Implications for Policy Analytics",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Technology Use, Exposure to Natural Hazards, and Being Digitally Invisible: Implications for Policy Analytics — authors: Justin Longo, Evan R. Kuras, Holly Smith, David M. Hondula, Erik Johnston"
@@ -298,8 +275,8 @@
     {
      "url": "https://api.openalex.org/works/W4225923460",
      "title": "Toward precision governance: infusing data into public management of environmental hazards",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Toward precision governance: infusing data into public management of environmental hazards — authors: David M. Hondula, Evan R. Kuras, Justin Longo, Erik Johnston"
@@ -307,8 +284,8 @@
     {
      "url": "https://api.openalex.org/works/W2607633755",
      "title": "Toward precision governance: infusing data into public management of environmental hazards",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Toward precision governance: infusing data into public management of environmental hazards — authors: David M. Hondula, Evan R. Kuras, Justin Longo, Erik Johnston"
@@ -330,8 +307,8 @@
     {
      "url": "https://api.openalex.org/works/W4225923460",
      "title": "Toward precision governance: infusing data into public management of environmental hazards",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Toward precision governance: infusing data into public management of environmental hazards — authors: David M. Hondula, Evan R. Kuras, Justin Longo, Erik Johnston"
@@ -339,8 +316,8 @@
     {
      "url": "https://api.openalex.org/works/W2981047529",
      "title": "Exploring Non-State Stakeholder and Community-Led Open Governance: Beyond the Three Pillars of Open Government",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Exploring Non-State Stakeholder and Community-Led Open Governance: Beyond the Three Pillars of Open Government — authors: Chul Hyun Park, Justin Longo, Erik Johnston"
@@ -362,8 +339,8 @@
     {
      "url": "https://api.openalex.org/works/W3130362615",
      "title": "How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents — authors: Dara M. Wald, Erik Johnston, Ned M. Wellman, John Harlow"
@@ -371,8 +348,8 @@
     {
      "url": "https://api.openalex.org/works/W2618566958",
      "title": "Understanding the influence of power and empathic perspective-taking on collaborative natural resource management",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Understanding the influence of power and empathic perspective-taking on collaborative natural resource management — authors: Dara M. Wald, Elizabeth A. Segal, Erik Johnston, Ajay Vinzé"
@@ -394,8 +371,8 @@
     {
      "url": "https://api.openalex.org/works/W3130362615",
      "title": "How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "How Does Personalization in News Stories Influence Intentions to Help With Drought? Assessing the Influence of State Empathy and Its Antecedents — authors: Dara M. Wald, Erik Johnston, Ned M. Wellman, John Harlow"
@@ -403,80 +380,11 @@
     {
      "url": "https://api.openalex.org/works/W3122239891",
      "title": "Toward Understanding Civic Data Bias in 311 Systems: An Information Deserts Perspective",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Toward Understanding Civic Data Bias in 311 Systems: An Information Deserts Perspective — authors: Myeong Ae Lee, Jieshu Wang, Erik Johnston, John Harlow, Eric Gordon, Shawn Janzen, Susan J. Winter"
-    }
-   ]
-  },
-  {
-   "from": {
-    "label": "Raymond Duch",
-    "kind": "person"
-   },
-   "to": {
-    "label": "Rodrigo Caputo",
-    "kind": "person"
-   },
-   "basis": "coauthorship",
-   "claim": "Co-authored 1 indexed work, e.g. “Agenda Power, Voting Pivotality, and Responsibility Attribution” (2025).",
-   "sources": [
-    {
-     "url": "https://api.openalex.org/works/W7117874461",
-     "title": "Agenda Power, Voting Pivotality, and Responsibility Attribution",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Agenda Power, Voting Pivotality, and Responsibility Attribution — authors:  raymond duch, Rodrigo Caputo, Tommaso Batistoni, Akitaka Matsuo"
-    }
-   ]
-  },
-  {
-   "from": {
-    "label": "Raymond Duch",
-    "kind": "person"
-   },
-   "to": {
-    "label": "Tommaso Batistoni",
-    "kind": "person"
-   },
-   "basis": "coauthorship",
-   "claim": "Co-authored 1 indexed work, e.g. “Agenda Power, Voting Pivotality, and Responsibility Attribution” (2025).",
-   "sources": [
-    {
-     "url": "https://api.openalex.org/works/W7117874461",
-     "title": "Agenda Power, Voting Pivotality, and Responsibility Attribution",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Agenda Power, Voting Pivotality, and Responsibility Attribution — authors:  raymond duch, Rodrigo Caputo, Tommaso Batistoni, Akitaka Matsuo"
-    }
-   ]
-  },
-  {
-   "from": {
-    "label": "Raymond Duch",
-    "kind": "person"
-   },
-   "to": {
-    "label": "Akitaka Matsuo",
-    "kind": "person"
-   },
-   "basis": "coauthorship",
-   "claim": "Co-authored 1 indexed work, e.g. “Agenda Power, Voting Pivotality, and Responsibility Attribution” (2025).",
-   "sources": [
-    {
-     "url": "https://api.openalex.org/works/W7117874461",
-     "title": "Agenda Power, Voting Pivotality, and Responsibility Attribution",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Agenda Power, Voting Pivotality, and Responsibility Attribution — authors:  raymond duch, Rodrigo Caputo, Tommaso Batistoni, Akitaka Matsuo"
     }
    ]
   },
@@ -486,7 +394,7 @@
     "kind": "person"
    },
    "to": {
-    "label": "Eitel J. M. Lauría",
+    "label": "Eitel J.M. Lauría",
     "kind": "person"
    },
    "basis": "coauthorship",
@@ -495,8 +403,8 @@
     {
      "url": "https://api.openalex.org/works/W4394576557",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -504,8 +412,8 @@
     {
      "url": "https://api.openalex.org/works/W2341502940",
      "title": "Benchmarking student performance and engagement in an early alert predictive system using interactive radar charts",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Benchmarking student performance and engagement in an early alert predictive system using interactive radar charts — authors: Sandeep M. Jayaprakash, Eitel J. M. Lauría, Pritesh Gandhi, Dinesh Mendhe"
@@ -527,8 +435,8 @@
     {
      "url": "https://api.openalex.org/works/W1486785378",
      "title": "Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Early Alert of Academically At-Risk Students: An Open Source Analytics Initiative — authors: Sandeep M. Jayaprakash, Erik W. Moody, Eitel J. M. Lauría, James R. Regan, Joshua D. Baron"
@@ -536,8 +444,8 @@
     {
      "url": "https://api.openalex.org/works/W2132154562",
      "title": "Open academic analytics initiative",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Open academic analytics initiative — authors: Eitel J. M. Lauría, Erik W. Moody, Sandeep M. Jayaprakash, Nagamani Jonnalagadda, Joshua D. Baron"
@@ -559,8 +467,8 @@
     {
      "url": "https://api.openalex.org/works/W4394576557",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -568,8 +476,8 @@
     {
      "url": "https://api.openalex.org/works/W2811036069",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -591,8 +499,8 @@
     {
      "url": "https://api.openalex.org/works/W4394576557",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -600,8 +508,8 @@
     {
      "url": "https://api.openalex.org/works/W2811036069",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -623,8 +531,8 @@
     {
      "url": "https://api.openalex.org/works/W4394576557",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -632,8 +540,8 @@
     {
      "url": "https://api.openalex.org/works/W2811036069",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -655,8 +563,8 @@
     {
      "url": "https://api.openalex.org/works/W4394576557",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -664,8 +572,8 @@
     {
      "url": "https://api.openalex.org/works/W2811036069",
      "title": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Using Learning Analytics to Predict At-Risk Students in Online Graduate Public Affairs and Administration Education — authors: Jay Bainbridge, James Melitski, Anne G. Zahradnik, Eitel J. M. Lauría, Sandeep M. Jayaprakash, Josh Baron"
@@ -687,8 +595,8 @@
     {
      "url": "https://api.openalex.org/works/W2789612603",
      "title": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets — authors: Joanne Luciano, Djoko Sigit Sayogo, Weijia Ran, Nic DePaula, Holly Jarman, Giri Kumar Tayi, Jing Zhang, Jana Hrdinová, Theresa A. Pardo, Deborah Lines Andersen, David F. Andersen, Luis F. Luna‐Reyes"
@@ -696,8 +604,8 @@
     {
      "url": "https://api.openalex.org/works/W2292814969",
      "title": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information — authors: Djoko Sigit Sayogo, Weijia Ran, Giri Kumar Tayi, Joanne Luciano, Luis F. Luna‐Reyes, Nic DePaula, Holly Jarman, Jing Zhang, Jana Hrdinová, Deborah Lines Andersen, David F. Andersen, Theresa A. Pardo"
@@ -719,8 +627,8 @@
     {
      "url": "https://api.openalex.org/works/W2789612603",
      "title": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets — authors: Joanne Luciano, Djoko Sigit Sayogo, Weijia Ran, Nic DePaula, Holly Jarman, Giri Kumar Tayi, Jing Zhang, Jana Hrdinová, Theresa A. Pardo, Deborah Lines Andersen, David F. Andersen, Luis F. Luna‐Reyes"
@@ -728,8 +636,8 @@
     {
      "url": "https://api.openalex.org/works/W2292814969",
      "title": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information — authors: Djoko Sigit Sayogo, Weijia Ran, Giri Kumar Tayi, Joanne Luciano, Luis F. Luna‐Reyes, Nic DePaula, Holly Jarman, Jing Zhang, Jana Hrdinová, Deborah Lines Andersen, David F. Andersen, Theresa A. Pardo"
@@ -751,8 +659,8 @@
     {
      "url": "https://api.openalex.org/works/W2789612603",
      "title": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets — authors: Joanne Luciano, Djoko Sigit Sayogo, Weijia Ran, Nic DePaula, Holly Jarman, Giri Kumar Tayi, Jing Zhang, Jana Hrdinová, Theresa A. Pardo, Deborah Lines Andersen, David F. Andersen, Luis F. Luna‐Reyes"
@@ -760,8 +668,8 @@
     {
      "url": "https://api.openalex.org/works/W2292814969",
      "title": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information — authors: Djoko Sigit Sayogo, Weijia Ran, Giri Kumar Tayi, Joanne Luciano, Luis F. Luna‐Reyes, Nic DePaula, Holly Jarman, Jing Zhang, Jana Hrdinová, Deborah Lines Andersen, David F. Andersen, Theresa A. Pardo"
@@ -783,8 +691,8 @@
     {
      "url": "https://api.openalex.org/works/W2789612603",
      "title": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets — authors: Joanne Luciano, Djoko Sigit Sayogo, Weijia Ran, Nic DePaula, Holly Jarman, Giri Kumar Tayi, Jing Zhang, Jana Hrdinová, Theresa A. Pardo, Deborah Lines Andersen, David F. Andersen, Luis F. Luna‐Reyes"
@@ -792,8 +700,8 @@
     {
      "url": "https://api.openalex.org/works/W2292814969",
      "title": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information — authors: Djoko Sigit Sayogo, Weijia Ran, Giri Kumar Tayi, Joanne Luciano, Luis F. Luna‐Reyes, Nic DePaula, Holly Jarman, Jing Zhang, Jana Hrdinová, Deborah Lines Andersen, David F. Andersen, Theresa A. Pardo"
@@ -815,8 +723,8 @@
     {
      "url": "https://api.openalex.org/works/W2789612603",
      "title": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Building a Certification and Inspection Data Infrastructure to Promote Transparent Markets — authors: Joanne Luciano, Djoko Sigit Sayogo, Weijia Ran, Nic DePaula, Holly Jarman, Giri Kumar Tayi, Jing Zhang, Jana Hrdinová, Theresa A. Pardo, Deborah Lines Andersen, David F. Andersen, Luis F. Luna‐Reyes"
@@ -824,8 +732,8 @@
     {
      "url": "https://api.openalex.org/works/W2292814969",
      "title": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Ontological Modeling of Certification and Inspection Process to Support Smart Disclosure of Product Information — authors: Djoko Sigit Sayogo, Weijia Ran, Giri Kumar Tayi, Joanne Luciano, Luis F. Luna‐Reyes, Nic DePaula, Holly Jarman, Jing Zhang, Jana Hrdinová, Deborah Lines Andersen, David F. Andersen, Theresa A. Pardo"
@@ -847,8 +755,8 @@
     {
      "url": "https://api.openalex.org/works/W7131109624",
      "title": "Dancing Alone or Dancing Together? New Product Development, Knowledge Sharing and Innovation Investment",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Dancing Alone or Dancing Together? New Product Development, Knowledge Sharing and Innovation Investment — authors: Yashuang Wei, Guofang Nan, Dahui Li, Giri Kumar Tayi"
@@ -856,121 +764,11 @@
     {
      "url": "https://api.openalex.org/works/W4416120250",
      "title": "Retail Strategies for E-Tailers in Live Streaming Commerce: When Does Influencer Marketing Work?",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
+     "retrieved_at": "2026-10-09T03:39:02.120Z",
+     "checked_at": "2026-10-09T03:39:02.120Z",
      "status": 200,
      "accessible": true,
      "excerpt": "Retail Strategies for E-Tailers in Live Streaming Commerce: When Does Influencer Marketing Work? — authors: Guangyu Li, Guofang Nan, Ronghui Wang, Giri Kumar Tayi, Dahui Li"
-    }
-   ]
-  },
-  {
-   "from": {
-    "label": "Edward Presutti",
-    "kind": "person"
-   },
-   "to": {
-    "label": "Eitel J. M. Lauría",
-    "kind": "person"
-   },
-   "basis": "coauthorship",
-   "claim": "Co-authored 4 indexed works, e.g. “Implementing Open-Domain Question-Answering in a College Setting: An End-to-End Methodology and a Preliminary Exploration” (2022).",
-   "sources": [
-    {
-     "url": "https://api.openalex.org/works/W4285165709",
-     "title": "Implementing Open-Domain Question-Answering in a College Setting: An End-to-End Methodology and a Preliminary Exploration",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Implementing Open-Domain Question-Answering in a College Setting: An End-to-End Methodology and a Preliminary Exploration — authors: Augusto Gonzalez-Bonorino, Eitel J. M. Lauría, Edward Presutti"
-    },
-    {
-     "url": "https://api.openalex.org/works/W3027223932",
-     "title": "Boosting Early Detection of Spring Semester Freshmen Attrition: A Preliminary Exploration",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Boosting Early Detection of Spring Semester Freshmen Attrition: A Preliminary Exploration — authors: Eitel J. M. Lauría, Eric Stenton, Edward Presutti"
-    }
-   ]
-  },
-  {
-   "from": {
-    "label": "Edward Presutti",
-    "kind": "person"
-   },
-   "to": {
-    "label": "Maria Kapogiannis",
-    "kind": "person"
-   },
-   "basis": "coauthorship",
-   "claim": "Co-authored 2 indexed works, e.g. “Of Stacks and Muses: Adventures in Learning Analytics at Marist College” (2019).",
-   "sources": [
-    {
-     "url": "https://api.openalex.org/works/W4293163899",
-     "title": "Of Stacks and Muses: Adventures in Learning Analytics at Marist College",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Of Stacks and Muses: Adventures in Learning Analytics at Marist College — authors: Eitel J. M. Lauría, Edward Presutti, Maria Kapogiannis"
-    },
-    {
-     "url": "https://api.openalex.org/works/W2791700776",
-     "title": "Stacking Classifiers for Early Detection of Students at Risk",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Stacking Classifiers for Early Detection of Students at Risk — authors: Eitel J. M. Lauría, Edward Presutti, Maria Kapogiannis, Anuya Kamath"
-    }
-   ]
-  },
-  {
-   "from": {
-    "label": "Edward Presutti",
-    "kind": "person"
-   },
-   "to": {
-    "label": "Eric Stenton",
-    "kind": "person"
-   },
-   "basis": "coauthorship",
-   "claim": "Co-authored 1 indexed work, e.g. “Boosting Early Detection of Spring Semester Freshmen Attrition: A Preliminary Exploration” (2020).",
-   "sources": [
-    {
-     "url": "https://api.openalex.org/works/W3027223932",
-     "title": "Boosting Early Detection of Spring Semester Freshmen Attrition: A Preliminary Exploration",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Boosting Early Detection of Spring Semester Freshmen Attrition: A Preliminary Exploration — authors: Eitel J. M. Lauría, Eric Stenton, Edward Presutti"
-    }
-   ]
-  },
-  {
-   "from": {
-    "label": "Edward Presutti",
-    "kind": "person"
-   },
-   "to": {
-    "label": "Anuya Kamath",
-    "kind": "person"
-   },
-   "basis": "coauthorship",
-   "claim": "Co-authored 1 indexed work, e.g. “Stacking Classifiers for Early Detection of Students at Risk” (2018).",
-   "sources": [
-    {
-     "url": "https://api.openalex.org/works/W2791700776",
-     "title": "Stacking Classifiers for Early Detection of Students at Risk",
-     "retrieved_at": "2026-10-09T03:36:07.180Z",
-     "checked_at": "2026-10-09T03:36:07.180Z",
-     "status": 200,
-     "accessible": true,
-     "excerpt": "Stacking Classifiers for Early Detection of Students at Risk — authors: Eitel J. M. Lauría, Edward Presutti, Maria Kapogiannis, Anuya Kamath"
     }
    ]
   }
