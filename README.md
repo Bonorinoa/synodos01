@@ -1,67 +1,66 @@
 # Synodos
 
-Build a single-page app from first principles: Augusto’s private, evidence-gated social & academic network explorer.
+> σύνοδος — Greek for "journeying together."
 
-Attached: (1) augusto-network.html — working prototype with NETWORK_DATA, evidence packets, Path vs Lineage modes, P0 honesty chrome. (2) ARCHITECTURE-v2.md — vertical lineage + scale plan. Use these as product/data reference; do NOT clone the prototype’s UI chrome. Redesign beautifully as a freeform canvas SPA.
+Synodos is an evidence-gated explorer for academic and professional networks. It maps who connects to whom on a single pan-and-zoom canvas, and every link is backed by a recorded source. It never invents relationships.
 
-# Product purpose
-Personal tool to map people, labs, and institutions with verifiable relationships. Logical implications (paths to targets, lineage depth, intro plans) will be derived from this graph — so every edge must carry inspectable evidence. Never invent relationships.
+Live app: https://synodos01.lovable.app
 
-# Single-page UX flow (think carefully)
-One continuous freeform canvas (infinite pan/zoom), not multi-route dashboard.
+## Features
 
-1. **Land** — calm empty-ish canvas with Augusto as ego; soft ambient background; glass HUD floating (not a heavy sidebar wall).
-2. **Mode pill** (glass): **Path** | **Lineage** — mutually exclusive layouts and legal edge sets.
-3. **Path mode** — force or organic canvas layout. Goal: find honest paths to targets (DeepMind, SFI). Highlight only top-ranked paths (≤3). Edge visual weight by basis (coauthorship/joint_project strong; shared_field/venue dashed & thin). Unverified (empty urls) badged and muted.
-4. **Lineage mode** — vertical depth levels (Sugiyama/layered): hop distance from selected root. Tree edges (phd_advisor, research_group) vertical; peer coauthorship within a level as cross-links. Expand/collapse, focus-as-root, breadcrumb. Do not mix university-scale shared_institution into lineage distance.
-5. **Select node/edge** — glass inspector sheet: blurb, profiles (Scholar/LinkedIn/site), evidence packet (claim, basis chip, clickable URLs), strongest bridges. Selecting is how you “dive deeper,” not page navigation.
-6. **Command/palette** (optional Cmd-K): search node, switch mode, fit, export JSON.
-7. Mobile: bottom glass sheet + dismiss; preserve zoom; no crazy auto-fit on fullscreen.
+- **Path mode**: shows routes from you to a destination you choose, drawn as hop terraces. Each step is ranked by evidence strength.
+- **Lineage mode**: lets you explore academic connections (advisors, committees, co-authors) by relationship hop.
+- **People summary** (`/people`): every person in a tree or list, with their hop, the contact they were reached through, and their co-authors.
+- **Evidence inspector**: shows each link's sources, quotes, confidence and review status.
+- **Research** (invited testers only): bounded 1–3 hop searches using OpenAlex, Firecrawl and Grok. Deterministic rules decide what gets accepted.
+- **Your own network**: a wizard that builds a network around you from contacts you name.
+- **Sharing**: read-only share links. "Handshake" badges mark people two networks have in common, matched only by identical catalog IDs.
+- **Privacy**: account saving and external research are optional and off by default.
 
-# Design preferences (apply from the start)
-- Aesthetic: scholarly, calm, cinematic — liquid glass (frosted translucent panels, soft blur, subtle specular borders), deep charcoal/ink canvas, accent mint/teal + warm gold for targets only.
-- Freeform canvas as the primary interaction metaphor (pan, zoom, drag nodes gently).
-- Typography elegant and readable; sparse chrome; personality without clutter.
-- Respect prefers-reduced-motion; mute any ambient audio by default (skip audio in v1).
-- Honesty chrome before decoration: weak/unverified edges must never look as strong as coauthorship.
+## Getting started
 
-# Data model (hard rules)
-- Source of truth: JSON graph (nodes + edges), extract/seed from the attached HTML NETWORK_DATA.
-- Node: id, label, kind (person|lab|institution|university), blurb, tags, candidate?, target?, profiles?, evidence_packet {urls, notes}.
-- Edge: source, target, strength 1–10, evidence { claim, basis, urls[], institutional_hop? }.
-- Allowed bases: coauthorship, joint_project, shared_appointment, shared_institution, shared_venue, shared_field, phd_advisor, research_group.
-- Interests/vibes alone NEVER create edges. Empty urls → unverified badge; do not auto-promote.
-- Path mode may use all bases (with visual honesty). Lineage mode filters to phd_advisor, research_group, coauthorship, joint_project only.
-
-# Tech
-- Lovable default stack (React + Tailwind + shadcn). Prefer a canvas/graph library fit for freeform + later ELK for lineage (e.g. React Flow / cytoscape — pick what fits SPA best).
-- Keep v1 client-side with seeded JSON; schema ready for later DB. Private app — no public scrape of Academic Tree.
-- SPA only: no multi-page marketing site.
-
-# First milestone to ship in this build
-Beautiful glass canvas SPA with: seeded graph from attachment, Path mode working (select, inspect evidence, top paths to DeepMind/SFI), Lineage mode scaffold (filter legal edges + vertical levels if feasible — otherwise clear placeholder that still shows filtered graph honestly), mode toggle, search, export JSON.
-
-Name vibe: something like “Augusto Network” or “Lineage Canvas” — short, private, calm.
-
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://synodos01.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/970e0d42-f2d6-48f5-b8fd-e8c7719f9755).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Requirements: Node.js 20+ (or Bun).
 
 ```sh
 git clone <this-repository-url>
 cd <repository-name>
-npm i
-npm run dev
+npm install
+npm run dev        # http://localhost:8080
 ```
+
+### Scripts
+
+| Command          | Purpose                    |
+| ---------------- | -------------------------- |
+| `npm run dev`    | Start the dev server       |
+| `npm run build`  | Production build           |
+| `npm test`       | Run the Vitest suite       |
+| `npm run lint`   | ESLint                     |
+| `npm run format` | Prettier                   |
+
+### Environment
+
+The browser client reads `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` and `VITE_SUPABASE_PROJECT_ID` from `.env`. These are publishable values. Research also needs server-side secrets (`XAI_API_KEY`, a Firecrawl connection). Never commit those. Without them, the explorer still works fully on the bundled seed network.
+
+## Project layout
+
+```text
+src/
+  routes/        TanStack Start file routes (/, /people, /shared/$token)
+  components/    Canvas, inspector, guides, command panel, wizards
+  lib/           Graph logic (network.ts), ingestion, research, sync, privacy
+  data/          Seed network and recorded research findings
+  test/          Vitest suites
+supabase/        Database migrations
+docs/            Tester readiness and methodology notes
+```
+
+Architecture rules are in [`AGENTS.md`](AGENTS.md) and [`src/components/AGENTS.md`](src/components/AGENTS.md).
+
+## Built with
+
+TanStack Start · React 19 · TypeScript · Tailwind CSS v4 · Cytoscape · shadcn/ui · Vitest
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
